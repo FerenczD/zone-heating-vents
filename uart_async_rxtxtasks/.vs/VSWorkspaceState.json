@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\components",
+    "\\components\\uart",
+    "\\main"
+  ],
+  "SelectedNode": "\\components\\uart\\uart_esp.c",
+  "PreviewInSolutionExplorer": false
+}

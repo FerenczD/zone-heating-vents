@@ -1,0 +1,18 @@
+{
+    "project_name":       "bootloader",
+    "project_path":       "D:/ESE/Semester7/capstone/Esp/Tools/components/bootloader/subproject",
+    "build_dir":          "D:/ESE/Semester7/capstone/Esp/test/uart_async_rxtxtasks/build/bootloader",
+    "config_file":        "D:/ESE/Semester7/capstone/Esp/test/uart_async_rxtxtasks/sdkconfig",
+    "config_defaults":    "",
+    "app_elf":            "bootloader.elf",
+    "app_bin":            "bootloader.bin",
+    "git_revision":       "v4.0.1-dirty",
+    "phy_data_partition": "",
+    "monitor_baud" : "115200",
+    "config_environment" : {
+        "COMPONENT_KCONFIGS" : "D:/ESE/Semester7/capstone/Esp/Tools/components/efuse/Kconfig;D:/ESE/Semester7/capstone/Esp/Tools/components/esp32/Kconfig;D:/ESE/Semester7/capstone/Esp/Tools/components/esp_common/Kconfig;D:/ESE/Semester7/capstone/Esp/Tools/components/log/Kconfig;D:/ESE/Semester7/capstone/Esp/Tools/components/spi_flash/Kconfig",
+        "COMPONENT_KCONFIGS_PROJBUILD" : "D:/ESE/Semester7/capstone/Esp/Tools/components/bootloader/Kconfig.projbuild;D:/ESE/Semester7/capstone/Esp/Tools/components/esptool_py/Kconfig.projbuild;D:/ESE/Semester7/capstone/Esp/Tools/components/partition_table/Kconfig.projbuild"
+    },
+    "build_components" : [ "bootloader", "bootloader_support", "efuse", "esp32", "esp_common", "esp_rom", "esptool_py", "log", "main", "micro-ecc", "partition_table", "soc", "spi_flash", "xtensa", "" ],
+    "build_component_paths" : [ "D:/ESE/Semester7/capstone/Esp/Tools/components/bootloader", "D:/ESE/Semester7/capstone/Esp/Tools/components/bootloader_support", "D:/ESE/Semester7/capstone/Esp/Tools/components/efuse", "D:/ESE/Semester7/capstone/Esp/Tools/components/esp32", "D:/ESE/Semester7/capstone/Esp/Tools/components/esp_common", "D:/ESE/Semester7/capstone/Esp/Tools/components/esp_rom", "D:/ESE/Semester7/capstone/Esp/Tools/components/esptool_py", "D:/ESE/Semester7/capstone/Esp/Tools/components/log", "D:/ESE/Semester7/capstone/Esp/Tools/components/bootloader/subproject/main", "D:/ESE/Semester7/capstone/Esp/Tools/components/bootloader/subproject/components/micro-ecc", "D:/ESE/Semester7/capstone/Esp/Tools/components/partition_table", "D:/ESE/Semester7/capstone/Esp/Tools/components/soc", "D:/ESE/Semester7/capstone/Esp/Tools/components/spi_flash", "D:/ESE/Semester7/capstone/Esp/Tools/components/xtensa", "" ]
+}
