@@ -1,0 +1,15 @@
+examples/802_15_4/
+examples/ant/
+examples/ble_central/
+examples/ble_central_and_peripheral/
+examples/ble_peripheral/
+examples/connectivity/
+examples/crypto/
+examples/dfu/
+examples/dtm/
+examples/iot/
+examples/multiprotocol/
+examples/nfc/
+examples/peripheral/
+examples/propietary_rf/
+examples/usb_drivers/
