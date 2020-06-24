@@ -1,4 +1,4 @@
-# Install script for directory: C:/esp/components/nvs_flash
+# Install script for directory: D:/ESE/Semester7/capstone/Esp/Tools/components/nvs_flash
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

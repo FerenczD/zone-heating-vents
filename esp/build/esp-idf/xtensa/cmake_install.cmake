@@ -1,4 +1,4 @@
-# Install script for directory: C:/esp/components/xtensa
+# Install script for directory: D:/ESE/Semester7/capstone/Esp/Tools/components/xtensa
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

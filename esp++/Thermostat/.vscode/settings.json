@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "xstring": "cpp",
+        "xutility": "cpp"
+    },
+    "idf.espIdfPathWin": "d:\\ESE\\Semester7\\capstone\\Esp\\Tools\\esp-idf"
+}

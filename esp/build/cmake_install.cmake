@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/L_bil/React-Native/Venti/embedded
+# Install script for directory: D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/L_bil/React-Native/Venti/embedded/build/esp-idf/cmake_install.cmake")
+  include("D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp/build/esp-idf/cmake_install.cmake")
 
 endif()
 
@@ -46,5 +46,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/L_bil/React-Native/Venti/embedded/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

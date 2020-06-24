@@ -1,4 +1,4 @@
-# Install script for directory: C:/esp/components/mbedtls
+# Install script for directory: D:/ESE/Semester7/capstone/Esp/Tools/components/mbedtls
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/L_bil/React-Native/Venti/embedded/build/esp-idf/mbedtls/mbedtls/cmake_install.cmake")
+  include("D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp/build/esp-idf/mbedtls/mbedtls/cmake_install.cmake")
 
 endif()
 

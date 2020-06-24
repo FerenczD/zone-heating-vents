@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/L_bil/React-Native/Venti/embedded/components/uart
+# Install script for directory: D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp/components/uart
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

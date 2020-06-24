@@ -1,4 +1,4 @@
-# Install script for directory: C:/esp/components/wifi_provisioning
+# Install script for directory: D:/ESE/Semester7/capstone/Esp/Tools/components/wifi_provisioning
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

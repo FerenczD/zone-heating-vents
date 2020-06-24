@@ -1,4 +1,4 @@
-# Install script for directory: C:/esp/components/esptool_py
+# Install script for directory: D:/ESE/Semester7/capstone/Esp/Tools/components/esptool_py
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

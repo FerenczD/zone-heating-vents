@@ -1,4 +1,4 @@
-# Install script for directory: C:/esp/components/json
+# Install script for directory: D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp/components/json
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
