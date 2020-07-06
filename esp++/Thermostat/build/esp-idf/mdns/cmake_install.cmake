@@ -1,4 +1,4 @@
-# Install script for directory: D:/ESE/Semester7/capstone/Esp/Tools/components/mdns
+# Install script for directory: C:/esp/components/mdns
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

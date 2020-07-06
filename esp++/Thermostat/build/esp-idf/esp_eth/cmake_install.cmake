@@ -1,4 +1,4 @@
-# Install script for directory: D:/ESE/Semester7/capstone/Esp/Tools/components/esp_eth
+# Install script for directory: C:/esp/components/esp_eth
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

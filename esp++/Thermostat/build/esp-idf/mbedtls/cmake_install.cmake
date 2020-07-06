@@ -1,4 +1,4 @@
-# Install script for directory: D:/ESE/Semester7/capstone/Esp/Tools/components/mbedtls
+# Install script for directory: C:/esp/components/mbedtls
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("D:/ESE/Semester7/capstone/Esp/Thermostat/build/esp-idf/mbedtls/mbedtls/cmake_install.cmake")
+  include("C:/Users/L_bil/OneDrive/Documents/GitHub/zone-heating-vents/esp++/Thermostat/build/esp-idf/mbedtls/mbedtls/cmake_install.cmake")
 
 endif()
 
