@@ -1,20 +1,17 @@
-/* Hello World Example
 
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
-
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
-*/
+/* *********** Standard Libraries *********** */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 
+/* *********** Free RTOS Libraries *********** */
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
 #include "freertos/event_groups.h"
+
+/* *********** ESP Libraries *********** */
 #include "esp_tls.h"
 #include "esp_wifi.h"
 #include "esp_wpa2.h"
@@ -31,25 +28,32 @@
 #include "esp_timer.h"
 #include "esp_sleep.h"
 #include "sdkconfig.h"
-// #include <esp_wifi.h>
-// #include <esp_event.h>
-// #include <esp_log.h>
-// #include <esp_system.h>
-// #include <nvs_flash.h>
-// #include <sys/param.h>
-// #include "tcpip_adapter.h"
-// #include "esp_eth.h"
+#include "esp_smartconfig.h"
+#include "driver/gpio.h"
+
+/* *********** Components *********** */
 #include "uart_esp.h"
 #include "HttpServer.h"
 #include "HttpPost.h"
 #include "tensorflow/lite/experimental/micro/kernels/all_ops_resolver.h"
+#include "SmartConfig.h"
 
+#define GPIO_INPUT_IO_0 4
+#define GPIO_INPUT_IO_1 5
+#define GPIO_INPUT_PIN_SEL  ((1ULL<<GPIO_INPUT_IO_0) | (1ULL<<GPIO_INPUT_IO_1))
+#define ESP_INTR_FLAG_DEFAULT 0
 
-//#include "tensorflow/lite/experimental/micro/kernels/all_ops_resolver.h"
-
-static char tag[]="cpp_helloworld";
-
+static char tag[]="Venti";
 EspUart uartIntance_g;
+
+static xQueueHandle gpio_evt_queue = NULL;
+static void smartConfig();
+
+static void IRAM_ATTR gpio_isr_handler(void* arg)
+{
+    uint32_t gpio_num = (uint32_t) arg;
+    xQueueSendFromISR(gpio_evt_queue, &gpio_num, NULL);
+}
 
 extern "C"{
     void app_main();
@@ -74,16 +78,30 @@ static void rx_task(void *pvParameter)
         int rxBytes = uartIntance_g.uartRead((portTickType)portMAX_DELAY);
 
         if(rxBytes > 0){
-
             ventStatus_t receivedData = uartIntance_g.uartGetStatus(); 
-
             ESP_LOG_BUFFER_HEXDUMP(UART_READ_LOG_NAME, &receivedData, rxBytes, ESP_LOG_INFO);
-
         }    
     }
 }
 
-extern "C"{
+static void smartConfig() {
+    uint32_t io_num;
+
+    smartConfigEnabled = 0;
+
+    if(xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
+    printf("testsetset");
+        printf("GPIO[%d] intr, val: %d\n", io_num, gpio_get_level((gpio_num_t) io_num));
+        initialise_wifi();
+    }
+    while(smartConfigEnabled != 1) {
+        
+    }
+    smartConfigEnabled = 0;
+        vTaskDelete(NULL);
+
+}
+
 
 esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
@@ -120,17 +138,49 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
     }
     return ESP_OK;
 }
-}
 
 void app_main()
 {
     ESP_ERROR_CHECK( nvs_flash_init() );
-    tcpip_adapter_init();
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
-    ESP_ERROR_CHECK(httpServerConnect());
+    // tcpip_adapter_init();
+    // ESP_ERROR_CHECK(esp_event_loop_create_default());
+    // ESP_ERROR_CHECK(httpServerConnect());
+    
+    gpio_config_t io_conf;
+     //interrupt of rising edge
+    io_conf.intr_type = (gpio_int_type_t) GPIO_PIN_INTR_POSEDGE;
+    //bit mask of the pins, use GPIO4/5 here
+    io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
+    //set as input mode    
+    io_conf.mode = GPIO_MODE_INPUT;
+    //enable pull-up mode
+    io_conf.pull_down_en = (gpio_pulldown_t) 1;
+    gpio_config(&io_conf);
+
+    //change gpio intrrupt type for one pin
+    gpio_set_intr_type((gpio_num_t) GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
+
+    //create a queue to handle gpio event from isr
+    gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
+    //start gpio task
+    
+    xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 16383, NULL, 10, NULL);
+    // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
+    //install gpio isr service
+    gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
+    //hook isr handler for specific gpio pin
+    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
+    // //hook isr handler for specific gpio pin
+    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_1, gpio_isr_handler, (void*) GPIO_INPUT_IO_1);
+
+    // //remove isr handler for gpio number.
+    // gpio_isr_handler_remove((gpio_num_t) GPIO_INPUT_IO_0);
+    // //hook isr handler for specific gpio pin again
+    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
+
     uartIntance_g.uartInit();
-    xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES, NULL);
-    xTaskCreate(tx_task, "uart_tx_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
+    // xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES, NULL);
+    // xTaskCreate(tx_task, "uart_tx_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
 
     for(;;);
 }
