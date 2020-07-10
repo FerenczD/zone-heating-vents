@@ -20,20 +20,21 @@
 #define PAIRING_MODE            0x02
 
 static const int RX_BUF_SIZE = 1024;
+static const uint8_t defaultBleAddr[BLE_ADDR_LEN] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 /* Message sent from ESP to nRF to send command to vent */
 typedef struct {
     //uint8_t cmd_uuid[CMD_UUID_LEN];     /* UUID for message */
-    uint8_t ble_addr[BLE_ADDR_LEN];     /* BLE address of vent */
+    uint8_t bleAddr[BLE_ADDR_LEN];     /* BLE address of vent */
     uint8_t cmd;                        /* Command to open or close vent */
     uint8_t mode;                       /* Mode of operation of the BLE. Pairing or Normal*/
 }ventCmd_t;
 
 /* Message send from nRF to ESP to send vent status information */
 typedef struct {
-    uint8_t ble_addr[BLE_ADDR_LEN];     /* BLE address of vent */
-    uint8_t vent_status;                /* Vent status code (or struct) */
-    uint8_t vent_temp[2];               /* Vent temperature */
+    uint8_t bleAddr[BLE_ADDR_LEN];     /* BLE address of vent */
+    uint8_t ventStatus;                /* Vent status code (or struct) */
+    uint8_t ventTemp[2];               /* Vent temperature */
     //bool isCmd;
     //uint8_t cmd_uuid[CMD_UUID_LEN];     /* UUID for message */
 }ventStatus_t;
@@ -44,6 +45,7 @@ class EspUart
         ventCmd_t       ventCmd;
         ventStatus_t    ventStatus;
     public:
+
         void uartInit();
 
         int uartSendData();
@@ -52,7 +54,9 @@ class EspUart
 
         ventStatus_t uartGetStatus();           /* Retrieve ventStatus */
 
-        void uartSetWriteData(uint8_t cmd, uint8_t* uuid, uint8_t* addr);    /* Set vent cmd*/
+        void uartSetWriteData(uint8_t cmd, uint8_t* addr);    /* Set vent cmd*/
+
+        int uartSendPairingModeRequest();
 
 };
 

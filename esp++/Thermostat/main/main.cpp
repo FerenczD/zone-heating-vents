@@ -47,10 +47,13 @@ static char tag[]="Venti";
 EspUart uartIntance_g;
 
 static xQueueHandle gpio_evt_queue = NULL;
+static xQueueHandle pairingEvtQueue = NULL;
+
 static void smartConfig();
 esp_err_t _http_event_handler(esp_http_client_event_t *evt);
 
 int wifiIsConnected = 0;
+static int pairingEnabled = 0;
 
 static void IRAM_ATTR gpio_isr_handler(void* arg)
 {
@@ -65,9 +68,9 @@ extern "C"{
 static void tx_task(void *pvParameter){
     //uint8_t testUUID[CMD_UUID_LEN] = { 0x12 , 0x34 };
     uint8_t testBleAddr[BLE_ADDR_LEN] = { 0xAA , 0x17, 0x07, 0x58, 0xCD, 0xF4 };
-    //uint8_t testCmd = 0x1;
+    uint8_t testCmd = 0x1;
 
-    uartIntance_g.uartSetWriteData(testCmd, testUUID, testBleAddr);
+    uartIntance_g.uartSetWriteData(testCmd, testBleAddr);
 
     while(1){
         uartIntance_g.uartSendData();
@@ -83,8 +86,46 @@ static void rx_task(void *pvParameter)
         if(rxBytes > 0){
             ventStatus_t receivedData = uartIntance_g.uartGetStatus(); 
             ESP_LOG_BUFFER_HEXDUMP(UART_READ_LOG_NAME, &receivedData, rxBytes, ESP_LOG_INFO);
+
+            if(pairingEnabled == 1){
+                uint32_t pairingCompleted = 1;
+
+                ESP_LOGI(UART_READ_LOG_NAME, "here");
+
+                xQueueSend(pairingEvtQueue, &pairingCompleted, ( TickType_t ) 0);  /* Dont block if queue is already full */
+            }
         }    
     }
+}
+
+static void uart_pairing_task(void *pvParameter){
+
+    uint32_t pairingCompleted = 0;
+
+    ESP_LOGI("PAIRING", "Pairing task entered");
+
+    pairingEnabled = 1;
+
+    uartIntance_g.uartSendPairingModeRequest();
+
+    xQueueReceive(pairingEvtQueue, &pairingCompleted, portMAX_DELAY);
+
+    if(pairingCompleted == 1){
+        
+        ESP_LOGI("PAIRING", "Pairing done. This is the MAC address of vent");
+
+        ventStatus_t receivedData = uartIntance_g.uartGetStatus(); 
+        ESP_LOG_BUFFER_HEXDUMP(UART_READ_LOG_NAME, &receivedData.bleAddr, BLE_ADDR_LEN, ESP_LOG_INFO);
+
+        /* Here send the information to other task waiting for pairing information or do post request directly */
+
+    }else{
+        ESP_LOGI("PAIRING", "Error pairing. PairingComplete = 0");
+    }
+
+    pairingEnabled = 0;
+    vTaskDelete(NULL);
+
 }
 
 static void smartConfig() {
@@ -102,11 +143,11 @@ static void smartConfig() {
     }
     smartConfigEnabled = 0;
     wifiIsConnected = 1;
-    // ESP_ERROR_CHECK(httpServerConnect());
-   char * response = request(_http_event_handler, "action=confirmSmartConfigCompleted");
-    ESP_LOGD(TAG, "Server responed with: %s",response);
-        vTaskDelete(NULL);
 
+    // ESP_ERROR_CHECK(httpServerConnect());
+    char * response = request(_http_event_handler, "action=confirmSmartConfigCompleted");
+    ESP_LOGD(TAG, "Server responed with: %s",response);
+    vTaskDelete(NULL);
 }
 
 
@@ -153,36 +194,36 @@ void app_main()
     // ESP_ERROR_CHECK(esp_event_loop_create_default());
     // ESP_ERROR_CHECK(httpServerConnect());
     
-    gpio_config_t io_conf;
-     //interrupt of rising edge
-    io_conf.intr_type = (gpio_int_type_t) GPIO_PIN_INTR_POSEDGE;
-    //bit mask of the pins, use GPIO4/5 here
-    io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
-    //set as input mode    
-    io_conf.mode = GPIO_MODE_INPUT;
-    //enable pull-up mode
-    io_conf.pull_down_en = (gpio_pulldown_t) 1;
-    gpio_config(&io_conf);
+    // gpio_config_t io_conf;
+    //  //interrupt of rising edge
+    // io_conf.intr_type = (gpio_int_type_t) GPIO_PIN_INTR_POSEDGE;
+    // //bit mask of the pins, use GPIO4/5 here
+    // io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
+    // //set as input mode    
+    // io_conf.mode = GPIO_MODE_INPUT;
+    // //enable pull-up mode
+    // io_conf.pull_down_en = (gpio_pulldown_t) 1;
+    // gpio_config(&io_conf);
 
-    //change gpio intrrupt type for one pin
-    gpio_set_intr_type((gpio_num_t) GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
+    // //change gpio intrrupt type for one pin
+    // gpio_set_intr_type((gpio_num_t) GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
 
-    //create a queue to handle gpio event from isr
-    gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
-    //start gpio task
+    // //create a queue to handle gpio event from isr
+    // gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
+    // //start gpio task
     
-    xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 16383, NULL, 10, NULL);
+    // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 16383, NULL, 10, NULL);
 
-    if(wifiIsConnected == 1) {
-        ESP_ERROR_CHECK(httpServerConnect());
-    }
-    // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
-    //install gpio isr service
-    gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
-    //hook isr handler for specific gpio pin
-    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
+    // if(wifiIsConnected == 1) {
+    //     ESP_ERROR_CHECK(httpServerConnect());
+    // }
+    // // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
+    // //install gpio isr service
+    // gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
     // //hook isr handler for specific gpio pin
-    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_1, gpio_isr_handler, (void*) GPIO_INPUT_IO_1);
+    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
+    // // //hook isr handler for specific gpio pin
+    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_1, gpio_isr_handler, (void*) GPIO_INPUT_IO_1);
 
     // //remove isr handler for gpio number.
     // gpio_isr_handler_remove((gpio_num_t) GPIO_INPUT_IO_0);
@@ -190,8 +231,13 @@ void app_main()
     // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
 
     uartIntance_g.uartInit();
-    // xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES, NULL);
-    // xTaskCreate(tx_task, "uart_tx_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
+
+    // Create Queue to handle pairing completed information
+    pairingEvtQueue = xQueueCreate(3, sizeof(uint32_t));
+
+    xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES, NULL);
+    //xTaskCreate(tx_task, "uart_tx_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
+    xTaskCreate(uart_pairing_task, "uart_pairing_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
 
     for(;;);
 }

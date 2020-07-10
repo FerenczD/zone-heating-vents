@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/L_bil/OneDrive/Documents/GitHub/zone-heating-vents/esp++/Thermostat/components/http_server
+# Install script for directory: D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/components/http_server
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

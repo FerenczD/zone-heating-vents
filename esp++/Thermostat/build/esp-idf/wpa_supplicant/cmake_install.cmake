@@ -1,4 +1,4 @@
-# Install script for directory: C:/esp/components/wpa_supplicant
+# Install script for directory: D:/ESE/Semester7/capstone/Esp/Tools/components/wpa_supplicant
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

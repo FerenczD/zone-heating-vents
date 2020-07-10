@@ -34,12 +34,20 @@ ventStatus_t EspUart::uartGetStatus(){
     return this->ventStatus;
 }
 
-void EspUart::uartSetWriteData(uint8_t cmd, uint8_t* uuid, uint8_t* addr){
+void EspUart::uartSetWriteData(uint8_t cmd, uint8_t* addr){
     this->ventCmd.cmd = cmd;
-    memcpy(&this->ventCmd.ble_addr, addr, BLE_ADDR_LEN);
-    memcpy(&this->ventCmd.cmd_uuid, uuid, CMD_UUID_LEN);
+    memcpy(&this->ventCmd.bleAddr, addr, BLE_ADDR_LEN);
+    //memcpy(&this->ventCmd.cmd_uuid, uuid, CMD_UUID_LEN);
+    this->ventCmd.mode = NORMAL_MODE;
 }
 
+int EspUart::uartSendPairingModeRequest(){
+    this->ventCmd.cmd = 0x00;   /* Vent stops motor or doesnt do anything */
+    memcpy(&this->ventCmd.bleAddr, &defaultBleAddr, BLE_ADDR_LEN);
+    this->ventCmd.mode = PAIRING_MODE;
+
+    return uartSendData();
+}
 
 void EspUart::uartInit() {
     const uart_config_t uart_config = {
