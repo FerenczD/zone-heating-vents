@@ -63,9 +63,9 @@ extern "C"{
 }
 
 static void tx_task(void *pvParameter){
-    uint8_t testUUID[CMD_UUID_LEN] = { 0x12 , 0x34 };
+    //uint8_t testUUID[CMD_UUID_LEN] = { 0x12 , 0x34 };
     uint8_t testBleAddr[BLE_ADDR_LEN] = { 0xAA , 0x17, 0x07, 0x58, 0xCD, 0xF4 };
-    uint8_t testCmd = 0x1;
+    //uint8_t testCmd = 0x1;
 
     uartIntance_g.uartSetWriteData(testCmd, testUUID, testBleAddr);
 
