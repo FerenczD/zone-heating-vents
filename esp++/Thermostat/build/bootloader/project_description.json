@@ -1,0 +1,18 @@
+{
+    "project_name":       "bootloader",
+    "project_path":       "C:/esp/components/bootloader/subproject",
+    "build_dir":          "C:/Users/L_bil/OneDrive/Documents/GitHub/zone-heating-vents/esp++/Thermostat/build/bootloader",
+    "config_file":        "C:/Users/L_bil/OneDrive/Documents/GitHub/zone-heating-vents/esp++/Thermostat/sdkconfig",
+    "config_defaults":    "",
+    "app_elf":            "bootloader.elf",
+    "app_bin":            "bootloader.bin",
+    "git_revision":       "v4.0-dirty",
+    "phy_data_partition": "",
+    "monitor_baud" : "115200",
+    "config_environment" : {
+        "COMPONENT_KCONFIGS" : "C:/esp/components/efuse/Kconfig;C:/esp/components/esp32/Kconfig;C:/esp/components/esp_common/Kconfig;C:/esp/components/log/Kconfig;C:/esp/components/spi_flash/Kconfig",
+        "COMPONENT_KCONFIGS_PROJBUILD" : "C:/esp/components/bootloader/Kconfig.projbuild;C:/esp/components/esptool_py/Kconfig.projbuild;C:/esp/components/partition_table/Kconfig.projbuild"
+    },
+    "build_components" : [ "bootloader", "bootloader_support", "efuse", "esp32", "esp_common", "esp_rom", "esptool_py", "log", "main", "micro-ecc", "partition_table", "soc", "spi_flash", "xtensa", "" ],
+    "build_component_paths" : [ "C:/esp/components/bootloader", "C:/esp/components/bootloader_support", "C:/esp/components/efuse", "C:/esp/components/esp32", "C:/esp/components/esp_common", "C:/esp/components/esp_rom", "C:/esp/components/esptool_py", "C:/esp/components/log", "C:/esp/components/bootloader/subproject/main", "C:/esp/components/bootloader/subproject/components/micro-ecc", "C:/esp/components/partition_table", "C:/esp/components/soc", "C:/esp/components/spi_flash", "C:/esp/components/xtensa", "" ]
+}

@@ -70,7 +70,10 @@ static void smartconfig_example_task(void * parm)
     smartconfig_start_config_t cfg = SMARTCONFIG_START_CONFIG_DEFAULT();
     ESP_ERROR_CHECK( esp_smartconfig_start(&cfg) );
     while (1) {
-        uxBits = xEventGroupWaitBits(s_wifi_event_group, CONNECTED_BIT | ESPTOUCH_DONE_BIT, true, false, portMAX_DELAY); 
+        ESP_LOGI(SMART_CONFIG_TAG, "Before wait bits");
+
+        uxBits = xEventGroupWaitBits(s_wifi_event_group, CONNECTED_BIT | ESPTOUCH_DONE_BIT, true, false, portMAX_DELAY);
+        ESP_LOGI(SMART_CONFIG_TAG, "W wait bits"); 
         if(uxBits & CONNECTED_BIT) {
             ESP_LOGI(SMART_CONFIG_TAG, "WiFi Connected to ap");
         }

@@ -48,6 +48,9 @@ EspUart uartIntance_g;
 
 static xQueueHandle gpio_evt_queue = NULL;
 static void smartConfig();
+esp_err_t _http_event_handler(esp_http_client_event_t *evt);
+
+int wifiIsConnected = 0;
 
 static void IRAM_ATTR gpio_isr_handler(void* arg)
 {
@@ -98,6 +101,10 @@ static void smartConfig() {
         
     }
     smartConfigEnabled = 0;
+    wifiIsConnected = 1;
+    // ESP_ERROR_CHECK(httpServerConnect());
+   char * response = request(_http_event_handler, "action=confirmSmartConfigCompleted");
+    ESP_LOGD(TAG, "Server responed with: %s",response);
         vTaskDelete(NULL);
 
 }
@@ -165,6 +172,10 @@ void app_main()
     //start gpio task
     
     xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 16383, NULL, 10, NULL);
+
+    if(wifiIsConnected == 1) {
+        ESP_ERROR_CHECK(httpServerConnect());
+    }
     // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
     //install gpio isr service
     gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
