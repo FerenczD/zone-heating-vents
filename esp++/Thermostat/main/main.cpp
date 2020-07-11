@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <iostream>
+#include <sstream>
 
 /* *********** Free RTOS Libraries *********** */
 #include "freertos/FreeRTOS.h"
@@ -35,7 +37,7 @@
 #include "uart_esp.h"
 #include "HttpServer.h"
 #include "HttpPost.h"
-#include "tensorflow/lite/experimental/micro/kernels/all_ops_resolver.h"
+// #include "tensorflow/lite/experimental/micro/kernels/all_ops_resolver.h"
 #include "SmartConfig.h"
 
 #define GPIO_INPUT_IO_0 4
@@ -106,7 +108,7 @@ static void uart_pairing_task(void *pvParameter){
 
     pairingEnabled = 1;
 
-    uartIntance_g.uartSendPairingModeRequest();
+    uartIntance_g.uartSendPairingModeRequest(); 
 
     xQueueReceive(pairingEvtQueue, &pairingCompleted, portMAX_DELAY);
 
@@ -118,35 +120,79 @@ static void uart_pairing_task(void *pvParameter){
         ESP_LOG_BUFFER_HEXDUMP(UART_READ_LOG_NAME, &receivedData.bleAddr, BLE_ADDR_LEN, ESP_LOG_INFO);
 
         /* Here send the information to other task waiting for pairing information or do post request directly */
+        char query[255] = {0};
+        sprintf(query, "action=addNewVent&mac=%02x%02x%02x%02x%02x%02x",receivedData.bleAddr[0],
+                                                                         receivedData.bleAddr[1],
+                                                                         receivedData.bleAddr[2],
+                                                                         receivedData.bleAddr[3],
+                                                                         receivedData.bleAddr[4],
+                                                                         receivedData.bleAddr[5]);
 
+        ESP_LOG_BUFFER_HEXDUMP("PAIRING_TASK", query, strlen(query), ESP_LOG_INFO);
+
+        char* response = request(_http_event_handler, query);
+        free(response);
+        
     }else{
         ESP_LOGI("PAIRING", "Error pairing. PairingComplete = 0");
     }
 
     pairingEnabled = 0;
+    ESP_LOGI("PAIRING", "Pairing task completed. Killing task");
+
     vTaskDelete(NULL);
+
+}
+
+static void flag_lookup_task(void *pvParameter){
+    const TickType_t callFrequency = 10000 / portTICK_PERIOD_MS;
+    TickType_t xLastWakeTime = xTaskGetTickCount();
+
+    for(;;){
+
+        char * response = request(_http_event_handler, "action=checkIfVentsNeedPairing");
+        ESP_LOGI("FLAG_TASK", "Server responed with: %s",response);
+ 
+        if(*response - '0' == 1){
+            ESP_LOGI("FLAG_TASK", "Pairing required starting pairing task");
+            
+            pairingEnabled = 1;
+            xTaskCreate(uart_pairing_task, "uart_pairing_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
+            while(pairingEnabled == 1);
+
+
+        }else{
+            ESP_LOGI("FLAG_TASK", "Pairing not required yet");
+        }
+        free(response);
+        vTaskDelayUntil(&xLastWakeTime, callFrequency);
+
+        xLastWakeTime = xTaskGetTickCount();
+    }
+
 
 }
 
 static void smartConfig() {
     uint32_t io_num;
 
-    smartConfigEnabled = 0;
+    smartConfigEnabled = 1;
 
     if(xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
     printf("testsetset");
         printf("GPIO[%d] intr, val: %d\n", io_num, gpio_get_level((gpio_num_t) io_num));
         initialise_wifi();
     }
-    while(smartConfigEnabled != 1) {
+    while(smartConfigEnabled != 0) {
         
     }
-    smartConfigEnabled = 0;
+    // smartConfigEnabled = 0;
     wifiIsConnected = 1;
 
     // ESP_ERROR_CHECK(httpServerConnect());
     char * response = request(_http_event_handler, "action=confirmSmartConfigCompleted");
     ESP_LOGD(TAG, "Server responed with: %s",response);
+    free(response);
     vTaskDelete(NULL);
 }
 
@@ -194,50 +240,52 @@ void app_main()
     // ESP_ERROR_CHECK(esp_event_loop_create_default());
     // ESP_ERROR_CHECK(httpServerConnect());
     
-    // gpio_config_t io_conf;
+    gpio_config_t io_conf;
     //  //interrupt of rising edge
-    // io_conf.intr_type = (gpio_int_type_t) GPIO_PIN_INTR_POSEDGE;
+    io_conf.intr_type = (gpio_int_type_t) GPIO_PIN_INTR_POSEDGE;
     // //bit mask of the pins, use GPIO4/5 here
-    // io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
+    io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
     // //set as input mode    
-    // io_conf.mode = GPIO_MODE_INPUT;
+    io_conf.mode = GPIO_MODE_INPUT;
     // //enable pull-up mode
-    // io_conf.pull_down_en = (gpio_pulldown_t) 1;
-    // gpio_config(&io_conf);
+    io_conf.pull_down_en = (gpio_pulldown_t) 1;
+    gpio_config(&io_conf);
 
     // //change gpio intrrupt type for one pin
-    // gpio_set_intr_type((gpio_num_t) GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
+    gpio_set_intr_type((gpio_num_t) GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
 
     // //create a queue to handle gpio event from isr
-    // gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
-    // //start gpio task
-    
-    // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 16383, NULL, 10, NULL);
-
-    // if(wifiIsConnected == 1) {
-    //     ESP_ERROR_CHECK(httpServerConnect());
-    // }
-    // // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
-    // //install gpio isr service
-    // gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
-    // //hook isr handler for specific gpio pin
-    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
-    // // //hook isr handler for specific gpio pin
-    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_1, gpio_isr_handler, (void*) GPIO_INPUT_IO_1);
-
-    // //remove isr handler for gpio number.
-    // gpio_isr_handler_remove((gpio_num_t) GPIO_INPUT_IO_0);
-    // //hook isr handler for specific gpio pin again
-    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
-
-    uartIntance_g.uartInit();
+    gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
 
     // Create Queue to handle pairing completed information
     pairingEvtQueue = xQueueCreate(3, sizeof(uint32_t));
+    // //start gpio task
+    
+    xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 16383, NULL, 10, NULL);
+
+    if(wifiIsConnected == 1) {
+        ESP_ERROR_CHECK(httpServerConnect());
+    }
+    // // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
+    // //install gpio isr service
+    gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
+    // //hook isr handler for specific gpio pin
+    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
+    // // //hook isr handler for specific gpio pin
+    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_1, gpio_isr_handler, (void*) GPIO_INPUT_IO_1);
+
+    while(wifiIsConnected != 1);
+
+    // //remove isr handler for gpio number.
+    gpio_isr_handler_remove((gpio_num_t) GPIO_INPUT_IO_0);
+    // //hook isr handler for specific gpio pin again
+    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
+
+    uartIntance_g.uartInit();
 
     xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES, NULL);
     //xTaskCreate(tx_task, "uart_tx_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
-    xTaskCreate(uart_pairing_task, "uart_pairing_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
-
+    xTaskCreate(flag_lookup_task, "flag_lookup_task", 8192, NULL, configMAX_PRIORITIES, NULL);
+    
     for(;;);
 }

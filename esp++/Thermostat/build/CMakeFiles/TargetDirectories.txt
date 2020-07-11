@@ -526,13 +526,6 @@ D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/
 D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/smart_config/CMakeFiles/edit_cache.dir
 D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/smart_config/CMakeFiles/list_install_components.dir
 D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/smart_config/CMakeFiles/install/strip.dir
-D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/tfmicro/CMakeFiles/rebuild_cache.dir
-D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/tfmicro/CMakeFiles/__idf_tfmicro.dir
-D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/tfmicro/CMakeFiles/install/local.dir
-D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/tfmicro/CMakeFiles/install.dir
-D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/tfmicro/CMakeFiles/edit_cache.dir
-D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/tfmicro/CMakeFiles/list_install_components.dir
-D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/tfmicro/CMakeFiles/install/strip.dir
 D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/uart/CMakeFiles/rebuild_cache.dir
 D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/uart/CMakeFiles/__idf_uart.dir
 D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/uart/CMakeFiles/install/local.dir

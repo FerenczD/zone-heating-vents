@@ -21,7 +21,11 @@
         esp_http_client_read(client,buffer,esp_http_client_get_content_length(client));
         ESP_LOGI(POST_TAG, "Server responded with: %s",buffer);
      }
-return buffer;
+
+    esp_http_client_close(client);
+    esp_http_client_cleanup(client);
+    
+    return buffer;
 
 }
 

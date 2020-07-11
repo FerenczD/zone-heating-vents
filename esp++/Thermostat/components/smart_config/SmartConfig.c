@@ -80,7 +80,7 @@ static void smartconfig_example_task(void * parm)
         if(uxBits & ESPTOUCH_DONE_BIT) {
             ESP_LOGI(SMART_CONFIG_TAG, "smartconfig over");
             esp_smartconfig_stop();
-            smartConfigEnabled = 1;
+            smartConfigEnabled = 0;
             vTaskDelete(NULL);
         }
     }

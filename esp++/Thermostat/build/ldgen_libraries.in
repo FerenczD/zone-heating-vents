@@ -59,5 +59,4 @@ $<TARGET_FILE:__idf_main>
 $<TARGET_FILE:__idf_http_post>
 $<TARGET_FILE:__idf_http_server>
 $<TARGET_FILE:__idf_smart_config>
-$<TARGET_FILE:__idf_tfmicro>
 $<TARGET_FILE:__idf_uart>
