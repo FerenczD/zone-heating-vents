@@ -390,12 +390,12 @@ static void timer_init()
     };
     esp_timer_handle_t periodic_timer;
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
-  ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, GET_TEMP_REQUEST_INTERVAL_MICRO_S));
+    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, GET_TEMP_REQUEST_INTERVAL_MICRO_S));
 }
 
 void app_main()
 {
-ESP_LOGI(TAG, "Initializing NVS flash:");
+    ESP_LOGI(TAG, "Initializing NVS flash:");
     esp_err_t ret = nvs_flash_init();
      if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
       ESP_ERROR_CHECK(nvs_flash_erase());

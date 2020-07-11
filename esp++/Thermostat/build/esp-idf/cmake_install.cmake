@@ -102,7 +102,9 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/http_post/cmake_install.cmake")
   include("D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/http_server/cmake_install.cmake")
   include("D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/smart_config/cmake_install.cmake")
+  include("D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/tfmicro/cmake_install.cmake")
   include("D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/uart/cmake_install.cmake")
+  include("D:/ESE/Semester7/capstone/Esp/zone-heating-vents/esp++/Thermostat/build/esp-idf/vent_class/cmake_install.cmake")
 
 endif()
 

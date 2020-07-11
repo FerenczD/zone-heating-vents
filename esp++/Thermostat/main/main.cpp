@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <iostream>
 #include <sstream>
+#include <vector>
+#include <algorithm>
 
 /* *********** Free RTOS Libraries *********** */
 #include "freertos/FreeRTOS.h"
@@ -39,23 +41,31 @@
 #include "HttpPost.h"
 // #include "tensorflow/lite/experimental/micro/kernels/all_ops_resolver.h"
 #include "SmartConfig.h"
+#include "vent_class.h"
 
 #define GPIO_INPUT_IO_0 4
 #define GPIO_INPUT_IO_1 5
 #define GPIO_INPUT_PIN_SEL  ((1ULL<<GPIO_INPUT_IO_0) | (1ULL<<GPIO_INPUT_IO_1))
 #define ESP_INTR_FLAG_DEFAULT 0
 
+/* Globals */
 static char tag[]="Venti";
-EspUart uartIntance_g;
 
+/* Data structures */
+EspUart uartIntance_g;
+std::vector<Vent*> myHomeVents;  /* Vents paired and known by the sytem. Note: This hould be sinchronized with erver at some point and store it locally in flash */
+                                 /* Various tasks will have access so do semaphores in the future */
+/* Flags */
+int wifiIsConnected = 0;
+static int pairingEnabled = 0;
+
+/* Handles */
 static xQueueHandle gpio_evt_queue = NULL;
 static xQueueHandle pairingEvtQueue = NULL;
 
+/* Prototypes */
 static void smartConfig();
 esp_err_t _http_event_handler(esp_http_client_event_t *evt);
-
-int wifiIsConnected = 0;
-static int pairingEnabled = 0;
 
 static void IRAM_ATTR gpio_isr_handler(void* arg)
 {
@@ -68,7 +78,6 @@ extern "C"{
 }
 
 static void tx_task(void *pvParameter){
-    //uint8_t testUUID[CMD_UUID_LEN] = { 0x12 , 0x34 };
     uint8_t testBleAddr[BLE_ADDR_LEN] = { 0xAA , 0x17, 0x07, 0x58, 0xCD, 0xF4 };
     uint8_t testCmd = 0x1;
 
@@ -78,6 +87,34 @@ static void tx_task(void *pvParameter){
         uartIntance_g.uartSendData();
         vTaskDelay(2000 / portTICK_PERIOD_MS); 
     }
+}
+static void update_data_task(void *pvParameters){
+
+    ventStatus_t receivedData = *(ventStatus_t*)pvParameters;
+
+    /* Update local data structure */
+    Vent* localVent = findVentByMacBytes(receivedData.bleAddr, myHomeVents);
+
+    localVent->setStatus(receivedData.ventStatus);
+    localVent->setCurrentTemperature((uint16_t*)receivedData.ventTemp);
+
+    /* Update server */
+    char query[255] = {0};
+    sprintf(query, "action=updateExistingVent&mac=%s&temp=%d&status=%d", localVent->getMacAddrStr().c_str(), 
+                                                                         *(uint16_t*)receivedData.ventTemp,
+                                                                         receivedData.ventStatus);
+
+    ESP_LOGI("UPDATE", "%s", query);
+
+    //char* response = request(_http_event_handler, query);
+
+    /* Check http response for errors */
+
+    /* Run the algorithm task. Note: Important to do everytime you receive new data from vents */
+
+
+    free(response);
+    vTaskDelete(NULL);
 }
 
 static void rx_task(void *pvParameter)
@@ -92,12 +129,42 @@ static void rx_task(void *pvParameter)
             if(pairingEnabled == 1){
                 uint32_t pairingCompleted = 1;
 
-                ESP_LOGI(UART_READ_LOG_NAME, "here");
-
                 xQueueSend(pairingEvtQueue, &pairingCompleted, ( TickType_t ) 0);  /* Dont block if queue is already full */
+            }else{
+                /* This should be a normal operation read */
+                ventStatus_t receivedDataCpy = receivedData;
+                xTaskCreate(update_data_task, "update_data_task", 8192, &receivedDataCpy, configMAX_PRIORITIES - 1, NULL);
+                
             }
         }    
     }
+
+    vTaskDelete(NULL);
+}
+
+static void get_server_data_task(void* pvParameters){
+    const TickType_t callFrequency = 10000 / portTICK_PERIOD_MS;    /* 10 seconds */
+    TickType_t xLastWakeTime = xTaskGetTickCount();
+
+    char query[255] = {0};
+    sprintf(query, "action=getVentData");  /* Get all data */
+
+    for(;;){
+        char* response = request(_http_event_handler, query);
+
+        /* Parse response with cJSON and get ids and setTemperatures */
+        float* setTempArr;
+        int* idArr;
+
+        /* Update local data structure with new setTemperature */
+        updateHomeVents(myHomeVents, idArr, setTempArr);
+
+        free(response);
+        vTaskDelayUntil(&xLastWakeTime, callFrequency);
+        xLastWakeTime = xTaskGetTickCount();
+    }
+
+    vTaskDelete(NULL);
 }
 
 static void uart_pairing_task(void *pvParameter){
@@ -121,7 +188,7 @@ static void uart_pairing_task(void *pvParameter){
 
         /* Here send the information to other task waiting for pairing information or do post request directly */
         char query[255] = {0};
-        sprintf(query, "action=addNewVent&mac=%02x%02x%02x%02x%02x%02x",receivedData.bleAddr[0],
+        sprintf(query, "action=addNewVent&mac=%02x%02x%02x%02x%02x%02x", receivedData.bleAddr[0],
                                                                          receivedData.bleAddr[1],
                                                                          receivedData.bleAddr[2],
                                                                          receivedData.bleAddr[3],
@@ -130,7 +197,19 @@ static void uart_pairing_task(void *pvParameter){
 
         ESP_LOG_BUFFER_HEXDUMP("PAIRING_TASK", query, strlen(query), ESP_LOG_INFO);
 
-        char* response = request(_http_event_handler, query);
+        char* response = request(_http_event_handler, query);           /********** This response should give you the vent of the id *************/
+
+        /* Check if response is ok before storing in data structure */
+            /* if ok Create a new intance of the vent class store available data and store in vector */
+            // Vent* newVent;
+            // newVent->setCurrentTemperature((uint16_t*)receivedData.ventTemp);
+            // newVent->setStatus(receivedData.ventStatus);
+            // newVent->setMacAddr(receivedData.bleAddr);
+            //newVent.setId(response);
+
+            //myHomeVents.push_back(newVent);
+
+            /* Else error? */
         free(response);
         
     }else{
@@ -145,7 +224,7 @@ static void uart_pairing_task(void *pvParameter){
 }
 
 static void flag_lookup_task(void *pvParameter){
-    const TickType_t callFrequency = 10000 / portTICK_PERIOD_MS;
+    const TickType_t callFrequency = 10000 / portTICK_PERIOD_MS;    /* 10 seconds */
     TickType_t xLastWakeTime = xTaskGetTickCount();
 
     for(;;){
@@ -233,6 +312,62 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
     return ESP_OK;
 }
 
+/* Only to test functions. Called on main */
+static void tester(){
+
+    uint8_t temp[2] = {0xAB, 0x09};
+    uint8_t status = 0x01;
+    uint8_t mac[6] = {0xaa, 0x11, 0x22, 0x33,0x44,0x55};
+
+    Vent* newVent = new Vent();
+    newVent->setCurrentTemperature((uint16_t*)temp);
+    newVent->setStatus(status);
+    newVent->setMacAddr(mac);   
+    newVent->setId(1);
+    myHomeVents.push_back(newVent);
+
+    uint8_t temp2[2] = {0xc9, 0x0A};
+    uint8_t status2 = 0x02;
+    uint8_t mac2[6] = {0xcc, 0x77, 0x88, 0x99,0xaa,0xbb}; 
+    Vent* newVent2 = new Vent();;
+    newVent2->setCurrentTemperature((uint16_t*)temp2);
+    newVent2->setStatus(status2);
+    newVent2->setMacAddr(mac2);  
+    newVent2->setId(2);
+    myHomeVents.push_back(newVent2);
+
+    /* Iterating through the vector */
+    for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
+        Vent* test = *it;
+        ESP_LOGI("TEST", "Status: %d", test->getStatus());
+        ESP_LOGI("TEST", "Temp: %.2f", test->getCurrentTemperature());
+        ESP_LOGI("TEST", "mac: %s", test->getMacAddrStr().c_str());
+    }
+
+    /* Searching */
+    Vent* found = findVentById(1, myHomeVents);
+    ESP_LOGI("TEST", "Temp: %.2f", found->getCurrentTemperature());
+    Vent* found2 = findVentByMacBytes(mac, myHomeVents);
+
+    /*Edit values */
+    uint8_t temp3 [2] = {0x11, 0x07};
+    // found->setCurrentTemperature((uint16_t*)temp3);
+    // for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
+    //     Vent* test = *it;
+    //     ESP_LOGI("TEST", "Status: %d", test->getStatus());
+    //     ESP_LOGI("TEST", "Temp: %.2f", test->getCurrentTemperature());
+    //     ESP_LOGI("TEST", "mac: %s", test->getMacAddrStr().c_str());
+    // }
+
+    ventStatus_t receivedData;
+    receivedData.ventStatus = 0x01;
+    memcpy(&receivedData.bleAddr,mac,6);
+    memcpy(&receivedData.ventTemp , &temp3,2);
+
+    xTaskCreate(update_data_task, "update_data_task", 8192, &receivedData, configMAX_PRIORITIES - 1, NULL);
+    for(;;);
+}
+
 void app_main()
 {
     ESP_ERROR_CHECK( nvs_flash_init() );
@@ -286,6 +421,9 @@ void app_main()
     xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES, NULL);
     //xTaskCreate(tx_task, "uart_tx_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
     xTaskCreate(flag_lookup_task, "flag_lookup_task", 8192, NULL, configMAX_PRIORITIES, NULL);
-    
+    xTaskCreate(get_server_data_task, "get_server_data_task", 8192, NULL, configMAX_PRIORITIES, NULL);
+
+    //tester();
     for(;;);
 }
+
