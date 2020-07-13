@@ -14,6 +14,32 @@ switch ($action) {
         $mac = filter_input(INPUT_POST,'mac');
         echo thermRequestTemp($mac);
         break;
+    case 'confirmSmartConfigCompleted':
+	    echo confirmSmartConfigCompleted();
+	    break;
+    case 'checkIfVentsNeedPairing':
+        echo checkIfVentNeedsPairing();
+        break;
+        case 'addNewVent':
+            $mac = filter_input(INPUT_POST,'mac');
+        echo addNewVent($mac);
+        break;
+    case 'updateExistingVent':
+        $id = filter_input(INPUT_POST,'id');
+        $temp = filter_input(INPUT_POST,'temp');
+        $status = filter_input(INPUT_POST,'status');
+        echo updateExistingVent($id,$temp, $status);
+        break;
+        case 'getVentData':
+        echo getRoomData();
+        break;
+    case 'checkIfVentCompletedPairing':
+        echo checkIfVentCompletedPairing();
+        break;
+    case 'getIdForMac':
+        $mac = filter_input(INPUT_POST,'mac');
+        echo getIdForMac($mac);
+        break;
     default:
         echo null;
         break;

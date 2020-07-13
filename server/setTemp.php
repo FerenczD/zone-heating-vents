@@ -3,16 +3,15 @@
 
     global $mysqli;
 
-
-    $json = file_get_contents('php://input');
+   $json = file_get_contents('php://input');
    $obj = json_decode($json,true);
 
-   $temp= $obj['temp'];
-   $room = $obj['room'];
+   $id= $obj['id'];
+   $temp = $obj['temp'];
 
-    $query = "UPDATE temp SET temperature = ? WHERE name = ?";
+    $query = "UPDATE rooms SET setTemp = ? WHERE id = ?";
     $statement = $mysqli->prepare($query);
-    $statement->bind_param("ss",$temp,$room);
+    $statement->bind_param("ss",$temp,$id);
     $result = $statement->execute();
 
     echo json_encode(array(
