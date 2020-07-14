@@ -17,17 +17,20 @@ Vent* findVentByMacBytes(uint8_t* bleAddr, std::vector<Vent*> myHomeVents){
     return *it;
 }
 
-void updateHomeVents(std::vector<Vent*> myHomeVents, int* idArr, float* setTempArr){
+void updateHomeVents(std::vector<Vent*> myHomeVents, std::vector<int> idArr, std::vector<float> setTempArr, std::vector<std::string> nameArr){
 
     int i = 0;
     for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it, i++) {
         Vent* ventInstance = *it;
-        if(ventInstance->getId() == idArr[i]){      /* Simple error checking. In theory it hould be aligned */
-            ventInstance->setSetTemperature(setTempArr[i]);
+        if(ventInstance->getId() == idArr.at(i)){      /* Simple error checking. In theory it hould be aligned */
+            ESP_LOGI("UPDATE HOME", "Storing new set temperature and name");
+            ventInstance->setSetTemperature(setTempArr.at(i));
+            ventInstance->setName(nameArr.at(i));
         }else{
-            /* This shouldnt happen */
+            ESP_LOGI("UPDATE HOME", "Error. Vector and array values does not match");
         }
     }
+
 }
 
 /* Class methods */
@@ -35,9 +38,9 @@ void Vent::setId(int id){
     this->id = id;
 }
 
-void Vent::setCurrentTemperature(uint16_t* temperature){
-    float actualTemperature = *temperature/100.0;
-    this->currentTemperature = actualTemperature;
+void Vent::setCurrentTemperature(uint8_t* temperature){
+    uint16_t temp = *(uint16_t*)temperature;
+    this->currentTemperature = static_cast<float>(temp)/100.0;
 }
 
 void Vent::setSetTemperature(float temperature){
@@ -68,6 +71,10 @@ void Vent::setName(std::string name){
     this->name = name;
 }
 
+void Vent::setLatestVentCommand(uint8_t command){
+    this->latestVentCommand = command;
+}
+
 int Vent::getId(){
     return this->id;
 } 
@@ -90,6 +97,16 @@ std::string Vent::getMacAddrStr(){
         
 std::string Vent::getName(){
     return this->name;
-}       
+}
+
+uint8_t Vent::getLatestVentCommand(){
+    return this->latestVentCommand;
+}
+
+float Vent::getSetTemperature(){
+    return this->setTemperature;
+}
+
+
         
         

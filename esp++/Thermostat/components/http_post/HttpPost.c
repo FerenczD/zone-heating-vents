@@ -6,6 +6,7 @@
         .url = WEB_URL,
         .event_handler = eventHandler,
     };
+
     ESP_LOGI(POST_TAG, "Post request payload: %s",query);
     esp_http_client_handle_t client = esp_http_client_init(&config);
     esp_err_t err = esp_http_client_perform(client);
@@ -20,7 +21,7 @@
     } else {
         esp_http_client_read(client,buffer,esp_http_client_get_content_length(client));
         ESP_LOGI(POST_TAG, "Server responded with: %s",buffer);
-     }
+    }
 
     esp_http_client_close(client);
     esp_http_client_cleanup(client);

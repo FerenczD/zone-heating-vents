@@ -7,6 +7,8 @@
 #include <cstring>
 #include <vector>
 #include <algorithm>
+#include "esp_log.h"
+
 
 #define BLE_MAC_LEN 6
 
@@ -21,29 +23,31 @@ class Vent
         uint8_t macAddrBytes[BLE_MAC_LEN];      /* MAC address retrieved by UART */
         std::string name;                       /* Vent location i.e living room*/
         int batteryLevel;                       /* To be implemented */
+        uint8_t latestVentCommand;              /* Last command given to vent i.e open, close or do nothing */
 
     public:
         void setId(int id);
-        void setCurrentTemperature(uint16_t* temperature);
+        void setCurrentTemperature(uint8_t* temperature);
         void setSetTemperature(float temperature);
         void setStatus(uint8_t status);
         void setMacAddr(uint8_t* macAddr);
         void setName(std::string name);
+        void setLatestVentCommand(uint8_t command);
 
         int getId();
+        float getSetTemperature();
         float getCurrentTemperature();
         uint8_t getStatus();
         uint8_t* getMacAddrBytes();
         std::string getMacAddrStr();
         std::string getName();
-
-
+        uint8_t getLatestVentCommand();
 };
 
 Vent* findVentById(int id, std::vector<Vent*> myHomeVents);
 
 Vent* findVentByMacBytes(uint8_t* bleAddr, std::vector<Vent*> myHomeVents);
 
-void updateHomeVents(std::vector<Vent*> myHomeVents, int* idArr, float* setTempArr);
+void updateHomeVents(std::vector<Vent*> myHomeVents, std::vector<int> idArr, std::vector<float> setTempArr, std::vector<std::string> nameArr);
 
 #endif
