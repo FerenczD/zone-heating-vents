@@ -14,7 +14,7 @@ esp_err_t httpServerConnect()
         return ESP_ERR_INVALID_STATE;
     }
     s_connect_event_group = xEventGroupCreate();
-    // start();
+    //start();
     xEventGroupWaitBits(s_connect_event_group, CONNECTED_BITS, true, true, portMAX_DELAY);
     ESP_LOGI(TAG, "Connected to %s", s_connection_name);
     ESP_LOGI(TAG, "IPv4 address: " IPSTR, IP2STR(&s_ip_addr));

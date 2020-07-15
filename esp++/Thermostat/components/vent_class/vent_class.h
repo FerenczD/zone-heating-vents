@@ -10,7 +10,7 @@
 #include "esp_log.h"
 
 
-#define BLE_MAC_LEN 6
+#define BLE_MAC_LEN     6
 
 class Vent
 {

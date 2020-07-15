@@ -13,7 +13,7 @@ Vent* findVentByMacBytes(uint8_t* bleAddr, std::vector<Vent*> myHomeVents){
     std::vector<Vent*>::iterator it = std::find_if(std::begin(myHomeVents), std::end(myHomeVents), [&] ( Vent* &p) { 
             return (memcmp(p->getMacAddrBytes(), bleAddr, BLE_MAC_LEN) == 0); 
         });
-
+    
     return *it;
 }
 

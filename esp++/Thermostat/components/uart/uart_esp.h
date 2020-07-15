@@ -58,6 +58,8 @@ class EspUart
 
         int uartSendPairingModeRequest();
 
+        uint8_t uartCheckMessageReceived(portTickType timeout);
+
 };
 
 

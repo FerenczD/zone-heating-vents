@@ -25,6 +25,8 @@ extern "C" {
 #define WEB_URL "http://192.168.0.14"
 #define SERVER_URL "http://192.168.0.14/venti/serverRequests.php"
 
+#define ERROR_MESSAGE   "ERROR"
+
 static const char *POST_TAG = "HTTP_POST";
 
         char * request(esp_err_t(* eventHandler)(esp_http_client_event_t *), char * query);

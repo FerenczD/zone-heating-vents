@@ -18,6 +18,8 @@
 
     if (err != ESP_OK) {
         ESP_LOGE(POST_TAG, "HTTP POST request failed: %s", esp_err_to_name(err));
+        free(buffer);
+        buffer = NULL;
     } else {
         esp_http_client_read(client,buffer,esp_http_client_get_content_length(client));
         ESP_LOGI(POST_TAG, "Server responded with: %s",buffer);

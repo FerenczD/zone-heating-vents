@@ -64,5 +64,26 @@ void EspUart::uartInit() {
 
     esp_log_level_set(UART_SEND_LOG_NAME, ESP_LOG_INFO);
     esp_log_level_set(UART_READ_LOG_NAME, ESP_LOG_INFO);
+    uart_flush_input(UART_NUM_X);
+
+}
+
+uint8_t EspUart::uartCheckMessageReceived(portTickType timeout){
+    
+    uint8_t buffer = 0;
+
+    const int rxBytes = uart_read_bytes(UART_NUM_X, &buffer, 1, timeout); /* Blocking function add timeout */
+
+    if(buffer > 0x01){
+        ESP_LOGI(UART_READ_LOG_NAME, "Uart message received by peer");
+        buffer = 0x01;
+    }else{
+        ESP_LOGI(UART_READ_LOG_NAME, "Uart message error");
+        buffer = 0x00;
+    }
+
+    uart_flush_input(UART_NUM_X);
+    
+    return buffer;
 }
 
