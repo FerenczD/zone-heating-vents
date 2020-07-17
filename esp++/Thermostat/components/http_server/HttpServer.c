@@ -52,8 +52,8 @@ static void start()
     ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));
     wifi_config_t wifi_config = {
         .sta = {
-            .ssid = "BELL577",
-            .password = "EFDCCD924EDA",
+            .ssid = "Robinson",
+            .password = "3evi872ba2g490",
         },
     };
     ESP_LOGI(TAG, "Connecting to %s...", wifi_config.sta.ssid);
@@ -61,7 +61,7 @@ static void start()
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
     ESP_ERROR_CHECK(esp_wifi_connect());
-    s_connection_name = "BELL577";
+    s_connection_name = "Robinson";
 
 }
 
