@@ -47,9 +47,15 @@
 #include "vent_class.h"
 
 #define GPIO_INPUT_IO_0 4
-#define GPIO_INPUT_IO_1 5
+#define GPIO_INPUT_IO_1 36
 #define GPIO_INPUT_PIN_SEL  ((1ULL<<GPIO_INPUT_IO_0) | (1ULL<<GPIO_INPUT_IO_1))
 #define ESP_INTR_FLAG_DEFAULT 0
+
+#define FAN_GPIO        23
+#define AC_GPIO         5
+#define FURNACE_GPIO    18
+#define AC_LED          25
+#define FAN_LED         26
 
 /* Globals */
 static char tag[]="Venti";
@@ -99,6 +105,24 @@ extern "C"{
     void app_main();
 }
 
+static void toggle_ac(int status){
+    if(status == 1){     /* Turn on AC and Fan*/
+        gpio_set_level((gpio_num_t)FAN_GPIO, 1);
+        gpio_set_level((gpio_num_t)FAN_LED, 1);
+        vTaskDelay(12000 / portTICK_PERIOD_MS);
+        gpio_set_level((gpio_num_t)AC_GPIO, 1);
+        gpio_set_level((gpio_num_t)AC_LED, 1);
+
+    }else if(status == 0){
+        gpio_set_level((gpio_num_t)FAN_GPIO, 0);
+        gpio_set_level((gpio_num_t)FAN_LED, 0);
+        vTaskDelay(12000 / portTICK_PERIOD_MS);
+        gpio_set_level((gpio_num_t)AC_GPIO, 0);
+        gpio_set_level((gpio_num_t)AC_LED, 0);
+
+    }
+}
+
 static void tx_task(void *pvParameter){
     
     for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
@@ -121,38 +145,92 @@ static void the_algorithm_task(void* pvParameters){
 
     // const int deltaThreshold = 1;
     // const float fanThreshold = 0.5;
-    // int fan;
-    // int ac;
+    // int fan = 0;
+    // int ac = 0;
     // float lowestDeltaT = 0;
     // float highestDeltaT = 0;
 
-    // /* Determine fan */
+    // /* Determine fan and ac */
     // for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
     //     Vent* ventInstance = *it;
 
     //     int deltaT = (ventInstance->getSetTemperature() - ventInstance->getCurrentTemperature());
-    
+
     //     if(abs(deltaT) >= fanThreshold && deltaT <= lowestDeltaT){
     //         lowestDeltaT = deltaT;
-    //     }
+    //     }else if(abs(deltaT) >= fanThreshold && deltaT >= highestDeltaT){
+            //     highestDeltaT = deltaT;
+            // }
+    // }
+    // if(abs(highestDeltaT + lowestDeltaT) <= deltaThreshold){
+    //     fan = 1;
+    // }
+
+    // if(fan == 0 && lowestDeltaT <= -deltaThreshold){
+            // ac = 1;
+    // }
+
+    
+    // /* Determine vent command */
+    // for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
+    //     Vent* ventInstance = *it;
+
+    //     int deltaT = (ventInstance->getSetTemperature() - ventInstance->getCurrentTemperature());
+            
+            // if(ac == 1){
+            //     if(deltaT <= -1){
+            //         ventInstance->setLatestCommand(0x01);   /* Open vent */
+            //     }else{
+            //         ventInstance->setLatestCommand(0x02);   /* Close vent */
+
+            //     }
+            // }else{
+            //     ventInstance->setLatestCommand(0x01);   /* Open for pressure protection */
+            // }
     // }
     
     /*********** TEST ***************/
-    /* Determine fan */
+    /* Determine */
+    bool acFlag = 0;
+    char* response;
     for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
         Vent* ventInstance = *it;
 
         int deltaT = (ventInstance->getSetTemperature() - ventInstance->getCurrentTemperature());
 
         if(deltaT >= 1){
-            ventInstance->setLatestVentCommand(0x01);   /* Open */
+            ventInstance->setLatestVentCommand(0x01);   /* Close */
         }else if(deltaT <= -1){
-            ventInstance->setLatestVentCommand(0x02);   /* Close */
+            ventInstance->setLatestVentCommand(0x02);   /* Open */
+            acFlag = 1;
         }else{
-            ventInstance->setLatestVentCommand(0x00);   /* Nothing */
+            ventInstance->setLatestVentCommand(0x00);   /* Nothing */     
         }
     }
     
+    if(acFlag == 1){
+        toggle_ac(1);
+        ESP_LOGI("ALGORITHM", "AC On");
+        do{
+            response = request(_http_event_handler, "action=updateHVAC&hvac=Cool");
+        }while(response == NULL);
+        do{
+            response = request(_http_event_handler, "action=updateFan&fan=Auto");
+        }while(response == NULL);
+    }else{
+        toggle_ac(0);
+        ESP_LOGI("ALGORITHM", "AC Off");
+
+        do{
+            response = request(_http_event_handler, "action=updateHVAC&hvac=Off");
+        }while(response == NULL);
+        do{
+            response = request(_http_event_handler, "action=updateFan&fan=Auto");
+        }while(response == NULL);
+
+    }
+
+
     xTaskCreate(tx_task, "tx_task", 8192, NULL, configMAX_PRIORITIES - 1, NULL);
 
     vTaskDelete(NULL);
@@ -248,7 +326,7 @@ static void get_server_data_task(void* pvParameters){
             }
 
             /* Update local data structure with new setTemperature */
-            updateHomeVents(myHomeVents, idArr, setTempArr, nameArr);
+            updateHomeVents(myHomeVents, idArr, setTempArr, nameArr); 
 
         }else{
             ESP_LOGI("GET_DATA", "No vent data in database");
@@ -288,6 +366,7 @@ static void uart_pairing_task(void *pvParameter){
 
     if(pairingCompleted == 1){
         
+        vTaskSuspend(rxTaskHandle);
         ESP_LOGI("PAIRING", "Pairing done. This is the MAC address of vent");
 
         /* Retrieve information from vent */
@@ -348,6 +427,7 @@ static void uart_pairing_task(void *pvParameter){
                 free(response);
 
                 pairingDoneFlag = 1;
+                vTaskResume(rxTaskHandle);
             }else{
                 free(response);  
             }
@@ -471,37 +551,39 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 
 /* Only to test functions. Called on main */
 static void tester(){
-
-const TickType_t callFrequency = 1000 / portTICK_PERIOD_MS;    /* 1 seconds */
-    TickType_t xLastWakeTime = xTaskGetTickCount();
-
-    char * response;
+        int acFlag = 0;
 
     for(;;){
-        do{
-            response = request(_http_event_handler, "action=checkIfVentsNeedPairing");
-        }while(response == NULL);
- 
-        if(*response - '0' == 1){
-            ESP_LOGI("FLAG_TASK", "Pairing required starting pairing task");
-            
-            pairingEnabled = 1;
-
-            xTaskCreate(uart_pairing_task, "uart_pairing_task", 16384, NULL, configMAX_PRIORITIES - 1, NULL);
-
-            while(pairingEnabled == 1){
-                vTaskDelay(100 / portTICK_PERIOD_MS);   /* Just error checking. It hould exit while loop instantly */
-            }; /* Wait until pairing is done. In theory no other vent should be sending data */
-
-        }else{
-            ESP_LOGI("FLAG_TASK", "Pairing not required yet");
-        }
-        free(response);
-        vTaskDelayUntil(&xLastWakeTime, callFrequency);
-
-        xLastWakeTime = xTaskGetTickCount();
+    
+    if(acFlag == 1){
+        toggle_ac(1);
+    //     do{
+    //         response = request(_http_event_handler, "action=updateHVAC&hvac='Cool'");
+    //     }while(response == NULL);
+    //     do{
+    //         response = request(_http_event_handler, "action=updateFan&fan='Auto'");
+    //     }while(response == NULL);
+    }else{
+        toggle_ac(0);
+        // do{
+        //     response = request(_http_event_handler, "action=updateHVAC&hvac='Off'");
+        // }while(response == NULL);
+        // do{
+        //     response = request(_http_event_handler, "action=updateFan&fan='Auto'");
+        // }while(response == NULL);
     }
+    
+    ESP_LOGI("TEST","Beforre");
+    vTaskDelay(2000 / portTICK_PERIOD_MS);
+    ESP_LOGI("TET", "After");
 
+
+        if(acFlag == 0){
+            acFlag = 1;
+        }else{
+            acFlag = 0;
+        }
+    }
 
 }
 
@@ -513,6 +595,22 @@ void app_main()
     // ESP_ERROR_CHECK(httpServerConnect());
     
     gpio_config_t io_conf;
+
+    /* HVAC gpios */
+    //disable interrupt
+    io_conf.intr_type = (gpio_int_type_t)GPIO_PIN_INTR_DISABLE;
+    //set as output mode
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    //bit mask of the pins that you want to set,e.g.GPIO18/19
+    io_conf.pin_bit_mask = ((1ULL<<AC_GPIO) | (1ULL<<FAN_GPIO) | (1ULL<<FURNACE_GPIO) | (1ULL<<AC_LED) | (1ULL<<FAN_LED));
+    //disable pull-down mode
+    io_conf.pull_down_en = (gpio_pulldown_t)0;
+    //disable pull-up mode
+    io_conf.pull_up_en = (gpio_pullup_t)0;
+    //configure GPIO with the given settings
+    gpio_config(&io_conf);
+
+    /* Interrupt gpio */
     //  //interrupt of rising edge
     io_conf.intr_type = (gpio_int_type_t) GPIO_PIN_INTR_POSEDGE;
     // //bit mask of the pins, use GPIO4/5 here
@@ -520,7 +618,9 @@ void app_main()
     // //set as input mode    
     io_conf.mode = GPIO_MODE_INPUT;
     // //enable pull-up mode
-    io_conf.pull_down_en = (gpio_pulldown_t) 1;
+    io_conf.pull_down_en = (gpio_pulldown_t) 0;
+    io_conf.pull_up_en = (gpio_pullup_t)1;
+
     gpio_config(&io_conf);
 
     // //change gpio intrrupt type for one pin
@@ -555,7 +655,7 @@ void app_main()
 
     uartIntance_g.uartInit();
 
-    xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES - 1, NULL);
+    xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES - 1, &rxTaskHandle);
     // //xTaskCreate(tx_task, "uart_tx_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
     xTaskCreate(flag_lookup_task, "flag_lookup_task", 16383, NULL, configMAX_PRIORITIES -1 , &flagLookupTaskHandle);
     xTaskCreate(get_server_data_task, "get_server_data_task", 8192, NULL, configMAX_PRIORITIES - 1, &getServerDataTaskHandle);

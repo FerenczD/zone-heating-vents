@@ -22,7 +22,7 @@ void updateHomeVents(std::vector<Vent*> myHomeVents, std::vector<int> idArr, std
     int i = 0;
     for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it, i++) {
         Vent* ventInstance = *it;
-        if(ventInstance->getId() == idArr.at(i)){      /* Simple error checking. In theory it hould be aligned */
+        if(ventInstance->getId() == idArr.at(i)){      /* Simple error checking. In theory it hould be aligned *//* error hewre*/
             ESP_LOGI("UPDATE HOME", "Storing new set temperature and name");
             ventInstance->setSetTemperature(setTempArr.at(i));
             ventInstance->setName(nameArr.at(i));
