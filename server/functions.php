@@ -103,6 +103,11 @@ function getIdForMac($mac) {
     while($row = mysqli_fetch_assoc($result)) {
         $data[] = $row;
     }
+
+    $query = "UPDATE flags SET ventCompletedPairing = false";
+    $statement = $mysqli->prepare($query);
+    $statement->execute();
+
     return $data[0]['id'];
 }
 
@@ -140,6 +145,7 @@ function updateExistingVent($id,$temp, $status) {
     if($result){
         $success = 1;
     }
+
     return $success;
 }
 
@@ -159,6 +165,33 @@ function getRoomData() {
         return json_encode($data);
     }
 
+}
 
+function updateHvacStatus($hvac) {
+
+    global $mysqli;
+    $status = 0;
+    $query = "UPDATE home SET hvac = ?";
+    $statement = $mysqli->prepare($query);
+    $statement->bind_param("s",$hvac);
+    $result = $statement->execute();
+    if($result){
+        $status = 1;
+    }
+    return $status;
+}
+
+function updateFanStatus($fan) {
+
+    global $mysqli;
+    $status = 0;
+    $query = "UPDATE home SET fan = ?";
+    $statement = $mysqli->prepare($query);
+    $statement->bind_param("s",$fan);
+    $result = $statement->execute();
+    if($result){
+        $status = 1;
+    }
+    return $status;
 
 }

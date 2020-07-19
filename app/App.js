@@ -5,6 +5,7 @@
  * @format
  * @flow
  */
+console.disableYellowBox = true;
 
 import React from 'react';
 import {

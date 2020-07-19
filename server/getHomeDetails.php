@@ -6,7 +6,7 @@ $json = file_get_contents('php://input');
 $obj = json_decode($json,true);
 
 $data = array();
-$query = "SELECT home, numRooms FROM home WHERE id = 0";
+$query = "SELECT home, numRooms,hvac,fan FROM home WHERE id = 0";
 $data = array();
 $statement = $mysqli->prepare($query);
 $statement->execute();

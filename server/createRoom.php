@@ -8,10 +8,11 @@ $obj = json_decode($json,true);
 
 $name= $obj['name'];
 $mac= $obj['mac'];
+$defaultTemp = 20;
 
-$query = "INSERT INTO rooms SET name = ?, mac = ?";
+$query = "INSERT INTO rooms SET name = ?, mac = ?, setTemp = ?";
 $statement = $mysqli->prepare($query);
-$statement->bind_param("ss",$name,$mac);
+$statement->bind_param("ssi",$name,$mac,$defaultTemp);
 $result = $statement->execute();
 
 $query = "UPDATE flags SET ventCompletedPairing = true";

@@ -40,6 +40,14 @@ switch ($action) {
         $mac = filter_input(INPUT_POST,'mac');
         echo getIdForMac($mac);
         break;
+    case 'updateHVAC':
+        $hvac = filter_input(INPUT_POST,'hvac');
+        echo updateHvacStatus($hvac);
+        break;
+        case 'updateFan':
+        $fan = filter_input(INPUT_POST,'fan');
+        echo updateFanStatus($fan);
+        break;
     default:
         echo null;
         break;
