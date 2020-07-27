@@ -14,7 +14,7 @@ esp_err_t httpServerConnect()
         return ESP_ERR_INVALID_STATE;
     }
     s_connect_event_group = xEventGroupCreate();
-    //start();
+    // start();
     xEventGroupWaitBits(s_connect_event_group, CONNECTED_BITS, true, true, portMAX_DELAY);
     ESP_LOGI(TAG, "Connected to %s", s_connection_name);
     ESP_LOGI(TAG, "IPv4 address: " IPSTR, IP2STR(&s_ip_addr));
@@ -52,8 +52,8 @@ static void start()
     ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));
     wifi_config_t wifi_config = {
         .sta = {
-            .ssid = "Robinson",
-            .password = "3evi872ba2g490",
+            .ssid = "The Real Promised LAN",
+            .password = "ice&fire",
         },
     };
     ESP_LOGI(TAG, "Connecting to %s...", wifi_config.sta.ssid);
@@ -61,7 +61,7 @@ static void start()
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
     ESP_ERROR_CHECK(esp_wifi_connect());
-    s_connection_name = "Robinson";
+    s_connection_name = "The Real Promised LAN";
 
 }
 

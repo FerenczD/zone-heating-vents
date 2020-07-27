@@ -3,7 +3,7 @@
 /* Helper functions */
 Vent* findVentById(int id, std::vector<Vent*> myHomeVents){
     std::vector<Vent*>::iterator it = std::find_if(std::begin(myHomeVents), std::end(myHomeVents), [&] ( Vent* &p) { 
-            return (p->getId() == 1); 
+            return (p->getId() == id); 
         });
 
     return *it;         /* Note: find_if() will return the last object if it cannot find one that matches watch out */
@@ -19,18 +19,29 @@ Vent* findVentByMacBytes(uint8_t* bleAddr, std::vector<Vent*> myHomeVents){
 
 void updateHomeVents(std::vector<Vent*> myHomeVents, std::vector<int> idArr, std::vector<float> setTempArr, std::vector<std::string> nameArr){
 
-    int i = 0;
-    for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it, i++) {
-        Vent* ventInstance = *it;
-        if(ventInstance->getId() == idArr.at(i)){      /* Simple error checking. In theory it hould be aligned *//* error hewre*/
-            ESP_LOGI("UPDATE HOME", "Storing new set temperature and name");
-            ventInstance->setSetTemperature(setTempArr.at(i));
-            ventInstance->setName(nameArr.at(i));
-        }else{
-            ESP_LOGI("UPDATE HOME", "Error. Vector and array values does not match");
-        }
-    }
+    /* More efficient but risky if server and local structure are not aligned */
+    // int i = 0;
+    // for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it, i++) {
+    //     Vent* ventInstance = *it;
+    //     if(ventInstance->getId() == idArr.at(i)){      /* Simple error checking. In theory it hould be aligned *//* error hewre*/
+    //         ESP_LOGI("UPDATE HOME", "Storing new set temperature and name");
+    //         ventInstance->setSetTemperature(setTempArr.at(i));
+    //         ventInstance->setName(nameArr.at(i));
+    //     }else{
+    //         ESP_LOGI("UPDATE HOME", "Error. Vector and array values does not match");
+    //     }
+    // }
 
+    /* Way les efficient with O(n^2) at least but doesnt depend in database and local structure being sincronized */
+    int i = 0;
+    for(auto it = std::begin(idArr); it != std::end(idArr); it++, i++){
+        Vent* ventInstance = findVentById(*it, myHomeVents);
+
+        ESP_LOGI("UPDATE HOME", "Storing new set temperature and name");
+
+        ventInstance->setSetTemperature(setTempArr.at(i));
+        ventInstance->setName(nameArr.at(i));
+    }
 }
 
 /* Class methods */

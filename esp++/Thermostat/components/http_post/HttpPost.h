@@ -22,8 +22,8 @@
 extern "C" {
 #endif
 
-#define WEB_URL "http://192.168.1.15"
-#define SERVER_URL "http://192.168.1.15/venti/serverRequests.php"
+#define WEB_URL "http://192.168.0.13"
+#define SERVER_URL "http://192.168.0.13/venti/serverRequests.php"
 
 #define ERROR_MESSAGE   "ERROR"
 

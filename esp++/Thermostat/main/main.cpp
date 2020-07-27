@@ -47,7 +47,7 @@
 #include "vent_class.h"
 
 #define GPIO_INPUT_IO_0 4
-#define GPIO_INPUT_IO_1 36
+#define GPIO_INPUT_IO_1 39
 #define GPIO_INPUT_PIN_SEL  ((1ULL<<GPIO_INPUT_IO_0) | (1ULL<<GPIO_INPUT_IO_1))
 #define ESP_INTR_FLAG_DEFAULT 0
 
@@ -105,20 +105,32 @@ extern "C"{
     void app_main();
 }
 
-static void toggle_ac(int status){
-    if(status == 1){     /* Turn on AC and Fan*/
-        gpio_set_level((gpio_num_t)FAN_GPIO, 1);
-        gpio_set_level((gpio_num_t)FAN_LED, 1);
-        vTaskDelay(12000 / portTICK_PERIOD_MS);
-        gpio_set_level((gpio_num_t)AC_GPIO, 1);
-        gpio_set_level((gpio_num_t)AC_LED, 1);
+static void toggle_fan(int status){
+    if(status == 1){     /* Turn on Fan only */
+        gpio_set_level((gpio_num_t)FAN_GPIO, status);
+        gpio_set_level((gpio_num_t)FAN_LED, status);
+
 
     }else if(status == 0){
-        gpio_set_level((gpio_num_t)FAN_GPIO, 0);
-        gpio_set_level((gpio_num_t)FAN_LED, 0);
+        gpio_set_level((gpio_num_t)FAN_GPIO, status);
+        gpio_set_level((gpio_num_t)FAN_LED, status);
+    }
+}
+
+static void toggle_ac(int status){
+    if(status == 1){     /* Turn on AC and Fan*/
+        gpio_set_level((gpio_num_t)FAN_GPIO, status);
+        gpio_set_level((gpio_num_t)FAN_LED, status);
         vTaskDelay(12000 / portTICK_PERIOD_MS);
-        gpio_set_level((gpio_num_t)AC_GPIO, 0);
-        gpio_set_level((gpio_num_t)AC_LED, 0);
+        gpio_set_level((gpio_num_t)AC_GPIO, status);
+        gpio_set_level((gpio_num_t)AC_LED, status);
+
+    }else if(status == 0){
+        gpio_set_level((gpio_num_t)FAN_GPIO, status);
+        gpio_set_level((gpio_num_t)FAN_LED, status);
+        vTaskDelay(12000 / portTICK_PERIOD_MS);
+        gpio_set_level((gpio_num_t)AC_GPIO, status);
+        gpio_set_level((gpio_num_t)AC_LED, status);
 
     }
 }
@@ -143,92 +155,128 @@ static void tx_task(void *pvParameter){
 
 static void the_algorithm_task(void* pvParameters){
 
-    // const int deltaThreshold = 1;
-    // const float fanThreshold = 0.5;
-    // int fan = 0;
-    // int ac = 0;
-    // float lowestDeltaT = 0;
-    // float highestDeltaT = 0;
+    const int deltaThreshold = 1;
+    const float fanThreshold = 0.5;
+    int fan = 0;
+    int ac = 0;
+    float lowestDeltaT = 0;
+    float highestDeltaT = 0;
 
-    // /* Determine fan and ac */
-    // for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
-    //     Vent* ventInstance = *it;
+    /* Determine fan and ac */
+    for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
+        Vent* ventInstance = *it;
 
-    //     int deltaT = (ventInstance->getSetTemperature() - ventInstance->getCurrentTemperature());
+        float deltaT = (ventInstance->getSetTemperature() - ventInstance->getCurrentTemperature());
 
-    //     if(abs(deltaT) >= fanThreshold && deltaT <= lowestDeltaT){
-    //         lowestDeltaT = deltaT;
-    //     }else if(abs(deltaT) >= fanThreshold && deltaT >= highestDeltaT){
-            //     highestDeltaT = deltaT;
-            // }
-    // }
-    // if(abs(highestDeltaT + lowestDeltaT) <= deltaThreshold){
-    //     fan = 1;
-    // }
+        if(abs(deltaT) >= fanThreshold && deltaT < lowestDeltaT){
+            lowestDeltaT = deltaT;
+        }else if(abs(deltaT) >= fanThreshold && deltaT > highestDeltaT){
+                highestDeltaT = deltaT;
+            }
+    }
+    if(abs(highestDeltaT + lowestDeltaT) <= deltaThreshold){
+        fan = 1;
+    }
 
-    // if(fan == 0 && lowestDeltaT <= -deltaThreshold){
-            // ac = 1;
-    // }
+    if(fan == 0 && abs(lowestDeltaT) >= deltaThreshold){
+            ac = 1;
+    }
 
     
-    // /* Determine vent command */
-    // for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
-    //     Vent* ventInstance = *it;
-
-    //     int deltaT = (ventInstance->getSetTemperature() - ventInstance->getCurrentTemperature());
-            
-            // if(ac == 1){
-            //     if(deltaT <= -1){
-            //         ventInstance->setLatestCommand(0x01);   /* Open vent */
-            //     }else{
-            //         ventInstance->setLatestCommand(0x02);   /* Close vent */
-
-            //     }
-            // }else{
-            //     ventInstance->setLatestCommand(0x01);   /* Open for pressure protection */
-            // }
-    // }
-    
-    /*********** TEST ***************/
-    /* Determine */
-    bool acFlag = 0;
-    char* response;
+    /* Determine vent command */
     for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
         Vent* ventInstance = *it;
 
         int deltaT = (ventInstance->getSetTemperature() - ventInstance->getCurrentTemperature());
-
-        if(deltaT >= 1){
-            ventInstance->setLatestVentCommand(0x01);   /* Close */
-        }else if(deltaT <= -1){
-            ventInstance->setLatestVentCommand(0x02);   /* Open */
-            acFlag = 1;
-        }else{
-            ventInstance->setLatestVentCommand(0x00);   /* Nothing */     
-        }
+            
+            if(ac == 1){
+                if(abs(deltaT) >= deltaThreshold){
+                    ventInstance->setLatestVentCommand(0x01);   /* Open vent */
+                }else{
+                    ventInstance->setLatestVentCommand(0x02);   /* Close vent */
+                }
+            }else{
+                ventInstance->setLatestVentCommand(0x01);   /* Open for pressure protection */
+            }
     }
     
-    if(acFlag == 1){
+    /* Turn on or off the HVAC as required */
+    char* response;
+
+    if(ac == 1){
         toggle_ac(1);
         ESP_LOGI("ALGORITHM", "AC On");
         do{
             response = request(_http_event_handler, "action=updateHVAC&hvac=Cool");
         }while(response == NULL);
+        // free(response);
         do{
             response = request(_http_event_handler, "action=updateFan&fan=Auto");
         }while(response == NULL);
+        // free(response);
+
+    }else if (fan == 1){
+        toggle_ac(0);   /* Make sure fan is off first */
+        do{
+            response = request(_http_event_handler, "action=updateHVAC&hvac=Off");
+        }while(response == NULL);
+
+        toggle_fan(1);  /* Toggle only fan */
+        ESP_LOGI("ALGORITHM", "Fan On");
+        do{
+            response = request(_http_event_handler, "action=updateFan&fan=On");
+        }while(response == NULL);
     }else{
         toggle_ac(0);
-        ESP_LOGI("ALGORITHM", "AC Off");
-
+        ESP_LOGI("ALGORITHM", "HVAC Off");
         do{
             response = request(_http_event_handler, "action=updateHVAC&hvac=Off");
         }while(response == NULL);
         do{
             response = request(_http_event_handler, "action=updateFan&fan=Auto");
         }while(response == NULL);
-
     }
+
+    /*********** TEST ***************/
+    /* Determine */
+    // bool acFlag = 0;
+    // char* response;
+    // for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
+    //     Vent* ventInstance = *it;
+
+    //     int deltaT = (ventInstance->getSetTemperature() - ventInstance->getCurrentTemperature());
+
+    //     if(deltaT >= 1){
+    //         ventInstance->setLatestVentCommand(0x01);   /* Close */
+    //     }else if(deltaT <= -1){
+    //         ventInstance->setLatestVentCommand(0x02);   /* Open */
+    //         acFlag = 1;
+    //     }else{
+    //         ventInstance->setLatestVentCommand(0x00);   /* Nothing */     
+    //     }
+    // }
+    
+    // if(acFlag == 1){
+    //     toggle_ac(1);
+    //     ESP_LOGI("ALGORITHM", "AC On");
+    //     do{
+    //         response = request(_http_event_handler, "action=updateHVAC&hvac=Cool");
+    //     }while(response == NULL);
+    //     do{
+    //         response = request(_http_event_handler, "action=updateFan&fan=Auto");
+    //     }while(response == NULL);
+    // }else{
+    //     toggle_ac(0);
+    //     ESP_LOGI("ALGORITHM", "AC Off");
+
+    //     do{
+    //         response = request(_http_event_handler, "action=updateHVAC&hvac=Off");
+    //     }while(response == NULL);
+    //     do{
+    //         response = request(_http_event_handler, "action=updateFan&fan=Auto");
+    //     }while(response == NULL);
+
+    // }
 
 
     xTaskCreate(tx_task, "tx_task", 8192, NULL, configMAX_PRIORITIES - 1, NULL);
@@ -384,57 +432,73 @@ static void uart_pairing_task(void *pvParameter){
 
         ESP_LOG_BUFFER_HEXDUMP("PAIRING_TASK", query, strlen(query), ESP_LOG_INFO);
 
-        /* Add vent to server */
-        do{
-            response = request(_http_event_handler, query);        
-        }while(response == NULL);
+        /* Check vent doesnt exist already */
+        bool stopPairingProcess = false;
 
-        free(response);
+        if(myHomeVents.size() > 0){
+            Vent* ventInstance = findVentByMacBytes(receivedData.bleAddr, myHomeVents);
 
-        int pairingDoneFlag = 0;                                        /* VentCompletedPairing */
-        const TickType_t xDelay = 500 / portTICK_PERIOD_MS;
+            if(memcmp(ventInstance->getMacAddrBytes(), receivedData.bleAddr, BLE_ADDR_LEN) == 0){
 
-        /* Wait for pairing to be completed and retrieve ID of new vent */
-        while(pairingDoneFlag == 0){
+                stopPairingProcess = true;
+                /* Vent already exists. Cancel pairing */
+                vTaskResume(rxTaskHandle);                          /*******************************************/
+            }
+        }
+        
+        if(stopPairingProcess != true) {
 
+            /* Add vent to server */
             do{
-                response = request(_http_event_handler, "action=checkIfVentCompletedPairing");
+                response = request(_http_event_handler, query);        
             }while(response == NULL);
 
-            if (*response - '0' == 1){
+            free(response);
 
-                free(response);
+            int pairingDoneFlag = 0;                                        /* VentCompletedPairing */
+            const TickType_t xDelay = 500 / portTICK_PERIOD_MS;
 
-                sprintf(query, "action=getIdForMac&mac=%02x%02x%02x%02x%02x%02x", receivedData.bleAddr[0],
-                                                                                  receivedData.bleAddr[1],
-                                                                                  receivedData.bleAddr[2],
-                                                                                  receivedData.bleAddr[3],
-                                                                                  receivedData.bleAddr[4],
-                                                                                  receivedData.bleAddr[5]);
+            /* Wait for pairing to be completed and retrieve ID of new vent */
+            while(pairingDoneFlag == 0){
+
                 do{
-                    response = request(_http_event_handler, query);
+                    response = request(_http_event_handler, "action=checkIfVentCompletedPairing");
                 }while(response == NULL);
 
-                /* Store all vent data on local variable */
-                Vent* newVent = new Vent;
-                newVent->setCurrentTemperature(receivedData.ventTemp);
-                newVent->setStatus(receivedData.ventStatus);
-                newVent->setMacAddr(receivedData.bleAddr);
-                newVent->setId(atoi(response));
+                if (*response - '0' == 1){
 
-                myHomeVents.push_back(newVent);
+                    free(response);
 
-                free(response);
+                    sprintf(query, "action=getIdForMac&mac=%02x%02x%02x%02x%02x%02x", receivedData.bleAddr[0],
+                                                                                    receivedData.bleAddr[1],
+                                                                                    receivedData.bleAddr[2],
+                                                                                    receivedData.bleAddr[3],
+                                                                                    receivedData.bleAddr[4],
+                                                                                    receivedData.bleAddr[5]);
+                    do{
+                        response = request(_http_event_handler, query);
+                    }while(response == NULL);
 
-                pairingDoneFlag = 1;
-                vTaskResume(rxTaskHandle);
-            }else{
-                free(response);  
-            }
+                    /* Store all vent data on local variable */
+                    Vent* newVent = new Vent;
+                    newVent->setCurrentTemperature(receivedData.ventTemp);
+                    newVent->setStatus(receivedData.ventStatus);
+                    newVent->setMacAddr(receivedData.bleAddr);
+                    newVent->setId(atoi(response));
 
-            vTaskDelay( xDelay );
-        }   
-        
+                    myHomeVents.push_back(newVent);
+
+                    free(response);
+
+                    pairingDoneFlag = 1;
+                    vTaskResume(rxTaskHandle);
+                }else{
+                    free(response);  
+                }
+
+                vTaskDelay( xDelay );
+            }   
+        }
     }else{
         ESP_LOGI("PAIRING", "Error pairing. PairingComplete = 0");
     }
@@ -611,7 +675,7 @@ void app_main()
     gpio_config(&io_conf);
 
     /* Interrupt gpio */
-    //  //interrupt of rising edge
+     //interrupt of rising edge
     io_conf.intr_type = (gpio_int_type_t) GPIO_PIN_INTR_POSEDGE;
     // //bit mask of the pins, use GPIO4/5 here
     io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
@@ -623,7 +687,7 @@ void app_main()
 
     gpio_config(&io_conf);
 
-    // //change gpio intrrupt type for one pin
+    // // //change gpio intrrupt type for one pin
     gpio_set_intr_type((gpio_num_t) GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
 
     // //create a queue to handle gpio event from isr
@@ -631,15 +695,15 @@ void app_main()
 
     // // Create Queue to handle pairing completed information
     pairingEvtQueue = xQueueCreate(3, sizeof(uint32_t));
-    // // //start gpio task
+    // //start gpio task
     
     xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 16383, NULL, 10, NULL);
 
     if(wifiIsConnected == 1) {
         ESP_ERROR_CHECK(httpServerConnect());
     }
-    // // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
-    // //install gpio isr service
+    // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
+    //install gpio isr service
     gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
     // //hook isr handler for specific gpio pin
     gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
