@@ -9,27 +9,44 @@
 
     ESP_LOGI(POST_TAG, "Post request payload: %s",query);
     esp_http_client_handle_t client = esp_http_client_init(&config);
+
+    if(client == NULL){
+        return NULL;
+    }
+
     esp_err_t err = esp_http_client_perform(client);
+
+    if(err != ESP_OK){
+        esp_http_client_cleanup(client);
+
+        return NULL;
+    }
+
     esp_http_client_set_url(client, SERVER_URL);
     esp_http_client_set_method(client, HTTP_METHOD_POST);
     esp_http_client_set_post_field(client, query, strlen(query));
     err = esp_http_client_perform(client);
-    char * buffer = (char *) malloc(esp_http_client_get_content_length(client));
 
     if (err != ESP_OK) {
         ESP_LOGE(POST_TAG, "HTTP POST request failed: %s", esp_err_to_name(err));
-        free(buffer);
-        buffer = NULL;
-    } else {
+        
+        //esp_http_client_close(client);
+        esp_http_client_cleanup(client);
+
+        return NULL;
+    }
+
+    char * buffer = (char *) malloc(esp_http_client_get_content_length(client));
+
+    if(buffer != NULL){
         esp_http_client_read(client,buffer,esp_http_client_get_content_length(client));
         ESP_LOGI(POST_TAG, "Server responded with: %s",buffer);
     }
 
-    esp_http_client_close(client);
+    //esp_http_client_close(client);
     esp_http_client_cleanup(client);
     
     return buffer;
-
 }
 
 

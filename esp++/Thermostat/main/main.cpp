@@ -97,7 +97,9 @@ static void JSON_ParseAndStore(const cJSON * const jsonArray, std::vector<float>
 
     setTempArr->push_back(setTemp);
     idArr->push_back(id);
-    nameArr->push_back(ventName);
+
+    std::string ventNameString(ventName);
+    nameArr->push_back(ventNameString);
 }
 
 
@@ -172,16 +174,16 @@ static void the_algorithm_task(void* pvParameters){
             lowestDeltaT = deltaT;
         }else if(abs(deltaT) >= fanThreshold && deltaT > highestDeltaT){
                 highestDeltaT = deltaT;
-            }
+        }
     }
+
     if(abs(highestDeltaT + lowestDeltaT) <= deltaThreshold){
         fan = 1;
     }
 
-    if(fan == 0 && abs(lowestDeltaT) >= deltaThreshold){
-            ac = 1;
+    if(fan == 0 && lowestDeltaT <= -deltaThreshold){
+        ac = 1;
     }
-
     
     /* Determine vent command */
     for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
@@ -190,7 +192,7 @@ static void the_algorithm_task(void* pvParameters){
         int deltaT = (ventInstance->getSetTemperature() - ventInstance->getCurrentTemperature());
             
             if(ac == 1){
-                if(abs(deltaT) >= deltaThreshold){
+                if(deltaT < -deltaThreshold){
                     ventInstance->setLatestVentCommand(0x01);   /* Open vent */
                 }else{
                     ventInstance->setLatestVentCommand(0x02);   /* Close vent */
@@ -209,32 +211,39 @@ static void the_algorithm_task(void* pvParameters){
         do{
             response = request(_http_event_handler, "action=updateHVAC&hvac=Cool");
         }while(response == NULL);
-        // free(response);
+        free(response);
         do{
             response = request(_http_event_handler, "action=updateFan&fan=Auto");
         }while(response == NULL);
-        // free(response);
+        free(response);
 
     }else if (fan == 1){
         toggle_ac(0);   /* Make sure fan is off first */
         do{
             response = request(_http_event_handler, "action=updateHVAC&hvac=Off");
         }while(response == NULL);
+        free(response);
 
         toggle_fan(1);  /* Toggle only fan */
         ESP_LOGI("ALGORITHM", "Fan On");
         do{
             response = request(_http_event_handler, "action=updateFan&fan=On");
         }while(response == NULL);
+        free(response);
+
     }else{
         toggle_ac(0);
         ESP_LOGI("ALGORITHM", "HVAC Off");
         do{
             response = request(_http_event_handler, "action=updateHVAC&hvac=Off");
         }while(response == NULL);
+        free(response);
+
         do{
             response = request(_http_event_handler, "action=updateFan&fan=Auto");
         }while(response == NULL);
+        free(response);
+
     }
 
     /*********** TEST ***************/
@@ -284,7 +293,9 @@ static void the_algorithm_task(void* pvParameters){
     vTaskDelete(NULL);
 }
 
+static void the_ai_algorithm(void* pvParameters){
 
+}
 
 static void update_data_task(void *pvParameters){
 
@@ -306,14 +317,13 @@ static void update_data_task(void *pvParameters){
     do{
         response = request(_http_event_handler, query);
     }while(response == NULL);
+    free(response);
 
     /* Check http response for errors */
 
     /* Run the algorithm task. Note: Important to do everytime you receive new data from vents */
     xTaskCreate(the_algorithm_task, "the_algortihm_task", 8192, NULL, configMAX_PRIORITIES - 1, NULL);
 
-
-    free(response);
     vTaskDelete(NULL);
 }
 
@@ -378,7 +388,6 @@ static void get_server_data_task(void* pvParameters){
 
         }else{
             ESP_LOGI("GET_DATA", "No vent data in database");
-
         }
 
         free(response);
@@ -438,12 +447,16 @@ static void uart_pairing_task(void *pvParameter){
         if(myHomeVents.size() > 0){
             Vent* ventInstance = findVentByMacBytes(receivedData.bleAddr, myHomeVents);
 
-            if(memcmp(ventInstance->getMacAddrBytes(), receivedData.bleAddr, BLE_ADDR_LEN) == 0){
+            if(ventInstance != NULL){
+                if(memcmp(ventInstance->getMacAddrBytes(), receivedData.bleAddr, BLE_ADDR_LEN) == 0){
+                    ESP_LOGI("PAIRING", "EXISTS EXISTS EXISTS EXISTS");
 
-                stopPairingProcess = true;
-                /* Vent already exists. Cancel pairing */
-                vTaskResume(rxTaskHandle);                          /*******************************************/
+                    stopPairingProcess = true;
+                    /* Vent already exists. Cancel pairing */
+                    vTaskResume(rxTaskHandle);                          /*******************************************/
+                }
             }
+
         }
         
         if(stopPairingProcess != true) {
