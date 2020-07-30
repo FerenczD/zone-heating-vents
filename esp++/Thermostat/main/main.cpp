@@ -42,9 +42,18 @@
 #include "uart_esp.h"
 #include "HttpServer.h"
 #include "HttpPost.h"
-// #include "tensorflow/lite/experimental/micro/kernels/all_ops_resolver.h"
 #include "SmartConfig.h"
 #include "vent_class.h"
+
+/* Tensorflow micro libraries */
+#include "tensorflow/lite/experimental/micro/kernels/all_ops_resolver.h"
+#include "tensorflow/lite/experimental/micro/micro_error_reporter.h"
+#include "tensorflow/lite/experimental/micro/micro_interpreter.h"
+#include "tensorflow/lite/schema/schema_generated.h"
+#include "tensorflow/lite/version.h"
+
+#include "venti_model.h"
+
 
 #define GPIO_INPUT_IO_0 4
 #define GPIO_INPUT_IO_1 39
@@ -189,7 +198,7 @@ static void the_algorithm_task(void* pvParameters){
     for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
         Vent* ventInstance = *it;
 
-        int deltaT = (ventInstance->getSetTemperature() - ventInstance->getCurrentTemperature());
+        float deltaT = (ventInstance->getSetTemperature() - ventInstance->getCurrentTemperature());
             
             if(ac == 1){
                 if(deltaT < -deltaThreshold){
@@ -292,10 +301,111 @@ static void the_algorithm_task(void* pvParameters){
 
     vTaskDelete(NULL);
 }
+/***************************** Tenorflow stuff ***************************************/
+// Globals, used for compatibility with Arduino-style sketches.
+namespace {
+    tflite::ErrorReporter* error_reporter = nullptr;
+    const tflite::Model* model = nullptr;
+    tflite::MicroInterpreter* interpreter = nullptr;
+    TfLiteTensor* input = nullptr;
+    TfLiteTensor* output = nullptr;
+    int inference_count = 0;
 
-static void the_ai_algorithm(void* pvParameters){
+    // Create an area of memory to use for input, output, and intermediate arrays.
+    // Finding the minimum value for your model may require some trial and error.
+    constexpr int kTensorArenaSize = 2 * 2048;
+    uint8_t tensor_arena[kTensorArenaSize];
+}  // namespace
+
+static void setup(){
+    static tflite::MicroErrorReporter micro_error_reporter;
+    error_reporter = &micro_error_reporter;
+
+    model = tflite::GetModel(venti_model);
+    if (model->version() != TFLITE_SCHEMA_VERSION) {
+        error_reporter->Report(
+            "Model provided is schema version %d not equal "
+            "to supported version %d.",
+            model->version(), TFLITE_SCHEMA_VERSION);
+        return;
+    }
+
+    // This pulls in all the operation implementations we need.
+    // NOLINTNEXTLINE(runtime-global-variables)
+    static tflite::ops::micro::AllOpsResolver resolver;
+
+    // Build an interpreter to run the model with.
+    static tflite::MicroInterpreter static_interpreter(
+            model, resolver, tensor_arena, kTensorArenaSize, error_reporter);
+    interpreter = &static_interpreter;
+
+    // Allocate memory from the tensor_arena for the model's tensors.
+    TfLiteStatus allocate_status = interpreter->AllocateTensors();
+    if (allocate_status != kTfLiteOk) {
+        error_reporter->Report("AllocateTensors() failed");
+        return;
+    }
+
+    // Obtain pointers to the model's input and output tensors.
+    input = interpreter->input(0);
+
+    ESP_LOGI("TENSOR SETUP", "input size = %d", input->dims->size);
+    ESP_LOGI("TENSOR SETUP", "input size in bytes = %d", input->bytes);
+    ESP_LOGI("TENSOR SETUP", "Is input float32? = %s", (input->type == kTfLiteFloat32) ? "true" : "false");
+    ESP_LOGI("TENSOR SETUP", "Input data dimentions = %d",input->dims->data[1]);
+
+    output = interpreter->output(0);
+
+    ESP_LOGI("TENSOR SETUP", "output size = %d", output->dims->size);
+    ESP_LOGI("TENSOR SETUP", "output size in bytes = %d", output->bytes);
+    ESP_LOGI("TENSOR SETUP", "Is input float32? = %s", (output->type == kTfLiteFloat32) ? "true" : "false");
+    ESP_LOGI("TENSOR SETUP", "Output data dimentions = %d",output->dims->data[1]);
+
+
 
 }
+
+static bool setupDone = true;
+
+static void the_ai_algorithm_task(){
+
+    /* First time task is init setup the ai model */
+    if(setupDone == false){
+        setup();
+        setupDone = true;
+    }
+
+    /* Load the input data i.e deltaT1 and deltaT2 */
+    //int i = 0;
+
+    float val1 = 0.0;
+    float val2 = 0.4;
+
+    input->data.f[0] = val1;    
+    input->data.f[1] = val2;
+
+
+    /* Run model */
+    TfLiteStatus invoke_status = interpreter->Invoke();
+    if (invoke_status != kTfLiteOk) {
+        error_reporter->Report("Invoke failed");
+        // return;
+    }
+
+    /* Retrieve outputs Fan , AC , Vent 1 , Vent 2 */
+    double fan = (double)output->data.f[0];
+    double ac =  (double)output->data.f[1];
+    double vent1 =  (double)output->data.f[2];
+    double vent2 =  (double)output->data.f[3];
+
+
+    ESP_LOGI("TENSOR SETUP", "fan = %f", fan);
+    ESP_LOGI("TENSOR SETUP", "ac = %f", ac);
+    ESP_LOGI("TENSOR SETUP", "vent1 = %f", vent1);
+    ESP_LOGI("TENSOR SETUP", "vent2 = %f", vent2);
+    
+}
+/************************** end of tensorflow stuff ************************************/
 
 static void update_data_task(void *pvParameters){
 
@@ -421,9 +531,12 @@ static void uart_pairing_task(void *pvParameter){
     xQueueReceive(pairingEvtQueue, &pairingCompleted, portMAX_DELAY);
     ESP_LOGI("PAIRING", "after queue received");
 
+    /* Making sure flag was actually toggled */
     if(pairingCompleted == 1){
         
+        /* Avoid receiving any new information while in pairing mode */
         vTaskSuspend(rxTaskHandle);
+
         ESP_LOGI("PAIRING", "Pairing done. This is the MAC address of vent");
 
         /* Retrieve information from vent */
@@ -449,11 +562,13 @@ static void uart_pairing_task(void *pvParameter){
 
             if(ventInstance != NULL){
                 if(memcmp(ventInstance->getMacAddrBytes(), receivedData.bleAddr, BLE_ADDR_LEN) == 0){
+
+                    /* Vent already exists. Cancel pairing */
+
                     ESP_LOGI("PAIRING", "EXISTS EXISTS EXISTS EXISTS");
 
                     stopPairingProcess = true;
-                    /* Vent already exists. Cancel pairing */
-                    vTaskResume(rxTaskHandle);                          /*******************************************/
+                    // vTaskResume(rxTaskHandle);                         
                 }
             }
 
@@ -504,7 +619,8 @@ static void uart_pairing_task(void *pvParameter){
                     free(response);
 
                     pairingDoneFlag = 1;
-                    vTaskResume(rxTaskHandle);
+                    // vTaskResume(rxTaskHandle);
+
                 }else{
                     free(response);  
                 }
@@ -520,6 +636,7 @@ static void uart_pairing_task(void *pvParameter){
     ESP_LOGI("PAIRING", "Pairing task completed. Killing task");
 
     /* Resume tasks */
+    vTaskResume(rxTaskHandle);
     vTaskResume(getServerDataTaskHandle);
     vTaskResume(flagLookupTaskHandle);
 
@@ -628,116 +745,86 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 
 /* Only to test functions. Called on main */
 static void tester(){
-        int acFlag = 0;
-
-    for(;;){
-    
-    if(acFlag == 1){
-        toggle_ac(1);
-    //     do{
-    //         response = request(_http_event_handler, "action=updateHVAC&hvac='Cool'");
-    //     }while(response == NULL);
-    //     do{
-    //         response = request(_http_event_handler, "action=updateFan&fan='Auto'");
-    //     }while(response == NULL);
-    }else{
-        toggle_ac(0);
-        // do{
-        //     response = request(_http_event_handler, "action=updateHVAC&hvac='Off'");
-        // }while(response == NULL);
-        // do{
-        //     response = request(_http_event_handler, "action=updateFan&fan='Auto'");
-        // }while(response == NULL);
-    }
-    
-    ESP_LOGI("TEST","Beforre");
-    vTaskDelay(2000 / portTICK_PERIOD_MS);
-    ESP_LOGI("TET", "After");
-
-
-        if(acFlag == 0){
-            acFlag = 1;
-        }else{
-            acFlag = 0;
-        }
-    }
+    setup();
+    the_ai_algorithm_task();
+    for(;;){}
 
 }
 
 void app_main()
 {
-    ESP_ERROR_CHECK( nvs_flash_init() );
-    // tcpip_adapter_init();
-    // ESP_ERROR_CHECK(esp_event_loop_create_default());
-    // ESP_ERROR_CHECK(httpServerConnect());
+    // ESP_ERROR_CHECK( nvs_flash_init() );
+    // // tcpip_adapter_init();
+    // // ESP_ERROR_CHECK(esp_event_loop_create_default());
+    // // ESP_ERROR_CHECK(httpServerConnect());
     
-    gpio_config_t io_conf;
+    // gpio_config_t io_conf;
 
-    /* HVAC gpios */
-    //disable interrupt
-    io_conf.intr_type = (gpio_int_type_t)GPIO_PIN_INTR_DISABLE;
-    //set as output mode
-    io_conf.mode = GPIO_MODE_OUTPUT;
-    //bit mask of the pins that you want to set,e.g.GPIO18/19
-    io_conf.pin_bit_mask = ((1ULL<<AC_GPIO) | (1ULL<<FAN_GPIO) | (1ULL<<FURNACE_GPIO) | (1ULL<<AC_LED) | (1ULL<<FAN_LED));
-    //disable pull-down mode
-    io_conf.pull_down_en = (gpio_pulldown_t)0;
-    //disable pull-up mode
-    io_conf.pull_up_en = (gpio_pullup_t)0;
-    //configure GPIO with the given settings
-    gpio_config(&io_conf);
+    // /* HVAC gpios */
+    // //disable interrupt
+    // io_conf.intr_type = (gpio_int_type_t)GPIO_PIN_INTR_DISABLE;
+    // //set as output mode
+    // io_conf.mode = GPIO_MODE_OUTPUT;
+    // //bit mask of the pins that you want to set,e.g.GPIO18/19
+    // io_conf.pin_bit_mask = ((1ULL<<AC_GPIO) | (1ULL<<FAN_GPIO) | (1ULL<<FURNACE_GPIO) | (1ULL<<AC_LED) | (1ULL<<FAN_LED));
+    // //disable pull-down mode
+    // io_conf.pull_down_en = (gpio_pulldown_t)0;
+    // //disable pull-up mode
+    // io_conf.pull_up_en = (gpio_pullup_t)0;
+    // //configure GPIO with the given settings
+    // gpio_config(&io_conf);
 
-    /* Interrupt gpio */
-     //interrupt of rising edge
-    io_conf.intr_type = (gpio_int_type_t) GPIO_PIN_INTR_POSEDGE;
-    // //bit mask of the pins, use GPIO4/5 here
-    io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
-    // //set as input mode    
-    io_conf.mode = GPIO_MODE_INPUT;
-    // //enable pull-up mode
-    io_conf.pull_down_en = (gpio_pulldown_t) 0;
-    io_conf.pull_up_en = (gpio_pullup_t)1;
+    // /* Interrupt gpio */
+    //  //interrupt of rising edge
+    // io_conf.intr_type = (gpio_int_type_t) GPIO_PIN_INTR_POSEDGE;
+    // // //bit mask of the pins, use GPIO4/5 here
+    // io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
+    // // //set as input mode    
+    // io_conf.mode = GPIO_MODE_INPUT;
+    // // //enable pull-up mode
+    // io_conf.pull_down_en = (gpio_pulldown_t) 0;
+    // io_conf.pull_up_en = (gpio_pullup_t)1;
 
-    gpio_config(&io_conf);
+    // gpio_config(&io_conf);
 
-    // // //change gpio intrrupt type for one pin
-    gpio_set_intr_type((gpio_num_t) GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
+    // // // //change gpio intrrupt type for one pin
+    // gpio_set_intr_type((gpio_num_t) GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
 
-    // //create a queue to handle gpio event from isr
-    gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
+    // // //create a queue to handle gpio event from isr
+    // gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
 
-    // // Create Queue to handle pairing completed information
-    pairingEvtQueue = xQueueCreate(3, sizeof(uint32_t));
-    // //start gpio task
+    // // // Create Queue to handle pairing completed information
+    // pairingEvtQueue = xQueueCreate(3, sizeof(uint32_t));
+    // // //start gpio task
     
-    xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 16383, NULL, 10, NULL);
+    // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 16383, NULL, 10, NULL);
 
-    if(wifiIsConnected == 1) {
-        ESP_ERROR_CHECK(httpServerConnect());
-    }
-    // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
-    //install gpio isr service
-    gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
-    // //hook isr handler for specific gpio pin
-    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
+    // if(wifiIsConnected == 1) {
+    //     ESP_ERROR_CHECK(httpServerConnect());
+    // }
+    // // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
+    // //install gpio isr service
+    // gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
     // // //hook isr handler for specific gpio pin
-    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_1, gpio_isr_handler, (void*) GPIO_INPUT_IO_1);
+    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
+    // // // //hook isr handler for specific gpio pin
+    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_1, gpio_isr_handler, (void*) GPIO_INPUT_IO_1);
 
-    while(wifiIsConnected != 1);
+    // while(wifiIsConnected != 1);
 
-    // //remove isr handler for gpio number.
-    gpio_isr_handler_remove((gpio_num_t) GPIO_INPUT_IO_0);
-    // //hook isr handler for specific gpio pin again
-    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
+    // // //remove isr handler for gpio number.
+    // gpio_isr_handler_remove((gpio_num_t) GPIO_INPUT_IO_0);
+    // // //hook isr handler for specific gpio pin again
+    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
 
-    uartIntance_g.uartInit();
+    // uartIntance_g.uartInit();
 
-    xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES - 1, &rxTaskHandle);
-    // //xTaskCreate(tx_task, "uart_tx_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
-    xTaskCreate(flag_lookup_task, "flag_lookup_task", 16383, NULL, configMAX_PRIORITIES -1 , &flagLookupTaskHandle);
-    xTaskCreate(get_server_data_task, "get_server_data_task", 8192, NULL, configMAX_PRIORITIES - 1, &getServerDataTaskHandle);
+    // xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES - 1, &rxTaskHandle);
+    // // //xTaskCreate(tx_task, "uart_tx_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
+    // xTaskCreate(flag_lookup_task, "flag_lookup_task", 16383, NULL, configMAX_PRIORITIES -1 , &flagLookupTaskHandle);
+    // xTaskCreate(get_server_data_task, "get_server_data_task", 8192, NULL, configMAX_PRIORITIES - 1, &getServerDataTaskHandle);
 
-    //tester();
+    tester();
     for(;;);
 }
 
