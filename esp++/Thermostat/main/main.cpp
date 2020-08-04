@@ -46,7 +46,10 @@
 #include "vent_class.h"
 
 /* Tensorflow micro libraries */
-#include "tensorflow/lite/experimental/micro/kernels/all_ops_resolver.h"
+// #include "tensorflow/lite/experimental/micro/kernels/all_ops_resolver.h"
+#include "tensorflow/lite/experimental/micro/kernels/micro_ops.h"
+#include "tensorflow/lite/experimental/micro/micro_mutable_op_resolver.h"
+
 #include "tensorflow/lite/experimental/micro/micro_error_reporter.h"
 #include "tensorflow/lite/experimental/micro/micro_interpreter.h"
 #include "tensorflow/lite/schema/schema_generated.h"
@@ -309,11 +312,10 @@ namespace {
     tflite::MicroInterpreter* interpreter = nullptr;
     TfLiteTensor* input = nullptr;
     TfLiteTensor* output = nullptr;
-    int inference_count = 0;
 
     // Create an area of memory to use for input, output, and intermediate arrays.
     // Finding the minimum value for your model may require some trial and error.
-    constexpr int kTensorArenaSize = 2 * 2048;
+    constexpr int kTensorArenaSize = 4 * 4096;
     uint8_t tensor_arena[kTensorArenaSize];
 }  // namespace
 
@@ -332,7 +334,9 @@ static void setup(){
 
     // This pulls in all the operation implementations we need.
     // NOLINTNEXTLINE(runtime-global-variables)
-    static tflite::ops::micro::AllOpsResolver resolver;
+    // static tflite::ops::micro::AllOpsResolver resolver;
+    static tflite::MicroMutableOpResolver resolver;
+    resolver.AddBuiltin(tflite::BuiltinOperator_FULLY_CONNECTED, tflite::ops::micro::Register_FULLY_CONNECTED(), 1, 4);
 
     // Build an interpreter to run the model with.
     static tflite::MicroInterpreter static_interpreter(
@@ -378,12 +382,11 @@ static void the_ai_algorithm_task(){
     /* Load the input data i.e deltaT1 and deltaT2 */
     //int i = 0;
 
-    float val1 = 0.0;
-    float val2 = 0.4;
+    float val1 = 0.00;
+    float val2 = 0.00;
 
     input->data.f[0] = val1;    
     input->data.f[1] = val2;
-
 
     /* Run model */
     TfLiteStatus invoke_status = interpreter->Invoke();
@@ -393,10 +396,16 @@ static void the_ai_algorithm_task(){
     }
 
     /* Retrieve outputs Fan , AC , Vent 1 , Vent 2 */
-    double fan = (double)output->data.f[0];
-    double ac =  (double)output->data.f[1];
-    double vent1 =  (double)output->data.f[2];
-    double vent2 =  (double)output->data.f[3];
+    float fan = output->data.f[0];
+    float ac = output->data.f[1];
+    float vent1 = output->data.f[2];
+    float vent2 = output->data.f[3];
+
+
+    ESP_LOG_BUFFER_HEXDUMP("TENSOR SETUP", &fan, sizeof(float), ESP_LOG_INFO);
+    ESP_LOG_BUFFER_HEXDUMP("TENSOR SETUP", &ac, sizeof(float), ESP_LOG_INFO);
+    ESP_LOG_BUFFER_HEXDUMP("TENSOR SETUP", &vent1, sizeof(float), ESP_LOG_INFO);
+    ESP_LOG_BUFFER_HEXDUMP("TENSOR SETUP", &vent2, sizeof(float), ESP_LOG_INFO);
 
 
     ESP_LOGI("TENSOR SETUP", "fan = %f", fan);
