@@ -335,7 +335,7 @@ static void setup(){
     // This pulls in all the operation implementations we need.
     // NOLINTNEXTLINE(runtime-global-variables)
     // static tflite::ops::micro::AllOpsResolver resolver;
-    static tflite::MicroMutableOpResolver resolver;
+    tflite::MicroMutableOpResolver resolver;
     resolver.AddBuiltin(tflite::BuiltinOperator_FULLY_CONNECTED, tflite::ops::micro::Register_FULLY_CONNECTED(), 1, 4);
 
     // Build an interpreter to run the model with.
@@ -382,7 +382,7 @@ static void the_ai_algorithm_task(){
     /* Load the input data i.e deltaT1 and deltaT2 */
     //int i = 0;
 
-    float val1 = 0.00;
+    float val1 = -2.6;
     float val2 = 0.00;
 
     input->data.f[0] = val1;    
