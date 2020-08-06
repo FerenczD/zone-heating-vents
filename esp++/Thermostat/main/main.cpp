@@ -315,7 +315,7 @@ namespace {
 
     // Create an area of memory to use for input, output, and intermediate arrays.
     // Finding the minimum value for your model may require some trial and error.
-    constexpr int kTensorArenaSize = 4 * 4096;
+    constexpr int kTensorArenaSize = 2 * 1024;
     uint8_t tensor_arena[kTensorArenaSize];
 }  // namespace
 
@@ -335,7 +335,7 @@ static void setup(){
     // This pulls in all the operation implementations we need.
     // NOLINTNEXTLINE(runtime-global-variables)
     // static tflite::ops::micro::AllOpsResolver resolver;
-    tflite::MicroMutableOpResolver resolver;
+    static tflite::MicroMutableOpResolver resolver;
     resolver.AddBuiltin(tflite::BuiltinOperator_FULLY_CONNECTED, tflite::ops::micro::Register_FULLY_CONNECTED(), 1, 4);
 
     // Build an interpreter to run the model with.
@@ -382,11 +382,11 @@ static void the_ai_algorithm_task(){
     /* Load the input data i.e deltaT1 and deltaT2 */
     //int i = 0;
 
-    float val1 = -2.6;
-    float val2 = 0.00;
+    float val1 = 2.1f;
+    float val2 = -2.0f;
 
-    input->data.f[0] = val1;    
-    input->data.f[1] = val2;
+    input->data.f[0] = static_cast<float>(val1);    
+    input->data.f[1] = static_cast<float>(val2);
 
     /* Run model */
     TfLiteStatus invoke_status = interpreter->Invoke();
@@ -762,78 +762,78 @@ static void tester(){
 
 void app_main()
 {
-    // ESP_ERROR_CHECK( nvs_flash_init() );
-    // // tcpip_adapter_init();
-    // // ESP_ERROR_CHECK(esp_event_loop_create_default());
-    // // ESP_ERROR_CHECK(httpServerConnect());
+    ESP_ERROR_CHECK( nvs_flash_init() );
+    // tcpip_adapter_init();
+    // ESP_ERROR_CHECK(esp_event_loop_create_default());
+    // ESP_ERROR_CHECK(httpServerConnect());
     
-    // gpio_config_t io_conf;
+    gpio_config_t io_conf;
 
-    // /* HVAC gpios */
-    // //disable interrupt
-    // io_conf.intr_type = (gpio_int_type_t)GPIO_PIN_INTR_DISABLE;
-    // //set as output mode
-    // io_conf.mode = GPIO_MODE_OUTPUT;
-    // //bit mask of the pins that you want to set,e.g.GPIO18/19
-    // io_conf.pin_bit_mask = ((1ULL<<AC_GPIO) | (1ULL<<FAN_GPIO) | (1ULL<<FURNACE_GPIO) | (1ULL<<AC_LED) | (1ULL<<FAN_LED));
-    // //disable pull-down mode
-    // io_conf.pull_down_en = (gpio_pulldown_t)0;
-    // //disable pull-up mode
-    // io_conf.pull_up_en = (gpio_pullup_t)0;
-    // //configure GPIO with the given settings
-    // gpio_config(&io_conf);
+    /* HVAC gpios */
+    //disable interrupt
+    io_conf.intr_type = (gpio_int_type_t)GPIO_PIN_INTR_DISABLE;
+    //set as output mode
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    //bit mask of the pins that you want to set,e.g.GPIO18/19
+    io_conf.pin_bit_mask = ((1ULL<<AC_GPIO) | (1ULL<<FAN_GPIO) | (1ULL<<FURNACE_GPIO) | (1ULL<<AC_LED) | (1ULL<<FAN_LED));
+    //disable pull-down mode
+    io_conf.pull_down_en = (gpio_pulldown_t)0;
+    //disable pull-up mode
+    io_conf.pull_up_en = (gpio_pullup_t)0;
+    //configure GPIO with the given settings
+    gpio_config(&io_conf);
 
-    // /* Interrupt gpio */
-    //  //interrupt of rising edge
-    // io_conf.intr_type = (gpio_int_type_t) GPIO_PIN_INTR_POSEDGE;
-    // // //bit mask of the pins, use GPIO4/5 here
-    // io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
-    // // //set as input mode    
-    // io_conf.mode = GPIO_MODE_INPUT;
-    // // //enable pull-up mode
-    // io_conf.pull_down_en = (gpio_pulldown_t) 0;
-    // io_conf.pull_up_en = (gpio_pullup_t)1;
+    /* Interrupt gpio */
+     //interrupt of rising edge
+    io_conf.intr_type = (gpio_int_type_t) GPIO_PIN_INTR_POSEDGE;
+    // //bit mask of the pins, use GPIO4/5 here
+    io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
+    // //set as input mode    
+    io_conf.mode = GPIO_MODE_INPUT;
+    // //enable pull-up mode
+    io_conf.pull_down_en = (gpio_pulldown_t) 0;
+    io_conf.pull_up_en = (gpio_pullup_t)1;
 
-    // gpio_config(&io_conf);
+    gpio_config(&io_conf);
 
-    // // // //change gpio intrrupt type for one pin
-    // gpio_set_intr_type((gpio_num_t) GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
+    // // //change gpio intrrupt type for one pin
+    gpio_set_intr_type((gpio_num_t) GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
 
-    // // //create a queue to handle gpio event from isr
-    // gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
+    // //create a queue to handle gpio event from isr
+    gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
 
-    // // // Create Queue to handle pairing completed information
-    // pairingEvtQueue = xQueueCreate(3, sizeof(uint32_t));
-    // // //start gpio task
+    // // Create Queue to handle pairing completed information
+    pairingEvtQueue = xQueueCreate(3, sizeof(uint32_t));
+    // //start gpio task
     
-    // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 16383, NULL, 10, NULL);
+    xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 16383, NULL, 10, NULL);
 
-    // if(wifiIsConnected == 1) {
-    //     ESP_ERROR_CHECK(httpServerConnect());
-    // }
-    // // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
-    // //install gpio isr service
-    // gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
+    if(wifiIsConnected == 1) {
+        ESP_ERROR_CHECK(httpServerConnect());
+    }
+    // xTaskCreate((TaskFunction_t ) smartConfig, "smartConfig", 8192, NULL, configMAX_PRIORITIES, NULL);
+    //install gpio isr service
+    gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
+    // //hook isr handler for specific gpio pin
+    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
     // // //hook isr handler for specific gpio pin
-    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
-    // // // //hook isr handler for specific gpio pin
-    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_1, gpio_isr_handler, (void*) GPIO_INPUT_IO_1);
+    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_1, gpio_isr_handler, (void*) GPIO_INPUT_IO_1);
 
-    // while(wifiIsConnected != 1);
+    while(wifiIsConnected != 1);
 
-    // // //remove isr handler for gpio number.
-    // gpio_isr_handler_remove((gpio_num_t) GPIO_INPUT_IO_0);
-    // // //hook isr handler for specific gpio pin again
-    // gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
+    // //remove isr handler for gpio number.
+    gpio_isr_handler_remove((gpio_num_t) GPIO_INPUT_IO_0);
+    // //hook isr handler for specific gpio pin again
+    gpio_isr_handler_add((gpio_num_t) GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
 
-    // uartIntance_g.uartInit();
+    uartIntance_g.uartInit();
 
-    // xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES - 1, &rxTaskHandle);
-    // // //xTaskCreate(tx_task, "uart_tx_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
-    // xTaskCreate(flag_lookup_task, "flag_lookup_task", 16383, NULL, configMAX_PRIORITIES -1 , &flagLookupTaskHandle);
-    // xTaskCreate(get_server_data_task, "get_server_data_task", 8192, NULL, configMAX_PRIORITIES - 1, &getServerDataTaskHandle);
+    xTaskCreate(rx_task, "uart_rx_task", 8192, NULL, configMAX_PRIORITIES - 1, &rxTaskHandle);
+    // //xTaskCreate(tx_task, "uart_tx_task", 8192, NULL, configMAX_PRIORITIES-1, NULL);
+    xTaskCreate(flag_lookup_task, "flag_lookup_task", 16383, NULL, configMAX_PRIORITIES -1 , &flagLookupTaskHandle);
+    xTaskCreate(get_server_data_task, "get_server_data_task", 8192, NULL, configMAX_PRIORITIES - 1, &getServerDataTaskHandle);
 
-    tester();
+    // tester();
     for(;;);
 }
 
