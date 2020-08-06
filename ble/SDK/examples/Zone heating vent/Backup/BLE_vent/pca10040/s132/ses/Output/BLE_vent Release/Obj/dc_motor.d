@@ -1,6 +1,6 @@
 Output/BLE_vent\ Release/Obj/dc_motor.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\dc_motor.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\dc_motor.h \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\dc_motor.c \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\dc_motor.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/string.h \
@@ -92,9 +92,9 @@ Output/BLE_vent\ Release/Obj/dc_motor.o: \
  ../../../../../../modules/nrfx/drivers/include/nrfx_gpiote.h \
  ../../../../../../modules/nrfx/hal/nrf_gpiote.h \
  ../../../../../../modules/nrfx/hal/nrf_gpio.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\ble_ves.h \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\ble_ves.h \
  ../../../../../../components/ble/common/ble_srv_common.h \
  ../../../../../../components/softdevice/s132/headers/ble_types.h \
  ../../../../../../components/softdevice/s132/headers/ble_gap.h \
  ../../../../../../components/softdevice/s132/headers/ble_gatt.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\util.h
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\util.h

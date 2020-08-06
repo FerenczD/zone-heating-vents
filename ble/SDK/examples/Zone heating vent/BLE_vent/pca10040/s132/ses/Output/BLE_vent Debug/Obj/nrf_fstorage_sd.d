@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/nrf_fstorage_sd.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\fstorage\nrf_fstorage_sd.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\fstorage\nrf_fstorage_sd.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
@@ -30,8 +30,8 @@ Output/BLE_vent\ Debug/Obj/nrf_fstorage_sd.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\fstorage\nrf_fstorage_sd.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\fstorage\nrf_fstorage.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\fstorage\nrf_fstorage_sd.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\fstorage\nrf_fstorage.h \
  ../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
  ../../../../../../components/libraries/util/nordic_common.h \

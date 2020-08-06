@@ -1,5 +1,5 @@
 Output/BLE_vent\ Release/Obj/nrf_log_backend_uart.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\log\src\nrf_log_backend_uart.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\log\src\nrf_log_backend_uart.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
@@ -50,10 +50,10 @@ Output/BLE_vent\ Release/Obj/nrf_log_backend_uart.o: \
  ../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
  ../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../components/libraries/log/nrf_log_types.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\log\src\nrf_log_backend_serial.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\log\src\nrf_log_backend_serial.h \
  ../../../../../../components/libraries/log/nrf_log_backend_interface.h \
  ../../../../../../external/fprintf/nrf_fprintf.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\log\src\nrf_log_internal.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\log\src\nrf_log_internal.h \
  ../../../../../../components/libraries/log/nrf_log_types.h \
  ../../../../../../integration/nrfx/legacy/nrf_drv_uart.h \
  ../../../../../../modules/nrfx/nrfx.h \

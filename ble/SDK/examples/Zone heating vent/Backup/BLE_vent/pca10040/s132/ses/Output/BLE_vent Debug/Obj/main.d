@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/main.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\main.c \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\main.c \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/string.h \
@@ -36,6 +36,10 @@ Output/BLE_vent\ Debug/Obj/main.o: \
  ../../../../../../components/softdevice/s132/headers/ble_gatt.h \
  ../../../../../../components/softdevice/s132/headers/ble_gattc.h \
  ../../../../../../components/softdevice/s132/headers/ble_gatts.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_sdm.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_error_sdm.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_soc.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
  ../../../../../../components/softdevice/s132/headers/ble_hci.h \
  ../../../../../../components/ble/common/ble_srv_common.h \
  ../../../../../../components/softdevice/s132/headers/ble_types.h \
@@ -64,24 +68,24 @@ Output/BLE_vent\ Debug/Obj/main.o: \
  ../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../components/softdevice/common/nrf_sdh_soc.h \
  ../../../../../../components/softdevice/s132/headers/nrf_soc.h \
- ../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
  ../../../../../../components/softdevice/common/nrf_sdh_ble.h \
  ../../../../../../components/libraries/timer/app_timer.h \
  ../../../../../../components/libraries/log/nrf_log_instance.h \
  ../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
  ../../../../../../components/libraries/log/nrf_log_types.h \
  ../../../../../../components/libraries/sortlist/nrf_sortlist.h \
- ../../../../../../components/libraries/fds/fds.h \
- ../../../../../../components/libraries/util/app_util_platform.h \
- ../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
- ../../../../../../components/libraries/util/app_error.h \
  ../../../../../../components/ble/peer_manager/peer_manager.h \
  ../../../../../../components/ble/peer_manager/peer_manager_types.h \
  ../../../../../../components/ble/common/ble_gatt_db.h \
+ ../../../../../../components/libraries/util/app_util_platform.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
+ ../../../../../../components/libraries/util/app_error.h \
  ../../../../../../components/ble/peer_manager/peer_database.h \
  ../../../../../../components/ble/peer_manager/peer_manager_internal.h \
  ../../../../../../components/ble/peer_manager/peer_manager_handler.h \
  ../../../../../../components/ble/peer_manager/peer_manager.h \
+ ../../../../../../components/libraries/fds/fds.h \
+ ../../../../../../components/libraries/fstorage/nrf_fstorage.h \
  ../../../../../../components/libraries/bsp/bsp_btn_ble.h \
  ../../../../../../components/libraries/bsp/bsp.h \
  ../../../../../../components/boards/boards.h \
@@ -106,8 +110,12 @@ Output/BLE_vent\ Debug/Obj/main.o: \
  ../../../../../../components/ble/common/ble_conn_state.h \
  ../../../../../../components/libraries/atomic/nrf_atomic.h \
  ../../../../../../components/ble/nrf_ble_gatt/nrf_ble_gatt.h \
+ ../../../../../../components/ble/peer_manager/nrf_ble_lesc.h \
  ../../../../../../components/ble/nrf_ble_qwr/nrf_ble_qwr.h \
  ../../../../../../components/libraries/pwr_mgmt/nrf_pwr_mgmt.h \
+ ../../../../../../components/libraries/delay/nrf_delay.h \
+ ../../../../../../modules/nrfx/drivers/include/nrfx_saadc.h \
+ ../../../../../../modules/nrfx/hal/nrf_saadc.h \
  ../../../../../../components/libraries/log/nrf_log.h \
  ../../../../../../components/libraries/strerror/nrf_strerror.h \
  ../../../../../../components/libraries/log/src/nrf_log_internal.h \
@@ -119,10 +127,14 @@ Output/BLE_vent\ Debug/Obj/main.o: \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdlib.h \
  ../../../../../../components/libraries/balloc/nrf_balloc.h \
  ../../../../../../components/libraries/log/nrf_log_default_backends.h \
- ../../../../../../integration/nrfx/legacy/nrf_drv_gpiote.h \
  ../../../../../../modules/nrfx/drivers/include/nrfx_gpiote.h \
  ../../../../../../modules/nrfx/hal/nrf_gpiote.h \
  ../../../../../../modules/nrfx/hal/nrf_gpio.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\ble_cus.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\dc_motor.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\util.h
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\ble_ves.h \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\dc_motor.h \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\util.h \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\temp_s.h \
+ ../../../../../../modules/nrfx/drivers/include/nrfx_twim.h \
+ ../../../../../../modules/nrfx/drivers/include/nrfx_twi_twim.h \
+ ../../../../../../modules/nrfx/hal/nrf_twim.h \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\initial_boot.h

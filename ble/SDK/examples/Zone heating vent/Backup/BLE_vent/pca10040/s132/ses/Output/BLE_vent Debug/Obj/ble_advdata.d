@@ -1,6 +1,6 @@
 Output/BLE_vent\ Debug/Obj/ble_advdata.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\common\ble_advdata.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\common\ble_advdata.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\common\ble_advdata.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\common\ble_advdata.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/string.h \
@@ -44,7 +44,7 @@ Output/BLE_vent\ Debug/Obj/ble_advdata.o: \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../components/softdevice/s132/headers/ble_gap.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\common\ble_srv_common.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\common\ble_srv_common.h \
  ../../../../../../components/softdevice/s132/headers/ble_types.h \
  ../../../../../../components/libraries/util/app_util.h \
  ../../../../../../components/softdevice/s132/headers/ble_gatt.h

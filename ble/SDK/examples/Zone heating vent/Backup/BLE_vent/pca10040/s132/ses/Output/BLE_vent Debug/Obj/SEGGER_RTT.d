@@ -1,7 +1,7 @@
 Output/BLE_vent\ Debug/Obj/SEGGER_RTT.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\external\segger_rtt\SEGGER_RTT.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\external\segger_rtt\SEGGER_RTT.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\external\segger_rtt\SEGGER_RTT_Conf.h \
+ D:\ESE\Semester7\capstone\ble\SDK\external\segger_rtt\SEGGER_RTT.c \
+ D:\ESE\Semester7\capstone\ble\SDK\external\segger_rtt\SEGGER_RTT.h \
+ D:\ESE\Semester7\capstone\ble\SDK\external\segger_rtt\SEGGER_RTT_Conf.h \
  ../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../components/libraries/util/app_util_platform.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \

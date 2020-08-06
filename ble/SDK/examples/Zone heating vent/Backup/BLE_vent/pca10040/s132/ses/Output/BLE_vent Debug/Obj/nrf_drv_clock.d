@@ -1,7 +1,7 @@
 Output/BLE_vent\ Debug/Obj/nrf_drv_clock.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_clock.c \
+ D:\ESE\Semester7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_clock.c \
  ../../../../../../components/libraries/util/nordic_common.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_clock.h \
+ D:\ESE\Semester7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_clock.h \
  ../../../../../../modules/nrfx/drivers/include/nrfx_clock.h \
  ../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../integration/nrfx/nrfx_config.h ../config/sdk_config.h \

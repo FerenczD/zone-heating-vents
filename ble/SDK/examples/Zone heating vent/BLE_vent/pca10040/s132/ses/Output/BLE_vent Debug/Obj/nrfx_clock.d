@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/nrfx_clock.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\modules\nrfx\drivers\src\nrfx_clock.c \
+ D:\ESE\Semester7\capstone\ble\SDK\modules\nrfx\drivers\src\nrfx_clock.c \
  ../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../integration/nrfx/nrfx_config.h ../config/sdk_config.h \
  ../../../../../../modules/nrfx/drivers/nrfx_common.h \

@@ -1,6 +1,6 @@
 Output/BLE_vent\ Debug/Obj/bsp_btn_ble.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\bsp\bsp_btn_ble.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\bsp\bsp_btn_ble.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\bsp\bsp_btn_ble.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\bsp\bsp_btn_ble.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  ../../../../../../components/softdevice/s132/headers/ble.h \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
@@ -27,7 +27,7 @@ Output/BLE_vent\ Debug/Obj/bsp_btn_ble.o: \
  ../../../../../../modules/nrfx/mdk/nrf52_name_change.h \
  ../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
  ../../../../../../components/softdevice/s132/headers/ble_gatts.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\bsp\bsp.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\bsp\bsp.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
  ../../../../../../components/boards/boards.h \
  ../../../../../../modules/nrfx/hal/nrf_gpio.h \

@@ -1,6 +1,6 @@
 Output/BLE_vent\ Debug/Obj/app_timer2.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\timer\app_timer2.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\timer\app_timer.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\timer\app_timer2.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\timer\app_timer.h \
  ../config/sdk_config.h \
  ../../../../../../components/libraries/util/app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
@@ -69,5 +69,5 @@ Output/BLE_vent\ Debug/Obj/app_timer2.o: \
  ../../../../../../components/libraries/strerror/nrf_strerror.h \
  ../../../../../../components/libraries/log/src/nrf_log_internal.h \
  ../../../../../../components/libraries/log/nrf_log_types.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\timer\drv_rtc.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\timer\drv_rtc.h \
  ../../../../../../modules/nrfx/hal/nrf_rtc.h

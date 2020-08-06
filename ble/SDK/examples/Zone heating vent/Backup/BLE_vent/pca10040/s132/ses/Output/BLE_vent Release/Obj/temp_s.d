@@ -1,6 +1,6 @@
 Output/BLE_vent\ Release/Obj/temp_s.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\temp_s.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\temp_s.h \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\temp_s.c \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\temp_s.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/string.h \
@@ -74,4 +74,8 @@ Output/BLE_vent\ Release/Obj/temp_s.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_sd_def.h \
  ../../../../../../modules/nrfx/drivers/nrfx_errors.h \
  ../../../../../../modules/nrfx/drivers/include/nrfx_twi_twim.h \
- ../../../../../../modules/nrfx/hal/nrf_twim.h
+ ../../../../../../modules/nrfx/hal/nrf_twim.h \
+ ../../../../../../modules/nrfx/drivers/include/nrfx_gpiote.h \
+ ../../../../../../modules/nrfx/hal/nrf_gpiote.h \
+ ../../../../../../modules/nrfx/hal/nrf_gpio.h \
+ ../../../../../../components/libraries/delay/nrf_delay.h

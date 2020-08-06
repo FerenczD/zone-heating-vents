@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/nrf_atfifo.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\atomic_fifo\nrf_atfifo.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\atomic_fifo\nrf_atfifo.c \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/string.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/__crossworks.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
@@ -23,7 +23,7 @@ Output/BLE_vent\ Debug/Obj/nrf_atfifo.o: \
  ../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
  ../../../../../../components/softdevice/s132/headers/nrf52/nrf_mbr.h \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\atomic_fifo\nrf_atfifo.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\atomic_fifo\nrf_atfifo.h \
  ../config/sdk_config.h \
  ../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
@@ -32,7 +32,7 @@ Output/BLE_vent\ Debug/Obj/nrf_atfifo.o: \
  ../../../../../../components/libraries/log/nrf_log_instance.h \
  ../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
  ../../../../../../components/libraries/log/nrf_log_types.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\atomic_fifo\nrf_atfifo_internal.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\atomic_fifo\nrf_atfifo_internal.h \
  ../../../../../../components/libraries/log/nrf_log.h \
  ../../../../../../components/libraries/util/sdk_common.h \
  ../../../../../../components/libraries/util/sdk_os.h \

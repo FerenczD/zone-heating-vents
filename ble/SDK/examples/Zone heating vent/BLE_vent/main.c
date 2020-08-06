@@ -59,6 +59,7 @@
 #include "nrf.h"
 #include "app_error.h"
 #include "ble.h"
+#include "nrf_sdm.h"
 #include "ble_hci.h"
 #include "ble_srv_common.h"
 #include "ble_advdata.h"
@@ -68,16 +69,20 @@
 #include "nrf_sdh_soc.h"
 #include "nrf_sdh_ble.h"
 #include "app_timer.h"
-#include "fds.h"
 #include "peer_manager.h"
 #include "peer_manager_handler.h"
+#include "fds.h"
+#include "nrf_fstorage.h"
 #include "bsp_btn_ble.h"
 #include "sensorsim.h"
 #include "ble_conn_state.h"
 #include "nrf_ble_gatt.h"
+#include "nrf_ble_lesc.h"
 #include "nrf_ble_qwr.h"
 #include "nrf_pwr_mgmt.h"
 #include "nrf_delay.h"
+#include "boards.h"
+#include "nrfx_saadc.h"
 
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
@@ -90,13 +95,14 @@
 #include "dc_motor.h"       /* Run motor */
 #include "temp_s.h"         /* Deal with temperature sensor with i2c */
 #include "util.h"           /* Common functions */
+#include "initial_boot.h"  /* Store data in memory for initial boot */
 //#include "test_functions.h"
-
+ 
 
 #define DEVICE_NAME                     "Venti"                       /**< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME               "NordicSemiconductor"                   /**< Manufacturer. Will be passed to Device Information Service. */
 #define APP_ADV_INTERVAL_FAST           300                                     /**< The advertising interval (in units of 0.625 ms. This value corresponds to 187.5 ms) MIN: 20ms, MAX: 10.24s. */
-#define APP_ADV_INTERVAL_SLOW           3200
+#define APP_ADV_INTERVAL_SLOW           1600
 
 #define APP_ADV_DURATION                1000                                    /**< The advertising duration (180 seconds) in units of 10 milliseconds. */
 
@@ -105,8 +111,8 @@
 
 #define MIN_CONN_INTERVAL               MSEC_TO_UNITS(100, UNIT_1_25_MS)        /**< Minimum acceptable connection interval (0.1 seconds). */
 #define MAX_CONN_INTERVAL               MSEC_TO_UNITS(200, UNIT_1_25_MS)        /**< Maximum acceptable connection interval (0.2 second). */
-#define SLAVE_LATENCY                   0                                       /**< Slave latency. */
-#define CONN_SUP_TIMEOUT                MSEC_TO_UNITS(4000, UNIT_10_MS)         /**< Connection supervisory timeout (4 seconds). */
+#define SLAVE_LATENCY                    0                                       /**< Slave latency. */
+#define CONN_SUP_TIMEOUT                MSEC_TO_UNITS(5000, UNIT_10_MS)         /**< Connection supervisory timeout (4 seconds). */
 
 #define FIRST_CONN_PARAMS_UPDATE_DELAY  APP_TIMER_TICKS(5000)                   /**< Time from initiating event (connect or start of notification) to first time sd_ble_gap_conn_param_update is called (5 seconds). */
 #define NEXT_CONN_PARAMS_UPDATE_DELAY   APP_TIMER_TICKS(30000)                  /**< Time between each call to sd_ble_gap_conn_param_update after the first call (30 seconds). */
@@ -114,7 +120,7 @@
 
 #define SEC_PARAM_BOND                  1                                       /**< Perform bonding. */
 #define SEC_PARAM_MITM                  0                                       /**< Man In The Middle protection not required. */
-#define SEC_PARAM_LESC                  0                                       /**< LE Secure Connections not enabled. */
+#define SEC_PARAM_LESC                  1                                       /**< LE Secure Connections not enabled. */
 #define SEC_PARAM_KEYPRESS              0                                       /**< Keypress notifications not enabled. */
 #define SEC_PARAM_IO_CAPABILITIES       BLE_GAP_IO_CAPS_NONE                    /**< No I/O capabilities. */
 #define SEC_PARAM_OOB                   0                                       /**< Out Of Band data not available. */
@@ -123,8 +129,24 @@
 
 #define DEAD_BEEF                       0xDEADBEEF                              /**< Value used as error code on stack dump, can be used to identify stack location on stack unwind. */
 
-#define NOTIFICATION_INTERVAL           APP_TIMER_TICKS(500)
-#define RECONNECTION_INTERVAL           APP_TIMER_TICKS(10000)
+#define NOTIFICATION_INTERVAL           APP_TIMER_TICKS(500)                    /* Temperature notification time*/
+#define RECONNECTION_INTERVAL           APP_TIMER_TICKS(10000)                  /* Sleep time */
+#define VES_ERROR_TIMEOUT               APP_TIMER_TICKS(15000)                  /* Notify error status timeout */
+#define CURRENT_MEASURE_INTERVAL        APP_TIMER_TICKS(10)
+#define CONNECTION_ERROR_TIMEOUT        APP_TIMER_TICKS(20000)
+
+#define LESC_DEBUG_MODE                     0                                       /**< Set to 1 to use LESC debug keys, allows you to use a sniffer to inspect traffic. */
+
+#define SAMPLES_IN_BUFFER                   20                                   /* Max number of samples stored in SAADC buffer */
+#define SAADC_BURST_MODE                    1                                   //Set to 1 to enable BURST mode, otherwise set to 0.
+#define SAADC_CALIBRATION_INTERVAL          5                                   //Determines how often the SAADC should be calibrated relative to NRF_DRV_SAADC_EVT_DONE event. E.g. value 5 will make the SAADC calibrate every fifth time the NRF_DRV_SAADC_EVT_DONE is received.
+#define STALL_THRESHOLD                     3600
+
+#define VENT_POSITION_OPEN                  1
+#define VENT_POSITION_CLOSE                 2
+
+#define FACTORY_RESET                       0
+
 
 /* Instance handlers */
 NRF_BLE_GATT_DEF(m_gatt);                                                       /**< GATT module instance. */
@@ -135,18 +157,29 @@ BLE_VES_DEF(m_ves);                                                             
 
 APP_TIMER_DEF(m_temperature_timer_id);                                         /* Timer instance for temperature */
 APP_TIMER_DEF(m_reconnection_timer_id);                                        /* Timer instance for reconnection */
+APP_TIMER_DEF(m_ves_error_timer_id);
+APP_TIMER_DEF(m_connection_error_timer_id);
+APP_TIMER_DEF(m_current_measure_timer_id);
+
 
 static uint16_t m_conn_handle = BLE_CONN_HANDLE_INVALID;                        /**< Handle of the current connection. */
 
-/* Flags */
-bool temp_notifications_enable = false;
+/* Flags */ 
+volatile bool temp_notifications_enable = false;
 bool status_notifications_enable = false;
-bool adv_enable = false;
-bool vent_idle = false;
-bool m_new_temp = false;
+volatile bool adv_enable = false;
+volatile bool vent_idle = false;
+volatile bool m_new_temp = false;
+static bool   m_saadc_initialized = false;      
 
 /* Global variables  */ 
 float current_temp = 0;
+static nrf_saadc_value_t       m_buffer_pool[2][SAMPLES_IN_BUFFER];
+static uint32_t                m_adc_evt_counter = 0;
+volatile uint8_t vent_position;
+volatile uint8_t vent_command;                 
+
+void saadc_init();
 
 // YOUR_JOB: Use UUIDs for service(s) used in your application.
 static ble_uuid_t m_adv_uuids[] =                                               /**< Universally unique service identifiers. */
@@ -259,16 +292,55 @@ static void notification_timeout_handler(void * p_context)
             m_new_temp = false;
         } 
     }
-
-
 }
 
+/* Sleep i over, start advertising */
 static void reconnection_timeout_handler(void * p_context){
     UNUSED_PARAMETER(p_context);
     ret_code_t err_code;
 
     NRF_LOG_INFO("Reconnection timer completed. Starting fast advertising");
     advertising_start(false, BLE_ADV_MODE_FAST);
+}
+
+/* Error opening/closing vent */
+static void ves_error_timer_handler(void * p_context){
+
+    UNUSED_PARAMETER(p_context);
+    ret_code_t err_code;
+
+    NRF_LOG_INFO("Error opening/closing the vent");
+    stop_vent();            
+     
+    status_update(STATUS_VENT_ERROR);
+    err_code = app_timer_stop(m_current_measure_timer_id);    /* Stop adc in case of error */
+    APP_ERROR_CHECK(err_code);
+}
+
+/* Error handling connection issues */
+static void connection_error_timer_handler(void* p_context){
+    UNUSED_PARAMETER(p_context);
+    ret_code_t err_code;
+
+    NRF_LOG_INFO("Error stablishing connection with vent. Disconnecting");
+    err_code = sd_ble_gap_disconnect(m_conn_handle, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
+    //APP_ERROR_CHECK(err_code);
+
+}
+
+static void current_measure_timer_handler(void * p_context){
+  
+    uint32_t err_code;
+    NRF_LOG_INFO("");     // Without this print program was braking 
+
+    if(!m_saadc_initialized)
+    {
+        saadc_init();                                              //Initialize the SAADC. In the case when SAADC_SAMPLES_IN_BUFFER > 1 then we only need to initialize the SAADC when the the buffer is empty.
+    }
+
+    m_saadc_initialized = true;                                    //Set SAADC as initialized
+    nrfx_saadc_sample();                                           //Take a ingle sample 
+    
 }
 
 /**@brief Function for the Timer initialization.
@@ -287,15 +359,17 @@ static void timers_init(void)
 
     err_code = app_timer_create(&m_reconnection_timer_id, APP_TIMER_MODE_SINGLE_SHOT, reconnection_timeout_handler);
     APP_ERROR_CHECK(err_code);
-    
 
-    /* YOUR_JOB: Create any timers to be used by the application.
-                 Below is an example of how to create a timer.
-                 For every new timer needed, increase the value of the macro APP_TIMER_MAX_TIMERS by
-                 one.
-       ret_code_t err_code;
-       err_code = app_timer_create(&m_app_timer_id, APP_TIMER_MODE_REPEATED, timer_timeout_handler);
-       APP_ERROR_CHECK(err_code); */
+    err_code = app_timer_create(&m_ves_error_timer_id, APP_TIMER_MODE_SINGLE_SHOT, ves_error_timer_handler);
+    APP_ERROR_CHECK(err_code);
+
+    err_code = app_timer_create(&m_current_measure_timer_id, APP_TIMER_MODE_REPEATED, current_measure_timer_handler);
+    APP_ERROR_CHECK(err_code);
+
+    err_code = app_timer_create(&m_connection_error_timer_id, APP_TIMER_MODE_SINGLE_SHOT, connection_error_timer_handler);
+    APP_ERROR_CHECK(err_code);
+    
+    
 }
 
 
@@ -317,9 +391,8 @@ static void gap_params_init(void)
                                           strlen(DEVICE_NAME));
     APP_ERROR_CHECK(err_code);
 
-    /* YOUR_JOB: Use an appearance value matching the application's use case.
-       err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_);
-       APP_ERROR_CHECK(err_code); */
+    err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_GENERIC_THERMOMETER);
+    APP_ERROR_CHECK(err_code);
 
     memset(&gap_conn_params, 0, sizeof(gap_conn_params));
 
@@ -332,6 +405,7 @@ static void gap_params_init(void)
     APP_ERROR_CHECK(err_code);
 
 }
+
 
 
 /**@brief Function for initializing the GATT module.
@@ -375,10 +449,18 @@ static void on_ves_evt(ble_ves_t     * p_ves_service,
         case BLE_VES_EVT_CONNECTED:
             NRF_LOG_INFO("Connection established.");
             vent_idle = false; 
+            
+            err_code = app_timer_start(m_ves_error_timer_id, VES_ERROR_TIMEOUT, NULL);
+            APP_ERROR_CHECK(err_code);
+
             break;
 
         case BLE_VES_EVT_DISCONNECTED:
             NRF_LOG_INFO("Connection dropped.");
+
+            err_code = app_timer_stop(m_ves_error_timer_id);
+            APP_ERROR_CHECK(err_code);
+
             break;
 
         case BLE_VES_EVT_TEMP_NOTIFICATION_ENABLED:
@@ -403,29 +485,36 @@ static void on_ves_evt(ble_ves_t     * p_ves_service,
             break;
 
         case BLE_VES_EVT_STATUS_NOTIFICATION_DISABLED:
-            
             NRF_LOG_INFO("Status notification disabled.");
             status_notifications_enable = false;
             break;
 
         case BLE_VES_EVT_DC:
-            if (p_evt->dc_direction == 0x01){
+            if (p_evt->dc_direction == DC_MOTOR_OPEN){
               NRF_LOG_INFO("Opening vent.");
               open_vent();
-              status_update(STATUS_VENT_OPENING);              
-            
+              status_update(STATUS_VENT_OPENING); 
+                          
+              err_code = app_timer_start(m_current_measure_timer_id, CURRENT_MEASURE_INTERVAL, NULL);
+              APP_ERROR_CHECK(err_code);
+
+              vent_command = DC_MOTOR_OPEN;
             }
-            else if (p_evt->dc_direction == 0x02){
+            else if (p_evt->dc_direction == DC_MOTOR_CLOSE){
               NRF_LOG_INFO("Closing vent.");
               close_vent();
               status_update(STATUS_VENT_CLOSING);  
+
+              err_code = app_timer_start(m_current_measure_timer_id, CURRENT_MEASURE_INTERVAL, NULL);
+              APP_ERROR_CHECK(err_code);
+
+              vent_command = DC_MOTOR_CLOSE;
             }
             else { 
               NRF_LOG_INFO("Stopping vent. Value: 0x%x", p_evt->dc_direction);
               stop_vent();
 
-              err_code = ble_ves_status_update(&m_ves, STATUS_VENT_ERROR);
-              APP_ERROR_CHECK(err_code);
+              status_update(STATUS_VENT_ERROR);
             }
             break;
 
@@ -488,8 +577,8 @@ static void services_init(void)
     memset(&ves_init, 0, sizeof(ves_init));
 
     /* Give read and write permission to the CUS characteristic */
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&ves_init.custom_value_char_attr_md.read_perm);
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&ves_init.custom_value_char_attr_md.write_perm);
+    BLE_GAP_CONN_SEC_MODE_SET_ENC_NO_MITM(&ves_init.custom_value_char_attr_md.read_perm);
+    BLE_GAP_CONN_SEC_MODE_SET_ENC_NO_MITM(&ves_init.custom_value_char_attr_md.write_perm);
     ves_init.evt_handler = on_ves_evt;
     /* Inititalize */
     err_code = ble_ves_init(&m_ves, &ves_init);
@@ -543,7 +632,7 @@ static void conn_params_init(void)
     cp_init.first_conn_params_update_delay = FIRST_CONN_PARAMS_UPDATE_DELAY;
     cp_init.next_conn_params_update_delay  = NEXT_CONN_PARAMS_UPDATE_DELAY;
     cp_init.max_conn_params_update_count   = MAX_CONN_PARAMS_UPDATE_COUNT;
-    cp_init.start_on_notify_cccd_handle    = BLE_GATT_HANDLE_INVALID;
+    cp_init.start_on_notify_cccd_handle    = BLE_GATT_HANDLE_INVALID;     /**/
     cp_init.disconnect_on_fail             = false;
     cp_init.evt_handler                    = on_conn_params_evt;
     cp_init.error_handler                  = conn_params_error_handler;
@@ -665,7 +754,13 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
     {
         case BLE_GAP_EVT_DISCONNECTED:
             NRF_LOG_INFO("Disconnected.");
+
+            err_code = app_timer_stop(m_connection_error_timer_id);
+            APP_ERROR_CHECK(err_code);
+
             low_power_mode_start();
+
+            m_conn_handle = BLE_CONN_HANDLE_INVALID;
 
             // LED indication will be changed when advertising starts.
             break;
@@ -680,6 +775,9 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
             APP_ERROR_CHECK(err_code);
 
             err_code = sd_ble_gap_tx_power_set(BLE_GAP_TX_POWER_ROLE_CONN, m_conn_handle, 4);
+            APP_ERROR_CHECK(err_code);
+
+            err_code = app_timer_start(m_connection_error_timer_id, CONNECTION_ERROR_TIMEOUT, NULL);
             APP_ERROR_CHECK(err_code);
 
             break;
@@ -711,6 +809,27 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
                                              BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
             APP_ERROR_CHECK(err_code);
             break;
+
+        case BLE_GAP_EVT_SEC_PARAMS_REQUEST:
+            NRF_LOG_DEBUG("BLE_GAP_EVT_SEC_PARAMS_REQUEST");
+            break;
+        
+        case BLE_GAP_EVT_AUTH_KEY_REQUEST:
+            NRF_LOG_INFO("BLE_GAP_EVT_AUTH_KEY_REQUEST");
+            break;
+
+        case BLE_GAP_EVT_LESC_DHKEY_REQUEST:
+            NRF_LOG_INFO("BLE_GAP_EVT_LESC_DHKEY_REQUEST");
+            break;
+
+        case BLE_GAP_EVT_AUTH_STATUS:
+            NRF_LOG_INFO("BLE_GAP_EVT_AUTH_STATUS: status=0x%x bond=0x%x lv4: %d kdist_own:0x%x kdist_peer:0x%x",
+                          p_ble_evt->evt.gap_evt.params.auth_status.auth_status,
+                          p_ble_evt->evt.gap_evt.params.auth_status.bonded,
+                          p_ble_evt->evt.gap_evt.params.auth_status.sm1_levels.lv4,
+                          *((uint8_t *)&p_ble_evt->evt.gap_evt.params.auth_status.kdist_own),
+                          *((uint8_t *)&p_ble_evt->evt.gap_evt.params.auth_status.kdist_peer));
+           break;
 
         default:
             // No implementation needed.
@@ -909,6 +1028,11 @@ static void power_management_init(void)
  */
 static void idle_state_handle(void)
 {
+    ret_code_t err_code;
+
+    err_code = nrf_ble_lesc_request_handler();
+    APP_ERROR_CHECK(err_code);
+
     if (NRF_LOG_PROCESS() == false)
     {
         nrf_pwr_mgmt_run();
@@ -923,28 +1047,130 @@ void gpio_init(){
     APP_ERROR_CHECK(err_code);
     
     //Initialize output pin
-    nrfx_gpiote_out_config_t out_config = NRFX_GPIOTE_CONFIG_OUT_SIMPLE(false);               //Configure output button
+    nrfx_gpiote_out_config_t out_config = NRFX_GPIOTE_CONFIG_OUT_SIMPLE(true);               //Configure output button
+    
+    err_code = nrfx_gpiote_out_init(CURRENT_SENSE_ENABLE_PIN, &out_config);
+    APP_ERROR_CHECK(err_code);
 
     /* Limit switches configuration */
     //Configure sense input pin to enable wakeup and interrupt on button press.
     nrfx_gpiote_in_config_t in_config = NRFX_GPIOTE_CONFIG_IN_SENSE_HITOLO(false);            //Configure to generate interrupt and wakeup on pin signal low. "false" means that gpiote will use the PORT event, which is low power, i.e. does not add any noticable current consumption (<<1uA). Setting this to "true" will make the gpiote module use GPIOTE->IN events which add ~8uA for nRF52 and ~1mA for nRF51.
     in_config.pull = NRF_GPIO_PIN_PULLUP;                                                     //Configure pullup for input pin to prevent it from floting. Pin is pulled down when button is pressed on nRF5x-DK boards, see figure two in http://infocenter.nordicsemi.com/topic/com.nordic.infocenter.nrf52/dita/nrf52/development/dev_kit_v1.1.0/hw_btns_leds.html?cp=2_0_0_1_4		
 
-    err_code = nrfx_gpiote_in_init(LIMIT_SWITCH_OPEN, &in_config, gpio_event_handler);        //Initialize the pin with interrupt handler
-    APP_ERROR_CHECK(err_code);                                                                //Check potential error
-
-    err_code = nrfx_gpiote_in_init(LIMIT_SWITCH_CLOSE, &in_config, gpio_event_handler);       //Initialize the pin with interrupt handler
-    APP_ERROR_CHECK(err_code);                                                                //Check potential error
+//    err_code = nrfx_gpiote_in_init(LIMIT_SWITCH_OPEN, &in_config, gpio_event_handler);        //Initialize the pin with interrupt handler
+//    APP_ERROR_CHECK(err_code);                                                                //Check potential error
+//
+//    err_code = nrfx_gpiote_in_init(LIMIT_SWITCH_CLOSE, &in_config, gpio_event_handler);       //Initialize the pin with interrupt handler
+//    APP_ERROR_CHECK(err_code);                                                                //Check potential error
   
     err_code = nrfx_gpiote_in_init(ALERT_PIN, &in_config, gpio_event_handler);                //Initialize the pin with interrupt handler
     APP_ERROR_CHECK(err_code);                                                                //Check potential error
     
     /* Temperature sensor alert configuration */
-    nrfx_gpiote_in_event_enable(LIMIT_SWITCH_OPEN, true);                                     //Enable event and interrupt for the wakeup pin
-    nrfx_gpiote_in_event_enable(LIMIT_SWITCH_CLOSE, true);                                    //Enable event and interrupt for the wakeup pin
+//    nrfx_gpiote_in_event_enable(LIMIT_SWITCH_OPEN, true);                                     //Enable event and interrupt for the wakeup pin
+//    nrfx_gpiote_in_event_enable(LIMIT_SWITCH_CLOSE, true);                                    //Enable event and interrupt for the wakeup pin
     nrfx_gpiote_in_event_enable(ALERT_PIN, true);                                             //Enable event and interrupt for the wakeup pin
 
 } 
+
+/* Deal with the ADC or current monitoring for limit switches */
+static void saadc_callback(nrfx_saadc_evt_t const * p_event){
+
+    if (p_event->type == NRFX_SAADC_EVT_DONE){
+        ret_code_t err_code;
+		
+        /* Calibrate sensor after certain time */
+        if((m_adc_evt_counter % SAADC_CALIBRATION_INTERVAL) == 0)                                       //Evaluate if offset calibration should be performed. Configure the SAADC_CALIBRATION_INTERVAL constant to change the calibration frequency
+        {
+					
+            NRF_SAADC->EVENTS_CALIBRATEDONE = 0;                                                        //Clear the calibration event flag
+            nrf_saadc_task_trigger(NRF_SAADC_TASK_CALIBRATEOFFSET);                                     //Trigger calibration task
+            while(!NRF_SAADC->EVENTS_CALIBRATEDONE);                                                    //Wait until calibration task is completed. The calibration tasks takes about 1000us with 10us acquisition time. Configuring shorter or longer acquisition time will make the calibration take shorter or longer respectively.
+            while(NRF_SAADC->STATUS == (SAADC_STATUS_STATUS_Busy << SAADC_STATUS_STATUS_Pos));          //Additional wait for busy flag to clear. Without this wait, calibration is actually not completed. This may take additional 100us - 300us
+            NRF_LOG_INFO("SAADC calibration complete");                                                //Print on UART
+        }
+     
+        /* Read buffer */
+        err_code = nrfx_saadc_buffer_convert(p_event->data.done.p_buffer, SAMPLES_IN_BUFFER);  //Set buffer so the SAADC can write to it again. This is either "buffer 1" or "buffer 2"
+        APP_ERROR_CHECK(err_code);
+        NRF_LOG_INFO("ADC event number: %d",(int)m_adc_evt_counter);                                      //Print the event number on UART
+
+        /* Avergae value for sanity check */
+        int average = 0;
+        for (int i = 0; i < SAMPLES_IN_BUFFER; i++)
+        {
+            NRF_LOG_INFO("%d", p_event->data.done.p_buffer[i]);                                           //Print the SAADC result on UART
+            average +=  p_event->data.done.p_buffer[i];
+        }
+        average = average/SAMPLES_IN_BUFFER;
+
+        /* If average grater than stall threshold then stop vent and update vent status locally and through BLE */
+        if(average >= STALL_THRESHOLD){
+            stop_vent();
+
+            if(vent_command == DC_MOTOR_OPEN){
+                vent_position = VENT_POSITION_OPEN;     /* Note: Future can be optimized to check position before actually running the motor */
+                status_update(STATUS_VENT_OPENED);
+            }else{
+                vent_position = VENT_POSITION_CLOSE; 
+                status_update(STATUS_VENT_CLOSED);
+            }
+          
+            err_code = app_timer_stop(m_current_measure_timer_id);
+            APP_ERROR_CHECK(err_code);
+        }
+
+        m_adc_evt_counter++;
+				
+        nrfx_saadc_uninit();                                                                   //Unintialize SAADC to disable EasyDMA and save power
+        NRF_SAADC->INTENCLR = (SAADC_INTENCLR_END_Clear << SAADC_INTENCLR_END_Pos);               //Disable the SAADC interrupt
+        NVIC_ClearPendingIRQ(SAADC_IRQn);                                                         //Clear the SAADC interrupt if set
+        m_saadc_initialized = false;                                                              //Set SAADC as uninitialized
+    }
+}
+
+void saadc_init(){
+    /* https://github.com/NordicPlayground/nRF52-ADC-examples/blob/11.0.0/saadc_low_power/main.c */
+
+    ret_code_t err_code;
+    nrfx_saadc_config_t saadc_config;
+    nrf_saadc_channel_config_t channel_config;
+
+    //Configure SAADC
+    saadc_config.resolution = NRF_SAADC_RESOLUTION_12BIT;                                 //Set SAADC resolution to 12-bit. This will make the SAADC output values from 0 (when input voltage is 0V) to 2^12=2048 (when input voltage is 3.6V for channel gain setting of 1/6).
+    saadc_config.oversample = NRF_SAADC_OVERSAMPLE_4X;                                    //Set oversample to 4x. This will make the SAADC output a single averaged value when the SAMPLE task is triggered 4 times.
+    saadc_config.interrupt_priority = APP_IRQ_PRIORITY_LOW;                               //Set SAADC interrupt to low priority.
+
+    //Initialize SAADC
+    err_code = nrfx_saadc_init(&saadc_config, saadc_callback);                         //Initialize the SAADC with configuration and callback function. The application must then implement the saadc_callback function, which will be called when SAADC interrupt is triggered
+    APP_ERROR_CHECK(err_code);
+
+    //Configure SAADC channel
+    channel_config.reference = NRF_SAADC_REFERENCE_INTERNAL;                              //Set internal reference of fixed 0.6 volts
+    channel_config.gain = NRF_SAADC_GAIN1_6;                                              //Set input gain to 1/6. The maximum SAADC input voltage is then 0.6V/(1/6)=3.6V. The single ended input range is then 0V-3.6V
+    channel_config.acq_time = NRF_SAADC_ACQTIME_10US;                                     //Set acquisition time. Set low acquisition time to enable maximum sampling frequency of 200kHz. Set high acquisition time to allow maximum source resistance up to 800 kohm, see the SAADC electrical specification in the PS. 
+    channel_config.mode = NRF_SAADC_MODE_SINGLE_ENDED;                                    //Set SAADC as single ended. This means it will only have the positive pin as input, and the negative pin is shorted to ground (0V) internally.
+    channel_config.pin_p = NRF_SAADC_INPUT_AIN3;                                          //Select the input pin for the channel. AIN5 pin maps to physical pin P0.05.
+    channel_config.pin_n = NRF_SAADC_INPUT_DISABLED;                                      //Since the SAADC is single ended, the negative pin is disabled. The negative pin is shorted to ground internally.
+    channel_config.resistor_p = NRF_SAADC_RESISTOR_DISABLED;                              //Disable pullup resistor on the input pin
+    channel_config.resistor_n = NRF_SAADC_RESISTOR_DISABLED;                              //Disable pulldown resistor on the input pin
+
+    //Initialize SAADC channel
+    err_code = nrfx_saadc_channel_init(0, &channel_config);                            //Initialize SAADC channel 0 with the channel configuration
+    APP_ERROR_CHECK(err_code);
+
+    if(SAADC_BURST_MODE)
+    {
+        NRF_SAADC->CH[0].CONFIG |= 0x01000000;                                            //Configure burst mode for channel 0. Burst is useful together with oversampling. When triggering the SAMPLE task in burst mode, the SAADC will sample "Oversample" number of times as fast as it can and then output a single averaged value to the RAM buffer. If burst mode is not enabled, the SAMPLE task needs to be triggered "Oversample" number of times to output a single averaged value to the RAM buffer.		
+    }
+
+    err_code = nrfx_saadc_buffer_convert(m_buffer_pool[0], SAMPLES_IN_BUFFER);    /* Queue two buffers to work simultaneouly */
+
+    err_code = nrfx_saadc_buffer_convert(m_buffer_pool[1], SAMPLES_IN_BUFFER);
+    APP_ERROR_CHECK(err_code);
+
+    NRF_LOG_INFO("SAADC INITIALIZE");
+}
 
 /**@brief Function for starting advertising.
  */
@@ -970,8 +1196,11 @@ static void advertising_start(bool erase_bonds, int mode)
  */
 int main(void)
 {
+
     bool erase_bonds;
     ret_code_t err_code;
+
+    //NRF_POWER->DCDCEN = 1;                           //Enabling the DCDC converter for lower current consumption
 
     // Initialize.  
     log_init();
@@ -992,6 +1221,20 @@ int main(void)
     // Start execution.
     NRF_LOG_INFO("Vent program started.");
     application_timers_start();
+        
+//    if(FACTORY_RESET == 1){
+//        factory_reset();
+//        erase_bonds = true;
+//    }
+//    
+//    if(initial_boot() == 1){
+//        NRF_LOG_INFO("First boot of the program. Deleting bonds.");
+//        erase_bonds = true;
+//    }else{
+//        erase_bonds = false;
+//    }
+
+    erase_bonds = true;
 
     advertising_start(erase_bonds, BLE_ADV_MODE_FAST);
 
@@ -1003,6 +1246,3 @@ int main(void)
 
 }
 
-/**
- * @}
- */

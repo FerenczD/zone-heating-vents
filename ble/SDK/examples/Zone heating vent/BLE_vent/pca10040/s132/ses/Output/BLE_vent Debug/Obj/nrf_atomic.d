@@ -1,6 +1,6 @@
 Output/BLE_vent\ Debug/Obj/nrf_atomic.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\atomic\nrf_atomic.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\atomic\nrf_atomic.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\atomic\nrf_atomic.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\atomic\nrf_atomic.h \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
@@ -31,4 +31,4 @@ Output/BLE_vent\ Debug/Obj/nrf_atomic.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\atomic\nrf_atomic_internal.h
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\atomic\nrf_atomic_internal.h

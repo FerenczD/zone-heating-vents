@@ -1,6 +1,6 @@
 Output/BLE_vent\ Debug/Obj/ble_conn_state.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\common\ble_conn_state.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\common\ble_conn_state.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\common\ble_conn_state.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\common\ble_conn_state.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  ../../../../../../components/softdevice/s132/headers/ble.h \

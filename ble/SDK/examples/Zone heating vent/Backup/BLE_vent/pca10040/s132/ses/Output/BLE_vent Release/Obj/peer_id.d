@@ -1,5 +1,5 @@
 Output/BLE_vent\ Release/Obj/peer_id.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\peer_manager\peer_id.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\peer_manager\peer_id.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/BLE_vent\ Release/Obj/peer_id.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\peer_manager\peer_id.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\peer_manager\peer_id.h \
  ../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../components/softdevice/s132/headers/ble_gap.h \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
@@ -39,7 +39,7 @@ Output/BLE_vent\ Release/Obj/peer_id.o: \
  ../../../../../../components/softdevice/s132/headers/ble_ranges.h \
  ../../../../../../components/softdevice/s132/headers/ble_types.h \
  ../../../../../../components/softdevice/s132/headers/ble_err.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\peer_manager\peer_manager_types.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\peer_manager\peer_manager_types.h \
  ../../../../../../components/softdevice/s132/headers/ble_hci.h \
  ../../../../../../components/ble/common/ble_gatt_db.h \
  ../../../../../../components/softdevice/s132/headers/ble.h \

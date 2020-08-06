@@ -1,5 +1,5 @@
 Output/BLE_vent\ Release/Obj/nrf_atflags.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\atomic_flags\nrf_atflags.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\atomic_flags\nrf_atflags.c \
  ../../../../../../modules/nrfx/mdk/nrf.h \
  ../../../../../../modules/nrfx/mdk/nrf52.h \
  ../../../../../../components/toolchain/cmsis/include/core_cm4.h \
@@ -31,4 +31,4 @@ Output/BLE_vent\ Release/Obj/nrf_atflags.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\atomic_flags\nrf_atflags.h
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\atomic_flags\nrf_atflags.h

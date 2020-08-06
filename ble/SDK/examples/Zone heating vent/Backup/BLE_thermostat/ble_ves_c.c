@@ -27,11 +27,12 @@ void ble_ves_c_on_db_disc_evt(ble_ves_c_t * p_ble_ves_c, ble_db_discovery_evt_t 
 
     ble_gatt_db_char_t * p_chars = p_evt->params.discovered_db.charateristics;
 
-    // Check if the NUS was discovered.
+    // Check if the VES was discovered.
     if (    (p_evt->evt_type == BLE_DB_DISCOVERY_COMPLETE)
         &&  (p_evt->params.discovered_db.srv_uuid.uuid == VENT_SERVICE_UUID)
         &&  (p_evt->params.discovered_db.srv_uuid.type == p_ble_ves_c->uuid_type))
     {
+        /* Store service characteristics */
         for (uint32_t i = 0; i < p_evt->params.discovered_db.char_count; i++)
         {
             switch (p_chars[i].characteristic.uuid.uuid)
@@ -66,33 +67,20 @@ void ble_ves_c_on_db_disc_evt(ble_ves_c_t * p_ble_ves_c, ble_db_discovery_evt_t 
 /**@brief     Function for handling Handle Value Notification received from the SoftDevice.
  *
  * @details   This function uses the Handle Value Notification received from the SoftDevice
- *            and checks if it is a notification of the NUS TX characteristic from the peer.
+ *            and checks if it is a notification of the VES characteristics from the peer.
  *            If it is, this function decodes the data and sends it to the application.
  *            
- * @param[in] p_ble_nus_c Pointer to the NUS Client structure.
+ * @param[in] p_ble_ves_c Pointer to the VES Client structure.
  * @param[in] p_ble_evt   Pointer to the BLE event received.
  */
 static void on_hvx(ble_ves_c_t * p_ble_ves_c, ble_evt_t const * p_ble_evt)
 {
-//    // HVX can only occur from client sending.
-//    if (   (p_ble_ves_c->handles.temp_handle != BLE_GATT_HANDLE_INVALID)
-//        && (p_ble_evt->evt.gattc_evt.params.hvx.handle == p_ble_ves_c->handles.temp_handle)
-//        && (p_ble_ves_c->evt_handler != NULL))
-//    {
-//        ble_ves_c_evt_t ble_ves_c_evt;
-//
-//        ble_ves_c_evt.evt_type        = BLE_VES_C_EVT_VES_TEMP_EVT;
-//        ble_ves_c_evt.current_temp    = (uint8_t*)p_ble_evt->evt.gattc_evt.params.hvx.data; /* It must be uint8_t* thus always keep data length*/
-//        ble_ves_c_evt.data_len        = p_ble_evt->evt.gattc_evt.params.hvx.len;
-//
-//        p_ble_ves_c->evt_handler(p_ble_ves_c, &ble_ves_c_evt);
-//        NRF_LOG_DEBUG("Client sending current temperature.");
-//    }
     /* HVX can only occur when a notification from peripheral occurs */
     ble_ves_c_evt_t ble_ves_c_evt;
 
     if (p_ble_ves_c->evt_handler != NULL){
-      /* Check wich notification was received */
+
+      /* Check wich characteristic notified */
       if((p_ble_evt->evt.gattc_evt.params.hvx.handle == p_ble_ves_c->handles.temp_handle) && (p_ble_ves_c->handles.temp_handle != BLE_GATT_HANDLE_INVALID)){
         ble_ves_c_evt.evt_type        = BLE_VES_C_EVT_VES_TEMP_EVT;
         ble_ves_c_evt.current_temp    = (uint8_t*)p_ble_evt->evt.gattc_evt.params.hvx.data; /* It must be uint8_t* thus always keep data length*/
@@ -193,7 +181,7 @@ static uint32_t cccd_configure(ble_ves_c_t * p_ble_ves_c, uint16_t handle ,bool 
     cccd_req.type                        = NRF_BLE_GQ_REQ_GATTC_WRITE;
     cccd_req.error_handler.cb            = gatt_error_handler;
     cccd_req.error_handler.p_ctx         = p_ble_ves_c;
-    cccd_req.params.gattc_write.handle   = handle; /* Make this variable */
+    cccd_req.params.gattc_write.handle   = handle; 
     cccd_req.params.gattc_write.len      = BLE_CCCD_VALUE_LEN;
     cccd_req.params.gattc_write.offset   = 0;
     cccd_req.params.gattc_write.p_value  = cccd;
@@ -229,60 +217,6 @@ uint32_t ble_ves_c_status_notif_enable(ble_ves_c_t * p_ble_ves_c, bool notificat
     return cccd_configure(p_ble_ves_c, p_ble_ves_c->handles.status_cccd_handle, notification_enable); /* tambien manda que tipo de handler es e.g temp or status */
 }
 
-//uint32_t ble_nus_c_string_send(ble_nus_c_t * p_ble_nus_c, uint8_t * p_string, uint16_t length)
-//{
-//    VERIFY_PARAM_NOT_NULL(p_ble_nus_c);
-//
-//    nrf_ble_gq_req_t write_req;
-//
-//    memset(&write_req, 0, sizeof(nrf_ble_gq_req_t));
-//
-//    if (length > BLE_NUS_MAX_DATA_LEN)
-//    {
-//        NRF_LOG_WARNING("Content too long.");
-//        return NRF_ERROR_INVALID_PARAM;
-//    }
-//    if (p_ble_nus_c->conn_handle == BLE_CONN_HANDLE_INVALID)
-//    {
-//        NRF_LOG_WARNING("Connection handle invalid.");
-//        return NRF_ERROR_INVALID_STATE;
-//    }
-//
-//    write_req.type                        = NRF_BLE_GQ_REQ_GATTC_WRITE;
-//    write_req.error_handler.cb            = gatt_error_handler;
-//    write_req.error_handler.p_ctx         = p_ble_nus_c;
-//    write_req.params.gattc_write.handle   = p_ble_nus_c->handles.nus_rx_handle;
-//    write_req.params.gattc_write.len      = length;
-//    write_req.params.gattc_write.offset   = 0;
-//    write_req.params.gattc_write.p_value  = p_string;
-//    write_req.params.gattc_write.write_op = BLE_GATT_OP_WRITE_CMD;
-//    write_req.params.gattc_write.flags    = BLE_GATT_EXEC_WRITE_FLAG_PREPARED_WRITE;
-//
-//    return nrf_ble_gq_item_add(p_ble_nus_c->p_gatt_queue, &write_req, p_ble_nus_c->conn_handle);
-//}
-
-uint32_t ble_ves_c_handles_assign(ble_ves_c_t               * p_ble_ves,
-                                  uint16_t                    conn_handle,
-                                  ble_ves_c_handles_t const * p_peer_handles)
-{
-    VERIFY_PARAM_NOT_NULL(p_ble_ves);
-
-    p_ble_ves->conn_handle = conn_handle;
-    if (p_peer_handles != NULL)
-    {
-        p_ble_ves->handles.temp_cccd_handle     = p_peer_handles->temp_cccd_handle;
-        p_ble_ves->handles.temp_handle          = p_peer_handles->temp_handle;
-        p_ble_ves->handles.status_cccd_handle   = p_peer_handles->status_cccd_handle;
-        p_ble_ves->handles.status_handle        = p_peer_handles->status_handle;
-        p_ble_ves->handles.dc_motor_handle      = p_peer_handles->dc_motor_handle;
-
-
-
-    }
-    return nrf_ble_gq_conn_handle_register(p_ble_ves->p_gatt_queue, conn_handle);
-}
-
-
 uint32_t ble_ves_c_dc_motor_send(ble_ves_c_t * p_ble_ves_c, uint8_t motor_direction) {
     VERIFY_PARAM_NOT_NULL(p_ble_ves_c);
 
@@ -304,6 +238,25 @@ uint32_t ble_ves_c_dc_motor_send(ble_ves_c_t * p_ble_ves_c, uint8_t motor_direct
     write_req.params.gattc_write.write_op = BLE_GATT_OP_WRITE_CMD;
     write_req.params.gattc_write.flags    = BLE_GATT_EXEC_WRITE_FLAG_PREPARED_WRITE;
 
-NRF_LOG_INFO("direction %d.", write_req.params.gattc_write.p_value);
     return nrf_ble_gq_item_add(p_ble_ves_c->p_gatt_queue, &write_req, p_ble_ves_c->conn_handle);
 }
+
+uint32_t ble_ves_c_handles_assign(ble_ves_c_t               * p_ble_ves,
+                                  uint16_t                    conn_handle,
+                                  ble_ves_c_handles_t const * p_peer_handles)
+{
+    VERIFY_PARAM_NOT_NULL(p_ble_ves);
+
+    p_ble_ves->conn_handle = conn_handle;
+    if (p_peer_handles != NULL)
+    {
+        p_ble_ves->handles.temp_cccd_handle     = p_peer_handles->temp_cccd_handle;
+        p_ble_ves->handles.temp_handle          = p_peer_handles->temp_handle;
+        p_ble_ves->handles.status_cccd_handle   = p_peer_handles->status_cccd_handle;
+        p_ble_ves->handles.status_handle        = p_peer_handles->status_handle;
+        p_ble_ves->handles.dc_motor_handle      = p_peer_handles->dc_motor_handle;
+    }
+    return nrf_ble_gq_conn_handle_register(p_ble_ves->p_gatt_queue, conn_handle);
+}
+
+

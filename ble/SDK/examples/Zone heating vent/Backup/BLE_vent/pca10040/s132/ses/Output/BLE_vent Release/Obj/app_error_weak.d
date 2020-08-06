@@ -1,6 +1,6 @@
 Output/BLE_vent\ Release/Obj/app_error_weak.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\app_error_weak.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\app_error.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\app_error_weak.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdio.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/__crossworks.h \
@@ -18,10 +18,10 @@ Output/BLE_vent\ Release/Obj/app_error_weak.o: \
  ../../../../../../modules/nrfx/mdk/nrf51_to_nrf52.h \
  ../../../../../../modules/nrfx/mdk/nrf52_name_change.h \
  ../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\sdk_errors.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\sdk_errors.h \
  ../../../../../../components/softdevice/s132/headers/nrf_error.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\nordic_common.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\app_error_weak.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\nordic_common.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\app_error_weak.h \
  ../../../../../../components/libraries/log/nrf_log.h \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/string.h \
@@ -58,7 +58,7 @@ Output/BLE_vent\ Release/Obj/app_error_weak.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
  ../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../components/libraries/util/app_error.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\app_util_platform.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\app_util_platform.h \
  ../../../../../../components/softdevice/s132/headers/nrf_sdm.h \
  ../../../../../../components/softdevice/s132/headers/nrf_error_sdm.h \
  ../../../../../../components/softdevice/s132/headers/nrf_soc.h

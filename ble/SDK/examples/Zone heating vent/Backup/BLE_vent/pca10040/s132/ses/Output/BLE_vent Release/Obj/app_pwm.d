@@ -1,5 +1,5 @@
 Output/BLE_vent\ Release/Obj/app_pwm.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\pwm\app_pwm.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\pwm\app_pwm.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/BLE_vent\ Release/Obj/app_pwm.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\pwm\app_pwm.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\pwm\app_pwm.h \
  ../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../integration/nrfx/legacy/nrf_drv_timer.h \
  ../../../../../../modules/nrfx/drivers/include/nrfx_timer.h \

@@ -1,6 +1,6 @@
 Output/BLE_vent\ Release/Obj/nrf_drv_ppi.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_ppi.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_ppi.h \
+ D:\ESE\Semester7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_ppi.c \
+ D:\ESE\Semester7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_ppi.h \
  ../../../../../../modules/nrfx/drivers/include/nrfx_ppi.h \
  ../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../integration/nrfx/nrfx_config.h ../config/sdk_config.h \

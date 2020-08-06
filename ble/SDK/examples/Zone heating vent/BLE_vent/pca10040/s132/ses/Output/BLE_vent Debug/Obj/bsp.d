@@ -1,6 +1,6 @@
 Output/BLE_vent\ Debug/Obj/bsp.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\bsp\bsp.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\bsp\bsp.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\bsp\bsp.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\bsp\bsp.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
  ../../../../../../components/boards/boards.h \
@@ -57,7 +57,7 @@ Output/BLE_vent\ Debug/Obj/bsp.o: \
  ../../../../../../components/boards/pca10040.h \
  ../../../../../../components/libraries/button/app_button.h \
  ../../../../../../components/libraries/util/app_error.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\bsp\bsp_config.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\bsp\bsp_config.h \
  ../../../../../../components/libraries/timer/app_timer.h \
  ../../../../../../components/libraries/log/nrf_log_instance.h \
  ../../../../../../components/libraries/experimental_section_vars/nrf_section.h \

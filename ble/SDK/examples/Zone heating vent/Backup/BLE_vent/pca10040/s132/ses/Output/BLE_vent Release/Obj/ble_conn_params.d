@@ -1,5 +1,5 @@
 Output/BLE_vent\ Release/Obj/ble_conn_params.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\common\ble_conn_params.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\common\ble_conn_params.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
@@ -35,7 +35,7 @@ Output/BLE_vent\ Release/Obj/ble_conn_params.o: \
  ../../../../../../components/softdevice/s132/headers/ble_hci.h \
  ../../../../../../components/softdevice/s132/headers/ble_err.h \
  ../../../../../../components/softdevice/s132/headers/nrf_error.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\common\ble_conn_params.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\common\ble_conn_params.h \
  ../../../../../../components/softdevice/s132/headers/ble.h \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/softdevice/s132/headers/ble_err.h \
@@ -47,12 +47,12 @@ Output/BLE_vent\ Release/Obj/ble_conn_params.o: \
  ../../../../../../components/softdevice/s132/headers/ble_gatt.h \
  ../../../../../../components/softdevice/s132/headers/ble_gattc.h \
  ../../../../../../components/softdevice/s132/headers/ble_gatts.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\common\ble_srv_common.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\common\ble_srv_common.h \
  ../../../../../../components/softdevice/s132/headers/ble_types.h \
  ../../../../../../components/libraries/util/app_util.h \
  ../../../../../../components/softdevice/s132/headers/ble_gap.h \
  ../../../../../../components/softdevice/s132/headers/ble_gatt.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\common\ble_conn_state.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\common\ble_conn_state.h \
  ../../../../../../components/libraries/atomic/nrf_atomic.h \
  ../../../../../../components/softdevice/common/nrf_sdh_ble.h \
  ../../../../../../components/libraries/experimental_section_vars/nrf_section_iter.h \

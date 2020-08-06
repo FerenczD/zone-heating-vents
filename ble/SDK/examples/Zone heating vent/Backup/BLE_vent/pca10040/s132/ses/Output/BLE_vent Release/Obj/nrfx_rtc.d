@@ -1,5 +1,5 @@
 Output/BLE_vent\ Release/Obj/nrfx_rtc.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\modules\nrfx\drivers\src\nrfx_rtc.c \
+ D:\ESE\Semester7\capstone\ble\SDK\modules\nrfx\drivers\src\nrfx_rtc.c \
  ../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../integration/nrfx/nrfx_config.h ../config/sdk_config.h \
  ../../../../../../modules/nrfx/drivers/nrfx_common.h \

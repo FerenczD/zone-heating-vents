@@ -1,6 +1,6 @@
 Output/BLE_vent\ Debug/Obj/nrf_ringbuf.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\ringbuf\nrf_ringbuf.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\ringbuf\nrf_ringbuf.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\ringbuf\nrf_ringbuf.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\ringbuf\nrf_ringbuf.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  ../../../../../../components/libraries/atomic/nrf_atomic.h \
  ../../../../../../components/libraries/util/sdk_common.h \

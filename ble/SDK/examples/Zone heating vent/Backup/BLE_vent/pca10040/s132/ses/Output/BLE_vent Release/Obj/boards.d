@@ -1,6 +1,6 @@
 Output/BLE_vent\ Release/Obj/boards.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\boards\boards.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\boards\boards.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\boards\boards.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\boards\boards.h \
  ../../../../../../modules/nrfx/hal/nrf_gpio.h \
  ../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../integration/nrfx/nrfx_config.h ../config/sdk_config.h \
@@ -53,4 +53,4 @@ Output/BLE_vent\ Release/Obj/boards.o: \
  ../../../../../../components/libraries/util/sdk_resources.h \
  ../../../../../../components/softdevice/s132/headers/nrf_sd_def.h \
  ../../../../../../modules/nrfx/drivers/nrfx_errors.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\boards\pca10040.h
+ D:\ESE\Semester7\capstone\ble\SDK\components\boards\pca10040.h

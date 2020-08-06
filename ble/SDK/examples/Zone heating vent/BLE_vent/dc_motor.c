@@ -1,46 +1,25 @@
 #include "dc_motor.h"
 
-
 void open_vent(){
-   int limit_switch_active = nrf_gpio_pin_read(LIMIT_SWITCH_OPEN);
-
-   if (limit_switch_active != 0){
-      nrf_gpio_pin_set(DC_ENABLE_PIN);
-      nrf_gpio_pin_set(DC_DIRECTION_A_PIN);
-      nrf_gpio_pin_clear(DC_DIRECTION_B_PIN);
-   }
-
+    nrf_gpio_pin_set(DC_DIRECTION_A_PIN);
+    nrf_gpio_pin_clear(DC_DIRECTION_B_PIN);
 }
 
 void close_vent(){
-   int limit_switch_active = nrf_gpio_pin_read(LIMIT_SWITCH_CLOSE);
-
-   if (limit_switch_active != 0){
-     nrf_gpio_pin_set(DC_ENABLE_PIN);
      nrf_gpio_pin_clear(DC_DIRECTION_A_PIN);
      nrf_gpio_pin_set(DC_DIRECTION_B_PIN);
-   }
 }
 
 void stop_vent(){
-   nrf_gpio_pin_clear(DC_ENABLE_PIN);
    nrf_gpio_pin_clear(DC_DIRECTION_A_PIN);
    nrf_gpio_pin_clear(DC_DIRECTION_B_PIN);
 }
 
 uint8_t get_vent_direction(){
-  
-  /* Read current DC motor pin values */
-  uint32_t enable_pin = nrf_gpio_pin_out_read(DC_ENABLE_PIN);
+
   uint32_t direction_a_pin = nrf_gpio_pin_out_read(DC_DIRECTION_A_PIN);
   uint32_t direction_b_pin = nrf_gpio_pin_out_read(DC_DIRECTION_B_PIN);
 
-  /* If enable button is off then motor is off already */
-  if (enable_pin != 1){
-    NRF_LOG_INFO("Enable off already. Returning error");
-    return 0;
-  }
-  
   if((direction_a_pin == 1) && (direction_b_pin != 1)){
     /* Vent is opening */
     NRF_LOG_INFO("Vent opening");
@@ -59,14 +38,14 @@ uint8_t get_vent_direction(){
 void limit_switch_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action){
 
   ret_code_t err_code;
-  uint8_t direction =  get_vent_direction();  /* Confirm that the limit switch activated is the same as the vent action. Avoid wrong limit switch triggering*/
+  //uint8_t direction =  get_vent_direction();  /* Confirm that the limit switch activated is the same as the vent action. Avoid wrong limit switch triggering*/
 
-  if(pin == LIMIT_SWITCH_OPEN && direction == 1){
+  if(pin == LIMIT_SWITCH_OPEN){
     NRF_LOG_INFO("Limit Switch open pressed");
     stop_vent();
     status_update(STATUS_VENT_OPENED);
 
-  }else if(pin == LIMIT_SWITCH_CLOSE && direction == 2){
+  }else if(pin == LIMIT_SWITCH_CLOSE){
     NRF_LOG_INFO("Limit Switch close pressed");
     stop_vent();
     status_update(STATUS_VENT_CLOSED);
@@ -80,11 +59,11 @@ void limit_switch_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action){
 void dc_init(){
     nrf_gpio_cfg_output(DC_DIRECTION_B_PIN);
     nrf_gpio_cfg_output(DC_DIRECTION_A_PIN);
-    nrf_gpio_cfg_output(DC_ENABLE_PIN);
+   // nrf_gpio_cfg_output(DC_ENABLE_PIN);
 
     nrf_gpio_pin_clear(DC_DIRECTION_B_PIN);
     nrf_gpio_pin_clear(DC_DIRECTION_A_PIN);
-    nrf_gpio_pin_clear(DC_ENABLE_PIN);
+   // nrf_gpio_pin_clear(DC_ENABLE_PIN);
  
 }
 

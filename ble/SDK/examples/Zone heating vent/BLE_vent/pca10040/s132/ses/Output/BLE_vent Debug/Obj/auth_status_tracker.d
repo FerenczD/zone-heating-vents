@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/auth_status_tracker.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\peer_manager\auth_status_tracker.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\peer_manager\auth_status_tracker.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \

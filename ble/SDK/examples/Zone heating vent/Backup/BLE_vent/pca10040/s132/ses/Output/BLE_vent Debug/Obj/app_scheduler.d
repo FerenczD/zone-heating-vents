@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/app_scheduler.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\scheduler\app_scheduler.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\scheduler\app_scheduler.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/BLE_vent\ Debug/Obj/app_scheduler.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\scheduler\app_scheduler.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\scheduler\app_scheduler.h \
  ../../../../../../components/libraries/util/app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdio.h \
  ../../../../../../components/libraries/util/app_error_weak.h \

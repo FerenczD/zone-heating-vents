@@ -1,6 +1,6 @@
 Output/BLE_vent\ Release/Obj/peer_manager_handler.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\peer_manager\peer_manager_handler.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\peer_manager\peer_manager_handler.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\peer_manager\peer_manager_handler.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\peer_manager\peer_manager_handler.h \
  ../../../../../../components/softdevice/s132/headers/ble.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
@@ -27,7 +27,7 @@ Output/BLE_vent\ Release/Obj/peer_manager_handler.o: \
  ../../../../../../modules/nrfx/mdk/nrf52_name_change.h \
  ../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
  ../../../../../../components/softdevice/s132/headers/ble_gatts.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\peer_manager\peer_manager.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\peer_manager\peer_manager.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/string.h \
@@ -45,7 +45,7 @@ Output/BLE_vent\ Release/Obj/peer_manager_handler.o: \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../components/softdevice/s132/headers/ble_gap.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\peer_manager\peer_manager_types.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\peer_manager\peer_manager_types.h \
  ../../../../../../components/softdevice/s132/headers/ble_hci.h \
  ../../../../../../components/ble/common/ble_gatt_db.h \
  ../../../../../../components/softdevice/s132/headers/ble_gattc.h \
@@ -57,8 +57,8 @@ Output/BLE_vent\ Release/Obj/peer_manager_handler.o: \
  ../../../../../../components/libraries/util/app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdio.h \
  ../../../../../../components/libraries/util/app_error_weak.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\peer_manager\peer_database.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\peer_manager\peer_manager_internal.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\peer_manager\peer_database.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\peer_manager\peer_manager_internal.h \
  ../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../components/libraries/util/app_error.h \
  ../../../../../../components/ble/common/ble_conn_state.h \

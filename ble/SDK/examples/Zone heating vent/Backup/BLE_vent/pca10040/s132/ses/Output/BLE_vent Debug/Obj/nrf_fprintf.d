@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/nrf_fprintf.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\external\fprintf\nrf_fprintf.c \
+ D:\ESE\Semester7\capstone\ble\SDK\external\fprintf\nrf_fprintf.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
@@ -32,5 +32,5 @@ Output/BLE_vent\ Debug/Obj/nrf_fprintf.o: \
  ../../../../../../components/libraries/util/nrf_assert.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdarg.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\external\fprintf\nrf_fprintf_format.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\external\fprintf\nrf_fprintf.h
+ D:\ESE\Semester7\capstone\ble\SDK\external\fprintf\nrf_fprintf_format.h \
+ D:\ESE\Semester7\capstone\ble\SDK\external\fprintf\nrf_fprintf.h

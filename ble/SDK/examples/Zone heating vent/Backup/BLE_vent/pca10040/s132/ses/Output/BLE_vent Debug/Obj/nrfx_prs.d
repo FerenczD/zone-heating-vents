@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/nrfx_prs.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\modules\nrfx\drivers\src\prs\nrfx_prs.c \
+ D:\ESE\Semester7\capstone\ble\SDK\modules\nrfx\drivers\src\prs\nrfx_prs.c \
  ../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../integration/nrfx/nrfx_config.h ../config/sdk_config.h \
  ../../../../../../modules/nrfx/drivers/nrfx_common.h \
@@ -51,7 +51,7 @@ Output/BLE_vent\ Debug/Obj/nrfx_prs.o: \
  ../../../../../../components/libraries/util/sdk_resources.h \
  ../../../../../../components/softdevice/s132/headers/nrf_sd_def.h \
  ../../../../../../modules/nrfx/drivers/nrfx_errors.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\modules\nrfx\drivers\src\prs\nrfx_prs.h \
+ D:\ESE\Semester7\capstone\ble\SDK\modules\nrfx\drivers\src\prs\nrfx_prs.h \
  ../../../../../../integration/nrfx/nrfx_log.h \
  ../../../../../../components/libraries/log/nrf_log.h \
  ../../../../../../components/libraries/util/sdk_common.h \

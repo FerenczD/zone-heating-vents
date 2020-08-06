@@ -1,6 +1,6 @@
 Output/BLE_vent\ Debug/Obj/nrf_drv_uart.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_uart.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_uart.h \
+ D:\ESE\Semester7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_uart.c \
+ D:\ESE\Semester7\capstone\ble\SDK\integration\nrfx\legacy\nrf_drv_uart.h \
  ../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../integration/nrfx/nrfx_config.h ../config/sdk_config.h \
  ../../../../../../modules/nrfx/drivers/nrfx_common.h \

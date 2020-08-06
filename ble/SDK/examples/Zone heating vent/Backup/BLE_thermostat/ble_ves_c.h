@@ -32,8 +32,13 @@
 #define TEMP_CHAR_UUID                    0x1402
 #define VENT_STATUS_UUID                  0x1403
 
-#define OPCODE_LENGTH 1
-#define HANDLE_LENGTH 2
+/* Vent status codes */
+#define STATUS_VENT_ERROR               0
+#define STATUS_VENT_OK                  1                                       
+#define STATUS_VENT_OPENING             2                                      
+#define STATUS_VENT_CLOSING             3                                       
+#define STATUS_VENT_OPENED              4                                       
+#define STATUS_VENT_CLOSED              5      
 
 /**@brief   Macro for defining a ble_nus_c instance.
  *
@@ -55,7 +60,7 @@ typedef enum
     BLE_VES_C_EVT_DISCOVERY_COMPLETE,     /**< Event indicating that the VES service and its characteristics were found. */
     BLE_VES_C_EVT_VES_TEMP_EVT,           /**< Event indicating that the central received something from a peer. */
     BLE_VES_C_EVT_VES_STATUS_EVT,
-    BLE_VES_C_EVT_DISCONNECTED            /**< Event indicating that the NUS server disconnected. */
+    BLE_VES_C_EVT_DISCONNECTED            /**< Event indicating that the VES server disconnected. */
 }ble_ves_c_evt_type_t;
 
 /**@brief Handles on the connected peer device needed to interact with it. */
@@ -76,10 +81,10 @@ typedef struct
     uint16_t             data_len;
     uint8_t*             current_temp;
     uint8_t*             vent_status;
-    ble_ves_c_handles_t  handles     /**< Handles on which the Vent service characteristics were discovered on the peer device. This is filled if the evt_type is @ref BLE_NUS_C_EVT_DISCOVERY_COMPLETE.*/
+    ble_ves_c_handles_t  handles     /**< Handles on which the Vent service characteristics were discovered on the peer device.*/
 }ble_ves_c_evt_t;
 
-// Forward declaration of the ble_nus_t type.
+// Forward declaration of the ble_ves_t type.
 typedef struct ble_ves_c_s ble_ves_c_t;
 
 /**@brief   Event handler type.
@@ -89,7 +94,7 @@ typedef struct ble_ves_c_s ble_ves_c_t;
  */
 typedef void (* ble_ves_c_evt_handler_t)(ble_ves_c_t * p_ble_ves_c, ble_ves_c_evt_t const * p_evt);
 
-/**@brief NUS Client structure. */
+/**@brief VES Client structure. */
 typedef struct ble_ves_c_s
 {
     uint8_t                   uuid_type;      /**< UUID type. */
@@ -100,10 +105,10 @@ typedef struct ble_ves_c_s
     nrf_ble_gq_t            * p_gatt_queue;   /**< Pointer to BLE GATT Queue instance. */
 }ble_ves_c_t;
 
-/**@brief NUS Client initialization structure. */
+/**@brief VES Client initialization structure. */
 typedef struct
 {
-    ble_ves_c_evt_handler_t   evt_handler;    /**< Application event handler to be called when there is an event related to the NUS. */
+    ble_ves_c_evt_handler_t   evt_handler;    /**< Application event handler to be called when there is an event related to the VES. */
     ble_srv_error_handler_t   error_handler;  /**< Function to be called in case of an error. */
     nrf_ble_gq_t            * p_gatt_queue;   /**< Pointer to BLE GATT Queue instance. */
 } ble_ves_c_init_t;
@@ -111,11 +116,11 @@ typedef struct
 /**@brief     Function for initializing the Vent service client module.
  *
  * @details   This function registers with the Database Discovery module
- *            for the NUS. The Database Discovery module looks for the presence
- *            of a NUS instance at the peer when a discovery is started.
+ *            for the VES. The Database Discovery module looks for the presence
+ *            of a VES instance at the peer when a discovery is started.
  *            
- * @param[in] p_ble_nus_c      Pointer to the NUS client structure.
- * @param[in] p_ble_nus_c_init Pointer to the NUS initialization structure that contains the
+ * @param[in] p_ble_ves_c      Pointer to the VES client structure.
+ * @param[in] p_ble_ves_c_init Pointer to the VES initialization structure that contains the
  *                             initialization information.
  *
  * @retval    NRF_SUCCESS If the module was initialized successfully.
@@ -128,12 +133,12 @@ uint32_t ble_ves_c_init(ble_ves_c_t * p_ble_ves_c, ble_ves_c_init_t * p_ble_ves_
 /**@brief Function for handling events from the Database Discovery module.
  *
  * @details This function handles an event from the Database Discovery module, and determines
- *          whether it relates to the discovery of NUS at the peer. If it does, the function
+ *          whether it relates to the discovery of VES at the peer. If it does, the function
  *          calls the application's event handler to indicate that NUS was
  *          discovered at the peer. The function also populates the event with service-related
  *          information before providing it to the application.
  *
- * @param[in] p_ble_nus_c Pointer to the NUS client structure.
+ * @param[in] p_ble_ves_c Pointer to the NUS client structure.
  * @param[in] p_evt       Pointer to the event received from the Database Discovery module.
  */
  void ble_ves_c_on_db_disc_evt(ble_ves_c_t * p_ble_ves_c, ble_db_discovery_evt_t * p_evt);
@@ -141,7 +146,7 @@ uint32_t ble_ves_c_init(ble_ves_c_t * p_ble_ves_c, ble_ves_c_init_t * p_ble_ves_
  /**@brief     Function for handling BLE events from the SoftDevice.
  *
  * @details   This function handles the BLE events received from the SoftDevice. If a BLE
- *            event is relevant to the NUS module, the function uses the event's data to update
+ *            event is relevant to the VES module, the function uses the event's data to update
  *            internal variables and, if necessary, send events to the application.
  *
  * @param[in] p_ble_evt     Pointer to the BLE event.
@@ -149,46 +154,43 @@ uint32_t ble_ves_c_init(ble_ves_c_t * p_ble_ves_c, ble_ves_c_init_t * p_ble_ves_
  */
 void ble_ves_c_on_ble_evt(ble_evt_t const * p_ble_evt, void * p_context);
 
-/**@brief   Function for requesting the peer to start sending notification of TX characteristic.
+/**@brief   Function for requesting the peer to start sending notification of characteristics.
  *
- * @details This function enables notifications of the NUS TX characteristic at the peer
- *          by writing to the CCCD of the NUS TX characteristic.
+ * @details This function enables notifications of the VES characteristic at the peer
+ *          by writing to the CCCD of the characteristic.
  *
- * @param   p_ble_nus_c Pointer to the NUS client structure.
+ * @param   p_ble_ves_c Pointer to the NUS client structure.
  *
  * @retval  NRF_SUCCESS If the operation was successful. 
  * @retval  err_code 	Otherwise, this API propagates the error code returned by function @ref nrf_ble_gq_item_add.
  */
 uint32_t ble_ves_c_temp_notif_enable(ble_ves_c_t * p_ble_ves_c,  bool notification_enable);
-
 uint32_t ble_ves_c_status_notif_enable(ble_ves_c_t * p_ble_ves_c, bool notification_enable);
 
-/**@brief Function for sending a string to the server.
+/**@brief Function for sending a dc motor direction to the peripheral
  *
- * @details This function writes the RX characteristic of the server.
+ * @details This function writes the Dc motor characteristic
  *
- * @param[in] p_ble_nus_c Pointer to the NUS client structure.
- * @param[in] p_string    String to be sent.
- * @param[in] length      Length of the string.
+ * @param[in] p_ble_ves_c       Pointer to the VES client structure.
+ * @param[in] motor_direction  0x01 - Open 0x02 - Close 
  *
  * @retval NRF_SUCCESS If the string was sent successfully. 
  * @retval err_code    Otherwise, this API propagates the error code returned by function @ref nrf_ble_gq_item_add.
  */
-uint32_t ble_ves_c_string_send(ble_ves_c_t * p_ble_ves_c, uint8_t * p_string, uint16_t length);
+uint32_t ble_ves_c_dc_motor_send(ble_ves_c_t * p_ble_ves_c, uint8_t motor_direction);
 
-
-/**@brief Function for assigning handles to this instance of nus_c.
+/**@brief Function for assigning handles to this instance of ves_c.
  *
  * @details Call this function when a link has been established with a peer to
  *          associate the link to this instance of the module. This makes it
  *          possible to handle several links and associate each link to a particular
  *          instance of this module. The connection handle and attribute handles are
- *          provided from the discovery event @ref BLE_NUS_C_EVT_DISCOVERY_COMPLETE.
+ *          provided from the discovery event @ref BLE_VES_C_EVT_DISCOVERY_COMPLETE.
  *
- * @param[in] p_ble_nus_c    Pointer to the NUS client structure instance to associate with these
+ * @param[in] p_ble_ves_c    Pointer to the VES client structure instance to associate with these
  *                           handles.
- * @param[in] conn_handle    Connection handle to associated with the given NUS Instance.
- * @param[in] p_peer_handles Attribute handles on the NUS server that you want this NUS client to
+ * @param[in] conn_handle    Connection handle to associated with the given VES Instance.
+ * @param[in] p_peer_handles Attribute handles on the NUS server that you want this VES client to
  *                           interact with.
  *
  * @retval    NRF_SUCCESS    If the operation was successful.
@@ -200,6 +202,6 @@ uint32_t ble_ves_c_handles_assign(ble_ves_c_t *               p_ble_ves_c,
                                   uint16_t                    conn_handle,
                                   ble_ves_c_handles_t const * p_peer_handles);
 
-uint32_t ble_ves_c_dc_motor_send(ble_ves_c_t * p_ble_ves_c, uint8_t motor_direction);
+
 
 #endif 

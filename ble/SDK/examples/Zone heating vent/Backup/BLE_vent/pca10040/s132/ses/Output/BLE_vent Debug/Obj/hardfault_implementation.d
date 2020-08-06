@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/hardfault_implementation.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\hardfault\hardfault_implementation.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\hardfault\hardfault_implementation.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \

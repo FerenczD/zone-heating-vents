@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/nrf_ble_gatt.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\nrf_ble_gatt\nrf_ble_gatt.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\nrf_ble_gatt\nrf_ble_gatt.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/BLE_vent\ Debug/Obj/nrf_ble_gatt.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\ble\nrf_ble_gatt\nrf_ble_gatt.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\ble\nrf_ble_gatt\nrf_ble_gatt.h \
  ../../../../../../components/softdevice/s132/headers/ble.h \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/softdevice/s132/headers/nrf_error.h \

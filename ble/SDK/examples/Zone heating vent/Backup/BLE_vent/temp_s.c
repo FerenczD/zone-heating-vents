@@ -26,21 +26,52 @@ void twim_handler(nrfx_twim_evt_t const * p_event, void * p_context){
 }
 
 void read_sensor_data(){
+
+    ret_code_t err_code; 
+
+    uint8_t reg = TEMP_REG;
+
     m_xfer_done = false;
+    err_code = nrfx_twim_tx(&m_twim, TMP116_ADDR, &reg, 1, false);
+    APP_ERROR_CHECK(err_code);
+    while (m_xfer_done == false);
+
+    m_xfer_done = false;
+    err_code = nrfx_twim_rx(&m_twim, TMP116_ADDR, data_buf, sizeof(data_buf));
+    APP_ERROR_CHECK(err_code);
+    while (m_xfer_done == false);
 
     /* Read 1 byte from the specified address - skip 3 bits dedicated for fractional part of temperature. */
-    ret_code_t err_code = nrfx_twim_rx(&m_twim, TMP116_ADDR, &data_buf, sizeof(data_buf));
+}
+
+void set_one_shot_temp(){
+    ret_code_t err_code; 
+
+    /* Setting up configuration register following datasheet and system parameters */
+    uint8_t reg[3] = {CONFIG_REG, (ONE_SHOT_CONFIG >> 8) , ONE_SHOT_CONFIG};  /* 1. Desired register 2. MSB 3. LSB of the config*/ 
+
+    m_xfer_done = false;
+    err_code = nrfx_twim_tx(&m_twim, TMP116_ADDR, reg, sizeof(reg), false);
     APP_ERROR_CHECK(err_code);
+    while (m_xfer_done == false);
+
+//    /* Writing address of temperature reg for future readings */
+//    reg[0] = TEMP_REG;
+//    m_xfer_done = false;
+//    err_code = nrfx_twim_tx(&m_twim, TMP116_ADDR, reg, 1, false);
+//    APP_ERROR_CHECK(err_code);
+//    while (m_xfer_done == false);
+
 }
 
 void setup_temp_sensor(){
    ret_code_t err_code; 
 
     /* Setting up configuration register following datasheet and system parameters */
-    uint8_t reg[3] = {CONFIG_REG, (CONFIG_VALUE >> 8) , CONFIG_VALUE};  /* 1. Desired register 2. MSB 3. LSB of the config*/ 
+    uint8_t reg[3] = {CONFIG_REG, (ONE_SHOT_CONFIG >> 8) , ONE_SHOT_CONFIG};  /* 1. Desired register 2. MSB 3. LSB of the config*/ 
 
+    m_xfer_done = false;
     err_code = nrfx_twim_tx(&m_twim, TMP116_ADDR, reg, sizeof(reg), false);
-
     APP_ERROR_CHECK(err_code);
     while (m_xfer_done == false);
 
@@ -50,6 +81,16 @@ void setup_temp_sensor(){
     err_code = nrfx_twim_tx(&m_twim, TMP116_ADDR, reg, 1, false);
     APP_ERROR_CHECK(err_code);
     while (m_xfer_done == false);
+    
+    nrf_delay_ms(500);
+
+    m_xfer_done = false;
+    err_code = nrfx_twim_rx(&m_twim, TMP116_ADDR, &data_buf, sizeof(data_buf));
+    APP_ERROR_CHECK(err_code);
+    while (m_xfer_done == false);
+
+
+
 }
 
 void twim_init(float* temp_ptr){
@@ -68,6 +109,12 @@ void twim_init(float* temp_ptr){
     APP_ERROR_CHECK(err_code);
 
     nrfx_twim_enable(&m_twim);
+}
+
+void temp_ready_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action){
+
+  NRF_LOG_INFO("Here");
+
 }
 
 void temp_sensor_init(float* temp_ptr){

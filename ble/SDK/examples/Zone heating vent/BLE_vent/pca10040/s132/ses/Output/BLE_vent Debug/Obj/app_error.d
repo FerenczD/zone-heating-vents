@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/app_error.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\app_error.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\app_error.c \
  ../../../../../../modules/nrfx/mdk/nrf.h \
  ../../../../../../modules/nrfx/mdk/nrf52.h \
  ../../../../../../components/toolchain/cmsis/include/core_cm4.h \
@@ -16,9 +16,9 @@ Output/BLE_vent\ Debug/Obj/app_error.o: \
  ../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdio.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/__crossworks.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\app_error.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\sdk_errors.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\sdk_errors.h \
  ../../../../../../components/softdevice/s132/headers/nrf_error.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\nordic_common.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\app_error_weak.h
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\nordic_common.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\app_error_weak.h

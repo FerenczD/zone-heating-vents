@@ -1,6 +1,6 @@
 Output/BLE_vent\ Release/Obj/test_functions.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\test_functions.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\test_functions.h \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\test_functions.c \
+ D:\ESE\Semester7\capstone\ble\SDK\examples\Zone\ heating\ vent\BLE_vent\test_functions.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/string.h \

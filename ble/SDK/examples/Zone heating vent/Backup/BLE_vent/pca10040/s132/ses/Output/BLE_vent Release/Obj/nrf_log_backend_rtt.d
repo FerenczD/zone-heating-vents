@@ -1,5 +1,5 @@
 Output/BLE_vent\ Release/Obj/nrf_log_backend_rtt.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\log\src\nrf_log_backend_rtt.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\log\src\nrf_log_backend_rtt.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \

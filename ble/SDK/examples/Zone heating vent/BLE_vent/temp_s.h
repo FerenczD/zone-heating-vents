@@ -16,10 +16,14 @@
 
 
 /* Constants */
-#define SDA_PIN        03
-#define SCL_PIN        04
-#define ALERT_PIN      28
-#define TMP116_ADDR    (0x90U >> 1)
+#define SDA_PIN        24
+#define SCL_PIN        25
+#define ALERT_PIN      23
+#define TMP116_ADDR    (0x92U >> 1) 
+//#define SDA_PIN        03
+//#define SCL_PIN        04
+//#define ALERT_PIN      28
+//#define TMP116_ADDR    (0x90U >> 1)
 
 #define TEMP_REG        0x00
 #define CONFIG_REG      0x01

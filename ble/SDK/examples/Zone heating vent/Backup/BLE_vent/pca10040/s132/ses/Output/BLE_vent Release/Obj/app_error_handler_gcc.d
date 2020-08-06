@@ -1,17 +1,17 @@
 Output/BLE_vent\ Release/Obj/app_error_handler_gcc.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\app_error_handler_gcc.c \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\sdk_common.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\app_error_handler_gcc.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/string.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/__crossworks.h \
  ../config/sdk_config.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\nordic_common.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\nordic_common.h \
  ../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\sdk_os.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\sdk_errors.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\sdk_os.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\sdk_errors.h \
  ../../../../../../components/softdevice/s132/headers/nrf_error.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\app_util.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\app_util.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stddef.h \
  ../../../../../../modules/nrfx/mdk/nrf.h \
  ../../../../../../modules/nrfx/mdk/nrf52.h \
@@ -28,8 +28,8 @@ Output/BLE_vent\ Release/Obj/app_error_handler_gcc.o: \
  ../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
  ../../../../../../components/softdevice/s132/headers/nrf52/nrf_mbr.h \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\sdk_macros.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\nrf_assert.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\app_error.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\sdk_macros.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\nrf_assert.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdio.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\util\app_error_weak.h
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\util\app_error_weak.h

@@ -1,5 +1,5 @@
 Output/BLE_vent\ Release/Obj/crc16.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\crc16\crc16.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\crc16\crc16.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
@@ -30,5 +30,5 @@ Output/BLE_vent\ Release/Obj/crc16.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\libraries\crc16\crc16.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\libraries\crc16\crc16.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdlib.h

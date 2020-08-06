@@ -36,6 +36,10 @@ Output/BLE_vent\ Release/Obj/main.o: \
  ../../../../../../components/softdevice/s132/headers/ble_gatt.h \
  ../../../../../../components/softdevice/s132/headers/ble_gattc.h \
  ../../../../../../components/softdevice/s132/headers/ble_gatts.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_sdm.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_error_sdm.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_soc.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
  ../../../../../../components/softdevice/s132/headers/ble_hci.h \
  ../../../../../../components/ble/common/ble_srv_common.h \
  ../../../../../../components/softdevice/s132/headers/ble_types.h \
@@ -64,7 +68,6 @@ Output/BLE_vent\ Release/Obj/main.o: \
  ../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../components/softdevice/common/nrf_sdh_soc.h \
  ../../../../../../components/softdevice/s132/headers/nrf_soc.h \
- ../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
  ../../../../../../components/softdevice/common/nrf_sdh_ble.h \
  ../../../../../../components/libraries/timer/app_timer.h \
  ../../../../../../components/libraries/log/nrf_log_instance.h \
@@ -106,6 +109,7 @@ Output/BLE_vent\ Release/Obj/main.o: \
  ../../../../../../components/ble/common/ble_conn_state.h \
  ../../../../../../components/libraries/atomic/nrf_atomic.h \
  ../../../../../../components/ble/nrf_ble_gatt/nrf_ble_gatt.h \
+ ../../../../../../components/ble/peer_manager/nrf_ble_lesc.h \
  ../../../../../../components/ble/nrf_ble_qwr/nrf_ble_qwr.h \
  ../../../../../../components/libraries/pwr_mgmt/nrf_pwr_mgmt.h \
  ../../../../../../components/libraries/delay/nrf_delay.h \

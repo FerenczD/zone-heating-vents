@@ -1,5 +1,5 @@
 Output/BLE_vent\ Debug/Obj/nrf_sdh_ble.o: \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\softdevice\common\nrf_sdh_ble.c \
+ D:\ESE\Semester7\capstone\ble\SDK\components\softdevice\common\nrf_sdh_ble.c \
  ../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/BLE_vent\ Debug/Obj/nrf_sdh_ble.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\softdevice\common\nrf_sdh_ble.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\softdevice\common\nrf_sdh_ble.h \
  ../../../../../../components/libraries/util/app_util.h \
  ../../../../../../components/softdevice/s132/headers/ble.h \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
@@ -49,7 +49,7 @@ Output/BLE_vent\ Debug/Obj/nrf_sdh_ble.o: \
  ../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../components/libraries/util/sdk_errors.h \
- D:\ESE\Semester\ 7\capstone\ble\SDK\components\softdevice\common\nrf_sdh.h \
+ D:\ESE\Semester7\capstone\ble\SDK\components\softdevice\common\nrf_sdh.h \
  ../../../../../../components/libraries/util/app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.42a/include/stdio.h \
  ../../../../../../components/libraries/util/app_error_weak.h \
