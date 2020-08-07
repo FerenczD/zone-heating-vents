@@ -140,12 +140,11 @@ static void toggle_ac(int status){
         gpio_set_level((gpio_num_t)AC_LED, status);
 
     }else if(status == 0){
-        gpio_set_level((gpio_num_t)FAN_GPIO, status);
-        gpio_set_level((gpio_num_t)FAN_LED, status);
-        vTaskDelay(12000 / portTICK_PERIOD_MS);
         gpio_set_level((gpio_num_t)AC_GPIO, status);
         gpio_set_level((gpio_num_t)AC_LED, status);
-
+        vTaskDelay(12000 / portTICK_PERIOD_MS);
+        gpio_set_level((gpio_num_t)FAN_GPIO, status);
+        gpio_set_level((gpio_num_t)FAN_LED, status);
     }
 }
 
@@ -189,13 +188,14 @@ static void the_algorithm_task(void* pvParameters){
         }
     }
 
-    if(abs(highestDeltaT + lowestDeltaT) <= deltaThreshold){
-        fan = 1;
-    }
+    // if(abs(highestDeltaT + lowestDeltaT) <= deltaThreshold){
+    //     fan = 1;
+    // }
 
     if(fan == 0 && lowestDeltaT <= -deltaThreshold){
         ac = 1;
     }
+    
     
     /* Determine vent command */
     for(auto it = std::begin(myHomeVents); it != std::end(myHomeVents); ++it) {
