@@ -1,0 +1,11 @@
+Removed Pin From Net: NetName=NetLED_A/C1_1 Pin=LED_A/C1-1
+Removed Pin From Net: NetName=NetLED_A/C1_1 Pin=LED_HEAT1-2
+Added Pin To Net: NetName=GND Pin=LED_A/C1-1
+Added Pin To Net: NetName=GND Pin=LED_HEAT1-2
+Added Pin To Net: NetName=GND Pin=PL1-1
+Added Pin To Net: NetName=+3.3V Pin=PL1-2
+Added Pin To Net: NetName=NetLED_A/C1_1 Pin=PL1-3
+Added Pin To Net: NetName=GND Pin=PR1-1
+Added Pin To Net: NetName=+3.3V Pin=PR1-2
+Added Pin To Net: NetName=NetLED_A/C1_1 Pin=PR1-3
+Change Net Name : Old Net Name=NetLED_A/C1_1 New Net Name=NetPL1_3

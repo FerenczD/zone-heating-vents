@@ -1,0 +1,20 @@
+Removed Pin From Net: NetName=NetBATT1_3 Pin=C6-1
+Removed Pin From Net: NetName=GND Pin=C6-2
+Change Component Footprint: Designator=C6 Old Footprint=NIC-CAPA2-6.3X5.8_V New Footprint=C1206
+Change Component Comment : Designator=C6 Old Comment=33UF 20% 35V New Comment=C3216X5R1C336M160AB
+Change Managed Component Library Link : Designator=C6 Old VaultGUID=B7D15EC3-160A-466F-A46C-7801FE6295A7 New VaultGUID= Old ItemGUID=4726F2C2-8457-49BA-AB3F-CEAEFB48B6A3 New ItemGUID= Old RevisionGUID=CA2E3DF7-EEED-411F-8FB5-DB6D1698DFB7 New RevisionGUID=
+Change component parameters: Designator = "C6" ("C6"); Footprint = "NIC-CAPA2-6.3X5.8_V"; UniqueID = "\JSGUFMYY\KBLCHYWV" ("\JSGUFMYY\KBLCHYWV")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = "C3216X5R1C336M160AB"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = "https://www.arrow.com/en/products/c3216x5r1c336m160ab/tdk"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Height"; Value = "1.8mm"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "TDK"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "C3216X5R1C336M160AB"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = "810-C3216X5R1C336M"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.com/Search/Refine.aspx?Keyword=810-C3216X5R1C336M"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=C6-1
+Added Pin To Net: NetName=NetBATT1_3 Pin=C6-2
+Added Pin To Net: NetName=NetP1_1 Pin=PL-2
+Added Pin To Net: NetName=+3.3V Pin=PL-3
+Added Pin To Net: NetName=NetP1_1 Pin=PR-2
+Added Pin To Net: NetName=+3.3V Pin=PR-3

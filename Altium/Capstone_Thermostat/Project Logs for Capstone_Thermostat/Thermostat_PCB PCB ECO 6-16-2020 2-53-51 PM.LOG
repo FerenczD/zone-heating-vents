@@ -1,0 +1,5 @@
+Added Pin To Net: NetName=24 VAC COM Pin=PL1-1
+Added Pin To Net: NetName=+3.3V Pin=PL1-2
+Added Pin To Net: NetName=24 VAC COM Pin=PR1-1
+Added Pin To Net: NetName=+3.3V Pin=PR1-2
+Change Net Name : Old Net Name=24 VAC COM New Net Name=GND

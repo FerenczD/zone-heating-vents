@@ -1,0 +1,19 @@
+Added Component: Designator=R3(RESC2013X70X40LL20T20)
+Add component (AddParameter): Name = "Manufacturer"; Value = "Panasonic"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Part Number"; Value = "ERJ-6GEYJ471V"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetP1_2 Pin=P1-2
+Added Pin To Net: NetName=NetP1_2 Pin=P2-16
+Added Pin To Net: NetName=NetPL1_1 Pin=PL1-1
+Added Pin To Net: NetName=NetPL1_2 Pin=PL1-2
+Added Pin To Net: NetName=NetPL1_3 Pin=PL1-3
+Added Pin To Net: NetName=NetPL1_1 Pin=PR1-1
+Added Pin To Net: NetName=NetPL1_2 Pin=PR1-2
+Added Pin To Net: NetName=NetPL1_3 Pin=PR1-3
+Added Pin To Net: NetName=GND Pin=R3-1
+Added Pin To Net: NetName=GND Pin=R3-2
+Change Net Name : Old Net Name=NetLED_A/C1_2 New Net Name=NetLED_A/C_2
+Change Net Name : Old Net Name=NetLED_FAN1_2 New Net Name=NetLED_FAN_2
+Change Net Name : Old Net Name=NetLED_HEAT1_1 New Net Name=NetLED_HEAT_1
+Change Net Name : Old Net Name=NetP1_3 New Net Name=NetPL1_3
+Change Net Name : Old Net Name=NetPL1_3 New Net Name=NetP1_3
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component R3 0

@@ -1,0 +1,3 @@
+Layer Pairs Export File for PCB: D:\ESE\Semester7\capstone\Altium projects\Capstone_Vent_COMPLETED_AWAITING_REVIEW_&_GERBER\Vent_pcb.PcbDoc
+LayersSetName=Top_Bot_Thru_Holes|DrillFile=vent_pcb-roundholes.txt|DrillLayers=gtl,gbl
+LayersSetName=Top_Bot_Slot_Holes|DrillFile=vent_pcb-slotholes.txt|DrillLayers=gtl,gbl

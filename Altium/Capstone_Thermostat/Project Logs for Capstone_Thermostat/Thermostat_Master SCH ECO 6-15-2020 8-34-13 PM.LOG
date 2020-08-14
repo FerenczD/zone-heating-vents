@@ -1,0 +1,13 @@
+Change Component Designator: Old Designator=LED_A/C New Designator=LED_A/C1
+Change Component Designator: Old Designator=LED_FAN New Designator=LED_FAN1
+Change Component Designator: Old Designator=LED_HEAT New Designator=LED_HEAT1
+Change Component Designator: Old Designator=OLED New Designator=OLED1
+Change Component Designator: Old Designator=P1 New Designator=P3
+Change Component Designator: Old Designator=PWR_DISCONNECT New Designator=PWR_DISCONNECT1
+Change Component Designator: Old Designator=R9 New Designator=R15
+Change Component Designator: Old Designator=R10 New Designator=R16
+Change Component Designator: Old Designator=R11 New Designator=R17
+Change Component Designator: Old Designator=R12 New Designator=R18
+Change Component Designator: Old Designator=R13 New Designator=R19
+Change Component Designator: Old Designator=R14 New Designator=R20
+Change Component Designator: Old Designator=R15 New Designator=R21

@@ -1,0 +1,711 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<style type="text/css">
+		h1, h2, h3, h4, h5, h6 {
+			font-family : segoe ui;
+			color : black;
+			background-color : #EDE7D9;
+			padding: 0.3em;
+		}
+
+		h1 {
+			font-size: 1.2em;
+		}		
+
+		h2 {
+			font-size: 1.2em;
+		}
+
+		body {
+			font-family : segoe ui;
+		}
+
+		td, th {
+			padding: 0.5em;
+			text-align : left;
+			width: 10em;
+		}
+		th {
+			background-color : #EEEEEE;
+
+		}
+		th.column1, td.column1 {
+			text-align: left;
+			width : auto;
+		}
+		table {
+			width : 100%;
+			font-size: 0.9em;
+		}
+
+		.DRC_summary_header {
+			padding-bottom : 0.1em;
+			border : 0px solid black;
+			width: 100%;
+			align: left;
+		}
+
+		.DRC_summary_header_col1,
+		.DRC_summary_header_col2, 
+		.DRC_summary_header_col3 {
+			color : black;
+			font-size:100%;
+			padding : 0em;
+			padding-top : 0.2em;
+			padding-bottom 0.2em;
+			border : 0px solid black;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.DRC_summary_header_col1 {
+			font-weight: bold;
+			width: 8em;
+		}
+
+		.DRC_summary_header_col2 {
+			width: 0.1em;
+		
+		}
+
+		.DRC_summary_header_col3 {
+			width : auto;
+		}
+
+		.header_holder {
+		    Width = 100%;
+		    border = 0px solid green;
+		    padding = 0;
+		}
+
+
+		.front_matter, .front_matter_column1, .front_matter_column2, .front_matter_column3
+		{
+			left : 0;
+			top : 0;
+			padding: 0em;
+			padding-top : 0.1em;
+			border : 0px solid black;
+			width : 100%;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.front_matter_column1 {
+			width : 8em;
+			font-weight: bold;
+		}
+
+		.front_matter_column2 {
+			width: 0.1em;
+		}
+
+		.front_matter_column3 {
+			width : auto;
+		}
+
+		.total_column1, .total_column {
+			font-weight : bold;
+		}
+		.total_column1 {
+			text-align : left;
+		}
+		.warning, .error {
+			color : red;
+			font-weight : bold;
+		}
+		tr.onmouseout_odd {
+			background-color : #white;
+		}
+		tr.onmouseout_even { 
+			background-color : #FAFAFA;
+		}
+		tr.onmouseover_odd, tr.onmouseover_even { 
+			background-color : #EEEEEE;
+		} 
+		a:link, a:visited, .q a:link,.q a:active,.q {
+			color: #21489e; 
+		}
+		a:link.callback, a:visited.callback { 
+			color: #21489e;
+		}
+		a:link.customize, a:visited.customize {
+			color: #C0C0C0;
+			position: absolute; 
+			right: 10px;
+		}	
+		p.contents_level1 {
+			font-weight : bold;
+			font-size : 110%;
+			margin : 0.5em;
+		}
+		p.contents_level2 {
+			position : relative;
+			left : 20px;
+			margin : 0.5em;
+		}
+	</style><script type="text/javascript">
+		function coordToMils(coord) {
+			var number = coord / 10000;
+			
+			if (number != number.toFixed(3))
+				number = number.toFixed(3);
+
+			return number + 'mil'
+		}
+
+		function coordToMM(coord) {
+			var number = 0.0254 * coord / 10000;
+			
+			if (number != number.toFixed(4))
+				number = number.toFixed(4);
+			
+			return number + 'mm'
+		}
+	
+		function convertCoord(coordNode, units) {
+			for (var i = 0; i < coordNode.childNodes.length; i++) {
+				coordNode.removeChild(coordNode.childNodes[i]);
+			}
+
+			var coord = coordNode.getAttribute('value');
+			if (coord != null) {
+				if (units == 'mm') {
+					textNode = document.createTextNode(coordToMM(coord));
+					coordNode.appendChild(textNode);
+				} else if (units == 'mil') {
+					textNode = document.createTextNode(coordToMils(coord));		
+					coordNode.appendChild(textNode);	
+				}
+			}
+		}
+	
+		function convertUnits(unitNode, units) {
+			for (var i = 0; i < unitNode.childNodes.length; i++) {
+				unitNode.removeChild(unitNode.childNodes[i]);		
+			}
+		
+			textNode = document.createTextNode(units); 
+			unitNode.appendChild(textNode);
+		}
+	
+		function changeUnits(radio_input, units) {
+			if (radio_input.checked) {
+			
+				var elements = document.getElementsByName('coordinate');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertCoord(elements[i], units);
+					}
+				}
+	
+				var elements = document.getElementsByName('units');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertUnits(elements[i], units);
+					}
+				}
+			}
+		}
+	</script><title>Design Rule Verification Report</title>
+</head>
+<body onload=""><img ALT="Altium" src="
+			file://C:\Users\Public\Documents\Altium\AD20\Templates\AD_logo.png
+		"><h1>Design Rule Verification Report</h1>
+<table class="header_holder">
+<td class="column1">
+<table class="front_matter">
+<tr class="front_matter">
+<td class="front_matter_column1">Date:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">6/22/2020</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">2:02:55 PM</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Elapsed Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">00:00:01</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Filename:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3"><a href="file:///C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc" class="file"><acronym title="C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc">C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc</acronym></a></td>
+</tr>
+</table>
+</td>
+<td class="column2">
+<table class="DRC_summary_header">
+<tr>
+<td class="DRC_summary_header_col1">Warnings:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3">0</td></tr>
+<tr>
+<td class="DRC_summary_header_col1">Rule Violations:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3" style="color : red">117</td></tr>
+</table>
+</td>
+</table><a name="IDUEHZNMISRDBLD3HYOH3YUAYXTB0WW30Z0DY3LDEX35E0YFX3HFP"><h2>Summary</h2></a><table>
+<tr>
+<th class="column1">Warnings</th>
+<th class="column2">Count</th>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">0</td>
+</tr>
+</table><br><table>
+<tr>
+<th class="column1">Rule Violations</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDFOWUIHMECQGXWRCOC5HAKX00LBPPS1XS2P5AEMSJCDS0Q0DEGPJ">Clearance Constraint (Gap=0.254mm) (All),(All)</a></td>
+<td class="column2">6</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDA21JEWIJWL3JJG4S1LTQY1EWHG0IOPTSHOB0CVT0IV5XEL2NXPG">Short-Circuit Constraint (Allowed=No) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID4T4IWZJEPILOL2Q0CAUEMCJO3CK5MCIGWRWZT2IKCLQGPY1U51HL">Un-Routed Net Constraint ( (All) )</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDRTSWA5C3NYHLFJBS3P2LL5GJOIBWUFX41LZ2MQETURZBG4GU4COB">Modified Polygon (Allow modified: No), (Allow shelved: No)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDI3UNTOAUFTB0INIYFSWM4GOISD0YW00U15S3DRHSBK3RKJXEEQIC">Width Constraint (Min=1.5mm) (Max=5mm) (Preferred=2mm) (InNet('24 VAC'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDXGU3MUL2VVAWCP1FFGIWWHSKLDQE3FTGKKJYVGZ3K4H141NOXD">Width Constraint (Min=1.5mm) (Max=5mm) (Preferred=2mm) (InNet('NetBR1_2'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDJHK45KVGWW3WE2JL3CQTE3PH3PSUOH35JDGK2BDVRGTS3TEYQJFH">Width Constraint (Min=0.5mm) (Max=2mm) (Preferred=1mm) (InNet('+3.3V'))</a></td>
+<td class="column2">4</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDWXYCN5LM0QR1MGGN2BLHZ0DOON3IYZN25NNBO5PI0XHVBUVCGBCM">Width Constraint (Min=0.254mm) (Max=5mm) (Preferred=0.254mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDHR1SS5WJK45SCDCX54FRLC3DDEEF01YD1FVX5YFRX0N4LDOCDLRF">Power Plane Connect Rule(Relief Connect )(Expansion=0.508mm) (Conductor Width=0.254mm) (Air Gap=0.254mm) (Entries=4) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDDW3VM2MJG5XDDH1QZKULSB0NNJI2SZJD0B4MNEBJKOFSZF2BFQKL">Hole Size Constraint (Min=0.025mm) (Max=2.54mm) (All)</a></td>
+<td class="column2">4</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDYH3BROK4RTHJFIPASVJRSUMT2CXCQ00INJSRF4COHR1N42AXFARI">Hole To Hole Clearance (Gap=0.254mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDI5ZTIZANL2PYDKZCOW0TGUPS0HBTOUWYP3QOFZGES5PYWTM0QOYJ">Minimum Solder Mask Sliver (Gap=0.254mm) (All),(All)</a></td>
+<td class="column2">12</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDRVEMFUWND1BFO1QJWWGWGKHI2MRG0LVJWT25VJMOGBXCD1XK2TUF">Silk To Solder Mask (Clearance=0.254mm) (IsPad),(All)</a></td>
+<td class="column2">85</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDKAX2P1ETK5EPDMETGVUB3TULXEMQEW1REJN2THMKYNPCNNQLVZ3H">Silk to Silk (Clearance=0.254mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDBUCV5J2UPOQ1JNVF3TJRREKCDODDYNQQT4IVTBAJJLXHRGCYENI">Net Antennae (Tolerance=0mm) (All)</a></td>
+<td class="column2">6</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDMCGQUZQQNONTOIPGRZANXGH2YHE3RP2WCCA1WMIUFHRCK4VK5XCL">Height Constraint (Min=0mm) (Max=25.4mm) (Prefered=12.7mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">117</td>
+</tr>
+</table><br><a name="IDFOWUIHMECQGXWRCOC5HAKX00LBPPS1XS2P5AEMSJCDS0Q0DEGPJ"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Clearance Constraint (Gap=0.254mm) (All),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1670.497mil|Location2.Y=1681.747mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1670.497mil|Location2.Y=1681.747mil|Absolute=True">Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-1(18.751mm,17.274mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1644.907mil|Location2.Y=1656.157mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1644.907mil|Location2.Y=1656.157mil|Absolute=True">Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-2(18.751mm,16.624mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1619.326mil|Location2.Y=1630.576mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1619.326mil|Location2.Y=1630.576mil|Absolute=True">Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-3(18.751mm,15.974mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1619.336mil|Location2.Y=1630.586mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1619.336mil|Location2.Y=1630.586mil|Absolute=True">Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-4(20.701mm,15.974mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1652.82mil|Location2.Y=1664.07mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1652.82mil|Location2.Y=1664.07mil|Absolute=True">Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-5(20.701mm,16.624mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1678.401mil|Location2.Y=1689.651mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1678.401mil|Location2.Y=1689.651mil|Absolute=True">Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-6(20.701mm,17.274mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer </acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDJHK45KVGWW3WE2JL3CQTE3PH3PSUOH35JDGK2BDVRGTS3TEYQJFH"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Width Constraint (Min=0.5mm) (Max=2mm) (Preferred=1mm) (InNet('+3.3V'))</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5769.48mil|Location2.X=5795.955mil|Location1.Y=4044.862mil|Location2.Y=4062.961mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5769.48mil|Location2.X=5795.955mil|Location1.Y=4044.862mil|Location2.Y=4062.961mil|Absolute=True">Width Constraint: Track (121.335mm,77.609mm)(121.412mm,77.532mm) on Top Layer Actual Width = 0.381mm, Target Width = 0.5mm</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5769.5mil|Location2.X=5795.833mil|Location1.Y=3196.98mil|Location2.Y=3215.22mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5769.5mil|Location2.X=5795.833mil|Location1.Y=3196.98mil|Location2.Y=3215.22mil|Absolute=True">Width Constraint: Track (121.368mm,56.026mm)(121.38mm,56.038mm) on Top Layer Actual Width = 0.381mm, Target Width = 0.5mm</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5789.425mil|Location2.X=5815.758mil|Location1.Y=2349.74mil|Location2.Y=2367.98mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5789.425mil|Location2.X=5815.758mil|Location1.Y=2349.74mil|Location2.Y=2367.98mil|Absolute=True">Width Constraint: Track (121.848mm,34.48mm)(121.912mm,34.544mm) on Top Layer Actual Width = 0.381mm, Target Width = 0.5mm</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2089.705mil|Location2.X=2110.095mil|Location1.Y=2986.768mil|Location2.Y=3007.923mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2089.705mil|Location2.X=2110.095mil|Location1.Y=2986.768mil|Location2.Y=3007.923mil|Absolute=True">Width Constraint: Track (27.94mm,49.302mm)(27.94mm,52.083mm) on Top Layer Actual Width = 0.381mm, Target Width = 0.5mm</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDDW3VM2MJG5XDDH1QZKULSB0NNJI2SZJD0B4MNEBJKOFSZF2BFQKL"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Hole Size Constraint (Min=0.025mm) (Max=2.54mm) (All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6774.729mil|Location2.X=6945.271mil|Location1.Y=1054.729mil|Location2.Y=1225.271mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6774.729mil|Location2.X=6945.271mil|Location1.Y=1054.729mil|Location2.Y=1225.271mil|Absolute=True">Hole Size Constraint: (4.3mm &gt; 2.54mm) Pad Free-2(148.844mm,3.556mm) on Multi-Layer Actual Hole Size = 4.3mm</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6774.729mil|Location2.X=6945.271mil|Location1.Y=4774.729mil|Location2.Y=4945.271mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6774.729mil|Location2.X=6945.271mil|Location1.Y=4774.729mil|Location2.Y=4945.271mil|Absolute=True">Hole Size Constraint: (4.3mm &gt; 2.54mm) Pad Free-2(148.844mm,98.044mm) on Multi-Layer Actual Hole Size = 4.3mm</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1074.729mil|Location2.X=1245.271mil|Location1.Y=1054.729mil|Location2.Y=1225.271mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1074.729mil|Location2.X=1245.271mil|Location1.Y=1054.729mil|Location2.Y=1225.271mil|Absolute=True">Hole Size Constraint: (4.3mm &gt; 2.54mm) Pad Free-2(4.064mm,3.556mm) on Multi-Layer Actual Hole Size = 4.3mm</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1074.729mil|Location2.X=1245.271mil|Location1.Y=4774.729mil|Location2.Y=4945.271mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1074.729mil|Location2.X=1245.271mil|Location1.Y=4774.729mil|Location2.Y=4945.271mil|Absolute=True">Hole Size Constraint: (4.3mm &gt; 2.54mm) Pad Free-2(4.064mm,98.044mm) on Multi-Layer Actual Hole Size = 4.3mm</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDI5ZTIZANL2PYDKZCOW0TGUPS0HBTOUWYP3QOFZGES5PYWTM0QOYJ"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Minimum Solder Mask Sliver (Gap=0.254mm) (All),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1861.8mil|Location2.X=1873.05mil|Location1.Y=1618.934mil|Location2.Y=1630.184mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1861.8mil|Location2.X=1873.05mil|Location1.Y=1618.934mil|Location2.Y=1630.184mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.097mm &lt; 0.254mm) Between Pad C1-1(22.809mm,15.164mm) on Top Layer And Pad C1-2(22.809mm,16.564mm) on Top Layer [Top Solder] Mask Sliver [0.097mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4790.375mil|Location2.X=4801.625mil|Location1.Y=3241.8mil|Location2.Y=3253.05mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4790.375mil|Location2.X=4801.625mil|Location1.Y=3241.8mil|Location2.Y=3253.05mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.097mm &lt; 0.254mm) Between Pad C2-1(97.118mm,57.861mm) on Top Layer And Pad C2-2(95.718mm,57.861mm) on Top Layer [Top Solder] Mask Sliver [0.097mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2446.816mil|Location2.X=2458.066mil|Location1.Y=4638.879mil|Location2.Y=4650.129mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2446.816mil|Location2.X=2458.066mil|Location1.Y=4638.879mil|Location2.Y=4650.129mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.097mm &lt; 0.254mm) Between Pad C3-1(36.192mm,93.347mm) on Top Layer And Pad C3-2(37.592mm,93.347mm) on Top Layer [Top Solder] Mask Sliver [0.097mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5008.375mil|Location2.X=5019.625mil|Location1.Y=1689.8mil|Location2.Y=1701.05mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5008.375mil|Location2.X=5019.625mil|Location1.Y=1689.8mil|Location2.Y=1701.05mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.097mm &lt; 0.254mm) Between Pad C4-1(102.656mm,18.44mm) on Top Layer And Pad C4-2(101.256mm,18.44mm) on Top Layer [Top Solder] Mask Sliver [0.097mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4208.41mil|Location2.X=4219.66mil|Location1.Y=4630.375mil|Location2.Y=4641.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4208.41mil|Location2.X=4219.66mil|Location1.Y=4630.375mil|Location2.Y=4641.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.201mm &lt; 0.254mm) Between Pad CBOOT1-1(80.924mm,92.335mm) on Top Layer And Via (82.474mm,92.354mm) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [0.201mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1670.497mil|Location2.Y=1681.747mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1670.497mil|Location2.Y=1681.747mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-1(18.751mm,17.274mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer [Top Solder] Mask Sliver [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1644.907mil|Location2.Y=1656.157mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1644.907mil|Location2.Y=1656.157mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-2(18.751mm,16.624mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer [Top Solder] Mask Sliver [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1619.326mil|Location2.Y=1630.576mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1746.383mil|Location2.X=1757.633mil|Location1.Y=1619.326mil|Location2.Y=1630.576mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-3(18.751mm,15.974mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer [Top Solder] Mask Sliver [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1619.336mil|Location2.Y=1630.586mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1619.336mil|Location2.Y=1630.586mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-4(20.701mm,15.974mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer [Top Solder] Mask Sliver [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1652.82mil|Location2.Y=1664.07mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1652.82mil|Location2.Y=1664.07mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-5(20.701mm,16.624mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer [Top Solder] Mask Sliver [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1678.401mil|Location2.Y=1689.651mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1795.595mil|Location2.X=1806.845mil|Location1.Y=1678.401mil|Location2.Y=1689.651mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.25mm &lt; 0.254mm) Between Pad U1-6(20.701mm,17.274mm) on Top Layer And Pad U1-7(19.726mm,16.624mm) on Top Layer [Top Solder] Mask Sliver [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2098.875mil|Location2.X=2110.643mil|Location1.Y=4846.375mil|Location2.Y=4857.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2098.875mil|Location2.X=2110.643mil|Location1.Y=4846.375mil|Location2.Y=4857.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (0.249mm &lt; 0.254mm) Between Via (27.534mm,98.527mm) from Top Layer to Bottom Layer And Via (28.575mm,97.155mm) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [0.249mm] / [Bottom Solder] Mask Sliver [0.249mm]</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDRVEMFUWND1BFO1QJWWGWGKHI2MRG0LVJWT25VJMOGBXCD1XK2TUF"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Silk To Solder Mask (Clearance=0.254mm) (IsPad),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2463.112mil|Location2.X=2470.779mil|Location1.Y=2750.285mil|Location2.Y=2757.951mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2463.112mil|Location2.X=2470.779mil|Location1.Y=2750.285mil|Location2.Y=2757.951mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 0.254mm) Between Arc (37.313mm,44.668mm) on Top Overlay And Pad R29-2(36.703mm,44.055mm) on Top Layer [Top Overlay] to [Top Solder] clearance [0mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4926.534mil|Location2.X=4937.784mil|Location1.Y=4373.903mil|Location2.Y=4385.153mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4926.534mil|Location2.X=4937.784mil|Location1.Y=4373.903mil|Location2.Y=4385.153mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad BR1-1(98.79mm,86.315mm) on Top Layer And Track (100.102mm,82.728mm)(100.102mm,87.452mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4845.836mil|Location2.X=4857.086mil|Location1.Y=4416.225mil|Location2.Y=4427.475mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4845.836mil|Location2.X=4857.086mil|Location1.Y=4416.225mil|Location2.Y=4427.475mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad BR1-1(98.79mm,86.315mm) on Top Layer And Track (97.827mm,87.14mm)(99.752mm,87.14mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4926.534mil|Location2.X=4937.784mil|Location1.Y=4277.446mil|Location2.Y=4288.696mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4926.534mil|Location2.X=4937.784mil|Location1.Y=4277.446mil|Location2.Y=4288.696mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad BR1-2(98.79mm,83.865mm) on Top Layer And Track (100.102mm,82.728mm)(100.102mm,87.452mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5070.216mil|Location2.X=5081.466mil|Location1.Y=4314.847mil|Location2.Y=4326.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5070.216mil|Location2.X=5081.466mil|Location1.Y=4314.847mil|Location2.Y=4326.097mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad BR1-3(104.614mm,83.865mm) on Top Layer And Track (103.302mm,82.728mm)(103.302mm,87.452mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5070.216mil|Location2.X=5081.466mil|Location1.Y=4411.304mil|Location2.Y=4422.554mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5070.216mil|Location2.X=5081.466mil|Location1.Y=4411.304mil|Location2.Y=4422.554mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad BR1-4(104.614mm,86.315mm) on Top Layer And Track (103.302mm,82.728mm)(103.302mm,87.452mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4171.871mil|Location2.X=4183.121mil|Location1.Y=4663.471mil|Location2.Y=4674.721mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4171.871mil|Location2.X=4183.121mil|Location1.Y=4663.471mil|Location2.Y=4674.721mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.249mm &lt; 0.254mm) Between Pad CBOOT1-1(80.924mm,92.335mm) on Top Layer And Text "CBOOT1" (78.698mm,93.383mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.249mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4097.296mil|Location2.X=4108.546mil|Location1.Y=4663.471mil|Location2.Y=4674.721mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4097.296mil|Location2.X=4108.546mil|Location1.Y=4663.471mil|Location2.Y=4674.721mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.249mm &lt; 0.254mm) Between Pad CBOOT1-2(79.324mm,92.335mm) on Top Layer And Text "CBOOT1" (78.698mm,93.383mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.249mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4222.296mil|Location2.X=4233.546mil|Location1.Y=4305.19mil|Location2.Y=4316.44mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4222.296mil|Location2.X=4233.546mil|Location1.Y=4305.19mil|Location2.Y=4316.44mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.175mm &lt; 0.254mm) Between Pad CIN1-1(82.614mm,84.757mm) on Top Layer And Track (81.989mm,83.807mm)(81.989mm,83.907mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.175mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4274.15mil|Location2.X=4287.612mil|Location1.Y=4305.071mil|Location2.Y=4316.321mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4274.15mil|Location2.X=4287.612mil|Location1.Y=4305.071mil|Location2.Y=4316.321mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.193mm &lt; 0.254mm) Between Pad CIN1-1(82.614mm,84.757mm) on Top Layer And Track (83.239mm,83.807mm)(83.239mm,83.907mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.193mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4222.296mil|Location2.X=4233.546mil|Location1.Y=4286.489mil|Location2.Y=4297.739mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4222.296mil|Location2.X=4233.546mil|Location1.Y=4286.489mil|Location2.Y=4297.739mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.175mm &lt; 0.254mm) Between Pad CIN1-2(82.614mm,82.957mm) on Top Layer And Track (81.989mm,83.807mm)(81.989mm,83.907mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.175mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4271.509mil|Location2.X=4282.759mil|Location1.Y=4286.489mil|Location2.Y=4297.739mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4271.509mil|Location2.X=4282.759mil|Location1.Y=4286.489mil|Location2.Y=4297.739mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.175mm &lt; 0.254mm) Between Pad CIN1-2(82.614mm,82.957mm) on Top Layer And Track (83.239mm,83.807mm)(83.239mm,83.907mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.175mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4079.619mil|Location2.X=4090.869mil|Location1.Y=4492.599mil|Location2.Y=4503.849mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4079.619mil|Location2.X=4090.869mil|Location1.Y=4492.599mil|Location2.Y=4503.849mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad IC1-1(77.915mm,89.617mm) on Top Layer And Track (78.59mm,88.855mm)(78.59mm,90.38mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4023.91mil|Location2.X=4035.16mil|Location1.Y=3586.588mil|Location2.Y=3597.838mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4023.91mil|Location2.X=4035.16mil|Location1.Y=3586.588mil|Location2.Y=3597.838mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad L1-1(76.05mm,68.617mm) on Top Layer And Track (76.95mm,62.617mm)(76.95mm,65.617mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4023.91mil|Location2.X=4035.16mil|Location1.Y=3805.091mil|Location2.Y=3816.341mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4023.91mil|Location2.X=4035.16mil|Location1.Y=3805.091mil|Location2.Y=3816.341mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad L1-1(76.05mm,68.617mm) on Top Layer And Track (76.95mm,71.617mm)(76.95mm,74.617mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3551.469mil|Location2.X=3562.719mil|Location1.Y=3586.588mil|Location2.Y=3597.838mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3551.469mil|Location2.X=3562.719mil|Location1.Y=3586.588mil|Location2.Y=3597.838mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad L1-2(65.85mm,68.617mm) on Top Layer And Track (64.95mm,62.617mm)(64.95mm,65.617mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3551.469mil|Location2.X=3562.719mil|Location1.Y=3805.091mil|Location2.Y=3816.341mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3551.469mil|Location2.X=3562.719mil|Location1.Y=3805.091mil|Location2.Y=3816.341mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.25mm &lt; 0.254mm) Between Pad L1-2(65.85mm,68.617mm) on Top Layer And Track (64.95mm,71.617mm)(64.95mm,74.617mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.25mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2648.784mil|Location2.X=2660.034mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2648.784mil|Location2.X=2660.034mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad LED_A/C-1(42.672mm,91.533mm) on Top Layer And Track (42.022mm,92.533mm)(42.022mm,93.633mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2648.784mil|Location2.X=2660.034mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2648.784mil|Location2.X=2660.034mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad LED_A/C-1(42.672mm,91.533mm) on Top Layer And Track (42.022mm,92.533mm)(43.322mm,92.533mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2699.965mil|Location2.X=2711.215mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2699.965mil|Location2.X=2711.215mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad LED_A/C-1(42.672mm,91.533mm) on Top Layer And Track (43.322mm,92.533mm)(43.322mm,93.633mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2648.784mil|Location2.X=2660.034mil|Location1.Y=4686.611mil|Location2.Y=4697.861mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2648.784mil|Location2.X=2660.034mil|Location1.Y=4686.611mil|Location2.Y=4697.861mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.1mm &lt; 0.254mm) Between Pad LED_A/C-2(42.672mm,94.533mm) on Top Layer And Track (42.022mm,92.533mm)(42.022mm,93.633mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.1mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2702.814mil|Location2.X=2715.782mil|Location1.Y=4686.403mil|Location2.Y=4697.653mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2702.814mil|Location2.X=2715.782mil|Location1.Y=4686.403mil|Location2.Y=4697.653mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.124mm &lt; 0.254mm) Between Pad LED_A/C-2(42.672mm,94.533mm) on Top Layer And Track (43.322mm,92.533mm)(43.322mm,93.633mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.124mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.784mil|Location2.X=2860.034mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.784mil|Location2.X=2860.034mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad LED_FAN-1(47.752mm,91.533mm) on Top Layer And Track (47.102mm,92.533mm)(47.102mm,93.633mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.784mil|Location2.X=2860.034mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.784mil|Location2.X=2860.034mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad LED_FAN-1(47.752mm,91.533mm) on Top Layer And Track (47.102mm,92.533mm)(48.402mm,92.533mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2899.965mil|Location2.X=2911.215mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2899.965mil|Location2.X=2911.215mil|Location1.Y=4629.525mil|Location2.Y=4640.775mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad LED_FAN-1(47.752mm,91.533mm) on Top Layer And Track (48.402mm,92.533mm)(48.402mm,93.633mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.784mil|Location2.X=2860.034mil|Location1.Y=4686.611mil|Location2.Y=4697.861mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.784mil|Location2.X=2860.034mil|Location1.Y=4686.611mil|Location2.Y=4697.861mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.1mm &lt; 0.254mm) Between Pad LED_FAN-2(47.752mm,94.533mm) on Top Layer And Track (47.102mm,92.533mm)(47.102mm,93.633mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.1mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2902.814mil|Location2.X=2915.782mil|Location1.Y=4686.403mil|Location2.Y=4697.653mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2902.814mil|Location2.X=2915.782mil|Location1.Y=4686.403mil|Location2.Y=4697.653mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.124mm &lt; 0.254mm) Between Pad LED_FAN-2(47.752mm,94.533mm) on Top Layer And Track (48.402mm,92.533mm)(48.402mm,93.633mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.124mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6259.784mil|Location2.X=6271.034mil|Location1.Y=1635.934mil|Location2.Y=1647.184mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6259.784mil|Location2.X=6271.034mil|Location1.Y=1635.934mil|Location2.Y=1647.184mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad LED1-1(134.391mm,17.096mm) on Top Layer And Track (133.741mm,14.996mm)(133.741mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6313.556mil|Location2.X=6327.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6313.556mil|Location2.X=6327.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad LED1-1(134.391mm,17.096mm) on Top Layer And Track (133.741mm,16.096mm)(135.041mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6313.556mil|Location2.X=6327.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6313.556mil|Location2.X=6327.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad LED1-1(134.391mm,17.096mm) on Top Layer And Track (135.041mm,14.996mm)(135.041mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6259.784mil|Location2.X=6271.034mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6259.784mil|Location2.X=6271.034mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.1mm &lt; 0.254mm) Between Pad LED1-2(134.391mm,14.096mm) on Top Layer And Track (133.741mm,14.996mm)(133.741mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.1mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6310.966mil|Location2.X=6322.216mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6310.966mil|Location2.X=6322.216mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.1mm &lt; 0.254mm) Between Pad LED1-2(134.391mm,14.096mm) on Top Layer And Track (135.041mm,14.996mm)(135.041mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.1mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6102.784mil|Location2.X=6114.034mil|Location1.Y=1635.934mil|Location2.Y=1647.184mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6102.784mil|Location2.X=6114.034mil|Location1.Y=1635.934mil|Location2.Y=1647.184mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad LED2-1(130.404mm,17.096mm) on Top Layer And Track (129.754mm,14.996mm)(129.754mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6156.556mil|Location2.X=6170.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6156.556mil|Location2.X=6170.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad LED2-1(130.404mm,17.096mm) on Top Layer And Track (129.754mm,16.096mm)(131.054mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6156.556mil|Location2.X=6170.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6156.556mil|Location2.X=6170.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad LED2-1(130.404mm,17.096mm) on Top Layer And Track (131.054mm,14.996mm)(131.054mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6102.784mil|Location2.X=6114.034mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6102.784mil|Location2.X=6114.034mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.1mm &lt; 0.254mm) Between Pad LED2-2(130.404mm,14.096mm) on Top Layer And Track (129.754mm,14.996mm)(129.754mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.1mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6153.966mil|Location2.X=6165.216mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6153.966mil|Location2.X=6165.216mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.1mm &lt; 0.254mm) Between Pad LED2-2(130.404mm,14.096mm) on Top Layer And Track (131.054mm,14.996mm)(131.054mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.1mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5945.784mil|Location2.X=5957.034mil|Location1.Y=1635.934mil|Location2.Y=1647.184mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5945.784mil|Location2.X=5957.034mil|Location1.Y=1635.934mil|Location2.Y=1647.184mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad LED3-1(126.416mm,17.096mm) on Top Layer And Track (125.766mm,14.996mm)(125.766mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5999.556mil|Location2.X=6013.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5999.556mil|Location2.X=6013.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad LED3-1(126.416mm,17.096mm) on Top Layer And Track (125.766mm,16.096mm)(127.066mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5999.556mil|Location2.X=6013.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5999.556mil|Location2.X=6013.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad LED3-1(126.416mm,17.096mm) on Top Layer And Track (127.066mm,14.996mm)(127.066mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5945.784mil|Location2.X=5957.034mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5945.784mil|Location2.X=5957.034mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.1mm &lt; 0.254mm) Between Pad LED3-2(126.416mm,14.096mm) on Top Layer And Track (125.766mm,14.996mm)(125.766mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.1mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5996.966mil|Location2.X=6008.216mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5996.966mil|Location2.X=6008.216mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.1mm &lt; 0.254mm) Between Pad LED3-2(126.416mm,14.096mm) on Top Layer And Track (127.066mm,14.996mm)(127.066mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.1mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5788.784mil|Location2.X=5800.034mil|Location1.Y=1635.934mil|Location2.Y=1647.184mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5788.784mil|Location2.X=5800.034mil|Location1.Y=1635.934mil|Location2.Y=1647.184mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad LED4-1(122.428mm,17.096mm) on Top Layer And Track (121.778mm,14.996mm)(121.778mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5842.556mil|Location2.X=5856.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5842.556mil|Location2.X=5856.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad LED4-1(122.428mm,17.096mm) on Top Layer And Track (121.778mm,16.096mm)(123.078mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5842.556mil|Location2.X=5856.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5842.556mil|Location2.X=5856.11mil|Location1.Y=1635.833mil|Location2.Y=1647.083mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad LED4-1(122.428mm,17.096mm) on Top Layer And Track (123.078mm,14.996mm)(123.078mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5788.784mil|Location2.X=5800.034mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5788.784mil|Location2.X=5800.034mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.1mm &lt; 0.254mm) Between Pad LED4-2(122.428mm,14.096mm) on Top Layer And Track (121.778mm,14.996mm)(121.778mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.1mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5839.966mil|Location2.X=5851.216mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5839.966mil|Location2.X=5851.216mil|Location1.Y=1578.847mil|Location2.Y=1590.097mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.1mm &lt; 0.254mm) Between Pad LED4-2(122.428mm,14.096mm) on Top Layer And Track (123.078mm,14.996mm)(123.078mm,16.096mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.1mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3948.737mil|Location2.X=3959.987mil|Location1.Y=4121.186mil|Location2.Y=4132.436mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3948.737mil|Location2.X=3959.987mil|Location1.Y=4121.186mil|Location2.Y=4132.436mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R1-1(75.616mm,80.021mm) on Top Layer And Track (75.041mm,79.021mm)(75.041mm,79.221mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3996.604mil|Location2.X=4010.158mil|Location1.Y=4121.085mil|Location2.Y=4132.335mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3996.604mil|Location2.X=4010.158mil|Location1.Y=4121.085mil|Location2.Y=4132.335mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad R1-1(75.616mm,80.021mm) on Top Layer And Track (76.191mm,79.021mm)(76.191mm,79.221mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3948.737mil|Location2.X=3959.987mil|Location1.Y=4097.564mil|Location2.Y=4108.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3948.737mil|Location2.X=3959.987mil|Location1.Y=4097.564mil|Location2.Y=4108.814mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R1-2(75.616mm,78.221mm) on Top Layer And Track (75.041mm,79.021mm)(75.041mm,79.221mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3994.013mil|Location2.X=4005.263mil|Location1.Y=4097.564mil|Location2.Y=4108.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3994.013mil|Location2.X=4005.263mil|Location1.Y=4097.564mil|Location2.Y=4108.814mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R1-2(75.616mm,78.221mm) on Top Layer And Track (76.191mm,79.021mm)(76.191mm,79.221mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3040.606mil|Location2.X=3051.856mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3040.606mil|Location2.X=3051.856mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R17-1(52.599mm,96.603mm) on Top Layer And Track (51.974mm,97.503mm)(51.974mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3089.819mil|Location2.X=3101.069mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3089.819mil|Location2.X=3101.069mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R17-1(52.599mm,96.603mm) on Top Layer And Track (53.224mm,97.503mm)(53.224mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3040.606mil|Location2.X=3051.856mil|Location1.Y=4848.816mil|Location2.Y=4860.066mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3040.606mil|Location2.X=3051.856mil|Location1.Y=4848.816mil|Location2.Y=4860.066mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R17-2(52.599mm,98.603mm) on Top Layer And Track (51.974mm,97.503mm)(51.974mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3092.41mil|Location2.X=3105.964mil|Location1.Y=4848.715mil|Location2.Y=4859.965mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3092.41mil|Location2.X=3105.964mil|Location1.Y=4848.715mil|Location2.Y=4859.965mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad R17-2(52.599mm,98.603mm) on Top Layer And Track (53.224mm,97.503mm)(53.224mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.195mil|Location2.X=2859.445mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.195mil|Location2.X=2859.445mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R18-1(47.712mm,96.603mm) on Top Layer And Track (47.087mm,97.503mm)(47.087mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2897.408mil|Location2.X=2908.658mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2897.408mil|Location2.X=2908.658mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R18-1(47.712mm,96.603mm) on Top Layer And Track (48.337mm,97.503mm)(48.337mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.195mil|Location2.X=2859.445mil|Location1.Y=4848.816mil|Location2.Y=4860.066mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.195mil|Location2.X=2859.445mil|Location1.Y=4848.816mil|Location2.Y=4860.066mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R18-2(47.712mm,98.603mm) on Top Layer And Track (47.087mm,97.503mm)(47.087mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2899.999mil|Location2.X=2913.553mil|Location1.Y=4848.715mil|Location2.Y=4859.965mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2899.999mil|Location2.X=2913.553mil|Location1.Y=4848.715mil|Location2.Y=4859.965mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad R18-2(47.712mm,98.603mm) on Top Layer And Track (48.337mm,97.503mm)(48.337mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2655.785mil|Location2.X=2667.035mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2655.785mil|Location2.X=2667.035mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R19-1(42.825mm,96.603mm) on Top Layer And Track (42.2mm,97.503mm)(42.2mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2704.997mil|Location2.X=2716.247mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2704.997mil|Location2.X=2716.247mil|Location1.Y=4825.194mil|Location2.Y=4836.444mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R19-1(42.825mm,96.603mm) on Top Layer And Track (43.45mm,97.503mm)(43.45mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2655.785mil|Location2.X=2667.035mil|Location1.Y=4848.816mil|Location2.Y=4860.066mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2655.785mil|Location2.X=2667.035mil|Location1.Y=4848.816mil|Location2.Y=4860.066mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R19-2(42.825mm,98.603mm) on Top Layer And Track (42.2mm,97.503mm)(42.2mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2707.588mil|Location2.X=2721.142mil|Location1.Y=4848.715mil|Location2.Y=4859.965mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2707.588mil|Location2.X=2721.142mil|Location1.Y=4848.715mil|Location2.Y=4859.965mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad R19-2(42.825mm,98.603mm) on Top Layer And Track (43.45mm,97.503mm)(43.45mm,97.703mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3850.769mil|Location2.X=3862.019mil|Location1.Y=4116.194mil|Location2.Y=4127.444mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3850.769mil|Location2.X=3862.019mil|Location1.Y=4116.194mil|Location2.Y=4127.444mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R2-1(73.177mm,78.594mm) on Top Layer And Track (72.552mm,79.494mm)(72.552mm,79.694mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3899.981mil|Location2.X=3911.231mil|Location1.Y=4116.194mil|Location2.Y=4127.444mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3899.981mil|Location2.X=3911.231mil|Location1.Y=4116.194mil|Location2.Y=4127.444mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R2-1(73.177mm,78.594mm) on Top Layer And Track (73.802mm,79.494mm)(73.802mm,79.694mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3850.769mil|Location2.X=3862.019mil|Location1.Y=4139.816mil|Location2.Y=4151.066mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3850.769mil|Location2.X=3862.019mil|Location1.Y=4139.816mil|Location2.Y=4151.066mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R2-2(73.177mm,80.594mm) on Top Layer And Track (72.552mm,79.494mm)(72.552mm,79.694mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3902.572mil|Location2.X=3916.126mil|Location1.Y=4139.715mil|Location2.Y=4150.965mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3902.572mil|Location2.X=3916.126mil|Location1.Y=4139.715mil|Location2.Y=4150.965mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad R2-2(73.177mm,80.594mm) on Top Layer And Track (73.802mm,79.494mm)(73.802mm,79.694mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3111.507mil|Location2.X=3122.757mil|Location1.Y=2918.54mil|Location2.Y=2929.79mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3111.507mil|Location2.X=3122.757mil|Location1.Y=2918.54mil|Location2.Y=2929.79mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.067mm &lt; 0.254mm) Between Pad R23-2(54.508mm,48.727mm) on Top Layer And Text "R23" (51.986mm,48.451mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.067mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=3111.737mil|Location2.Y=3122.987mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=3111.737mil|Location2.Y=3122.987mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R24-1(51.74mm,54.356mm) on Top Layer And Track (52.54mm,53.781mm)(52.74mm,53.781mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=3157.013mil|Location2.Y=3168.263mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=3157.013mil|Location2.Y=3168.263mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R24-1(51.74mm,54.356mm) on Top Layer And Track (52.54mm,54.931mm)(52.74mm,54.931mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.627mil|Location2.X=3089.877mil|Location1.Y=3111.737mil|Location2.Y=3122.987mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.627mil|Location2.X=3089.877mil|Location1.Y=3111.737mil|Location2.Y=3122.987mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R24-2(53.54mm,54.356mm) on Top Layer And Track (52.54mm,53.781mm)(52.74mm,53.781mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.526mil|Location2.X=3089.776mil|Location1.Y=3157.332mil|Location2.Y=3170.854mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.526mil|Location2.X=3089.776mil|Location1.Y=3157.332mil|Location2.Y=3170.854mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad R24-2(53.54mm,54.356mm) on Top Layer And Track (52.54mm,54.931mm)(52.74mm,54.931mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=2731.737mil|Location2.Y=2742.987mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=2731.737mil|Location2.Y=2742.987mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R25-1(51.74mm,44.704mm) on Top Layer And Track (52.54mm,44.129mm)(52.74mm,44.129mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=2777.013mil|Location2.Y=2788.263mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=2777.013mil|Location2.Y=2788.263mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R25-1(51.74mm,44.704mm) on Top Layer And Track (52.54mm,45.279mm)(52.74mm,45.279mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.627mil|Location2.X=3089.877mil|Location1.Y=2731.737mil|Location2.Y=2742.987mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.627mil|Location2.X=3089.877mil|Location1.Y=2731.737mil|Location2.Y=2742.987mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R25-2(53.54mm,44.704mm) on Top Layer And Track (52.54mm,44.129mm)(52.74mm,44.129mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.526mil|Location2.X=3089.776mil|Location1.Y=2777.332mil|Location2.Y=2790.854mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.526mil|Location2.X=3089.776mil|Location1.Y=2777.332mil|Location2.Y=2790.854mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad R25-2(53.54mm,44.704mm) on Top Layer And Track (52.54mm,45.279mm)(52.74mm,45.279mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2422.714mil|Location2.X=2433.964mil|Location1.Y=2933.928mil|Location2.Y=2945.178mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2422.714mil|Location2.X=2433.964mil|Location1.Y=2933.928mil|Location2.Y=2945.178mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.226mm &lt; 0.254mm) Between Pad R27-2(36.703mm,48.677mm) on Top Layer And Text "R27" (35.857mm,49.441mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.226mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=2371.737mil|Location2.Y=2382.987mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=2371.737mil|Location2.Y=2382.987mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R28-1(51.74mm,35.56mm) on Top Layer And Track (52.54mm,34.985mm)(52.74mm,34.985mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=2417.013mil|Location2.Y=2428.263mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3055.005mil|Location2.X=3066.255mil|Location1.Y=2417.013mil|Location2.Y=2428.263mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R28-1(51.74mm,35.56mm) on Top Layer And Track (52.54mm,36.135mm)(52.74mm,36.135mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.627mil|Location2.X=3089.877mil|Location1.Y=2371.737mil|Location2.Y=2382.987mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.627mil|Location2.X=3089.877mil|Location1.Y=2371.737mil|Location2.Y=2382.987mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R28-2(53.54mm,35.56mm) on Top Layer And Track (52.54mm,34.985mm)(52.74mm,34.985mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.526mil|Location2.X=3089.776mil|Location1.Y=2417.332mil|Location2.Y=2430.854mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3078.526mil|Location2.X=3089.776mil|Location1.Y=2417.332mil|Location2.Y=2430.854mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad R28-2(53.54mm,35.56mm) on Top Layer And Track (52.54mm,36.135mm)(52.74mm,36.135mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2416.737mil|Location2.X=2427.987mil|Location1.Y=2681.564mil|Location2.Y=2692.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2416.737mil|Location2.X=2427.987mil|Location1.Y=2681.564mil|Location2.Y=2692.814mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R29-1(36.703mm,42.255mm) on Top Layer And Track (36.128mm,43.055mm)(36.128mm,43.255mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2462.013mil|Location2.X=2473.263mil|Location1.Y=2681.564mil|Location2.Y=2692.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2462.013mil|Location2.X=2473.263mil|Location1.Y=2681.564mil|Location2.Y=2692.814mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R29-1(36.703mm,42.255mm) on Top Layer And Track (37.278mm,43.055mm)(37.278mm,43.255mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2416.737mil|Location2.X=2427.987mil|Location1.Y=2705.186mil|Location2.Y=2716.436mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2416.737mil|Location2.X=2427.987mil|Location1.Y=2705.186mil|Location2.Y=2716.436mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.2mm &lt; 0.254mm) Between Pad R29-2(36.703mm,44.055mm) on Top Layer And Track (36.128mm,43.055mm)(36.128mm,43.255mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.2mm]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2464.604mil|Location2.X=2478.158mil|Location1.Y=2705.085mil|Location2.Y=2716.335mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2464.604mil|Location2.X=2478.158mil|Location1.Y=2705.085mil|Location2.Y=2716.335mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.216mm &lt; 0.254mm) Between Pad R29-2(36.703mm,44.055mm) on Top Layer And Track (37.278mm,43.055mm)(37.278mm,43.255mm) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.216mm]</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDBUCV5J2UPOQ1JNVF3TJRREKCDODDYNQQT4IVTBAJJLXHRGCYENI"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Net Antennae (Tolerance=0mm) (All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1702.594mil|Location2.X=1728.154mil|Location1.Y=1670.673mil|Location2.Y=1708.123mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1702.594mil|Location2.X=1728.154mil|Location1.Y=1670.673mil|Location2.Y=1708.123mil|Absolute=True">Net Antennae: Track (18.085mm,17.274mm)(18.638mm,17.274mm) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1823.594mil|Location2.X=1849.154mil|Location1.Y=1619.492mil|Location2.Y=1656.942mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1823.594mil|Location2.X=1849.154mil|Location1.Y=1619.492mil|Location2.Y=1656.942mil|Absolute=True">Net Antennae: Track (20.729mm,15.974mm)(21.158mm,15.974mm) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1824.638mil|Location2.X=1850.198mil|Location1.Y=1670.673mil|Location2.Y=1708.123mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1824.638mil|Location2.X=1850.198mil|Location1.Y=1670.673mil|Location2.Y=1708.123mil|Absolute=True">Net Antennae: Track (20.756mm,17.274mm)(21.185mm,17.274mm) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3223.5mil|Location2.X=3299.336mil|Location1.Y=3710.5mil|Location2.Y=3832.456mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3223.5mil|Location2.X=3299.336mil|Location1.Y=3710.5mil|Location2.Y=3832.456mil|Absolute=True">Net Antennae: Via (57.302mm,69.672mm) from Top Layer to Bottom Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3223.5mil|Location2.X=3299.336mil|Location1.Y=3872.5mil|Location2.Y=3994.456mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3223.5mil|Location2.X=3299.336mil|Location1.Y=3872.5mil|Location2.Y=3994.456mil|Absolute=True">Net Antennae: Via (57.302mm,73.787mm) from Top Layer to Bottom Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3299.5mil|Location2.X=3375.336mil|Location1.Y=3791.5mil|Location2.Y=3913.456mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Public\Documents\Altium\Projects\Capstone_Thermostat\Thermostat_PCB.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3299.5mil|Location2.X=3375.336mil|Location1.Y=3791.5mil|Location2.Y=3913.456mil|Absolute=True">Net Antennae: Via (59.233mm,71.73mm) from Top Layer to Bottom Layer </acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br></body>
+</html>

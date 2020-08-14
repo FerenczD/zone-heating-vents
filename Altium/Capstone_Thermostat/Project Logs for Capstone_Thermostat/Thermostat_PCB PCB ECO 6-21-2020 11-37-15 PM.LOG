@@ -1,0 +1,6 @@
+Added Pin To Net: NetName=NetPL1_3 Pin=PL1-3
+Added Pin To Net: NetName=NetPL1_3 Pin=PR1-3
+Added Room: Name=Thermostat_Master
+Added Room: Name=U_Buttons
+Added Room: Name=U_Heltec_ESP32
+Added Room: Name=U_sparkfun_nrf52

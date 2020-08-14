@@ -1,0 +1,7 @@
+Change Component Comment : Designator=C9 Old Comment=Comment New Comment=0.1 uF
+Change Component Comment : Designator=C10 Old Comment=Comment New Comment=0.1 uF
+Added Pin To Net: NetName=+3.3V Pin=C10-2
+Added Pin To Net: NetName=NetPL_2 Pin=PL-2
+Added Pin To Net: NetName=NetPL_3 Pin=PL-3
+Added Pin To Net: NetName=NetPL_2 Pin=PR-2
+Added Pin To Net: NetName=NetPL_3 Pin=PR-3

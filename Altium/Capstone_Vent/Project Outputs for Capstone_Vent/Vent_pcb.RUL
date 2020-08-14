@@ -1,0 +1,5 @@
+DRC Rules Export File for PCB: D:\ESE\Semester7\capstone\Altium projects\Capstone_Vent_COMPLETED_AWAITING_REVIEW_&_GERBER\Vent_pcb.PcbDoc
+RuleKind=SolderMaskExpansion|RuleName=SolderMaskExpansion|Scope=Board|Minimum=4.00
+RuleKind=Width|RuleName=Width|Scope=Board|Minimum=10.00
+RuleKind=Clearance|RuleName=Clearance|Scope=Board|Minimum=8.00
+RuleKind=ShortCircuit|RuleName=ShortCircuit|Scope=Board|Allowed=0

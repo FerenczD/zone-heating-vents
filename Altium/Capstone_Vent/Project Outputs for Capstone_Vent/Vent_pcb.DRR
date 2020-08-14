@@ -1,0 +1,21 @@
+----------------------------------------------------------------------------------------------------------------------------------
+NCDrill File Report For: Vent_pcb.PcbDoc   2020-06-22  4:09:06 PM
+----------------------------------------------------------------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : Vent_pcb-RoundHoles.TXT
+ASCII SlotHoles File : Vent_pcb-SlotHoles.TXT
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T1      0.2mm (8mil)                                              Round             6         PTH        0.00mm (0.00inch)
+T2      0.5mm (20mil)                                             Slot              2         PTH        0.00mm (0.00inch)
+T3      0.55mm (22mil)                                            Slot              2         PTH        0.00mm (0.00inch)
+T4      0.711mm (28mil)                                           Round             32        PTH        0.00mm (0.00inch)
+T5      0.9mm (35mil)                                             Round             49        PTH        0.00mm (0.00inch)
+T6      1mm (39mil)                                               Slot              3         PTH        0.00mm (0.00inch)
+T7      0.9mm (35mil)                                             Round             2         NPTH       0.00mm (0.00inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              96
+
+Total Processing Time (hh:mm:ss) : 00:00:00

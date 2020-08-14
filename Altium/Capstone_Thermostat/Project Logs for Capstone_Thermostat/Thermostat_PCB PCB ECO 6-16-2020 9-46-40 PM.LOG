@@ -1,0 +1,10 @@
+Removed Pin From Net: NetName=NetR8_1 Pin=R9-1
+Removed Pin From Net: NetName=NetP2_2 Pin=R9-2
+Removed Pin From Net: NetName=NetP2_2 Pin=R10-1
+Removed Pin From Net: NetName=NetR8_1 Pin=R10-2
+Removed Member From Class: ClassName=U_temp_sensor Member=R9
+Removed Member From Class: ClassName=U_temp_sensor Member=R10
+Added Pin To Net: NetName=NetPL1_1 Pin=PL1-1
+Added Pin To Net: NetName=NetPL1_2 Pin=PL1-2
+Added Pin To Net: NetName=NetPL1_1 Pin=PR1-1
+Added Pin To Net: NetName=NetPL1_2 Pin=PR1-2

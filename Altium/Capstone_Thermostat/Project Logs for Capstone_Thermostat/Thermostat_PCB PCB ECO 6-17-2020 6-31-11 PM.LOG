@@ -1,0 +1,13 @@
+Change Component Footprint: Designator=J2 Old Footprint=SHDR2W100P0X500_1X2_1120X750X1020P New Footprint=SHDR2W90P0X350_1X2_800X700X855P
+Change Component Comment : Designator=J2 Old Comment=OSTTC020162 New Comment=OSTTE020161
+Change component parameters: Designator = "J2" ("J2"); Footprint = "SHDR2W100P0X500_1X2_1120X750X1020P"; UniqueID = "\BIRFDXQM\TNTXIHJD" ("\BIRFDXQM\TNTXIHJD")
+Change component parameters (AddParameter): Name = "Arrow Part Number"; Value = "OSTTE020161"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Arrow Price/Stock"; Value = "https://www.arrow.com/en/products/ostte020161/on-shore-technology"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet Link"; Value = "http://www.on-shore.com/wp-content/uploads/OSTTEXX0161.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Height"; Value = "8.55mm"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Name"; Value = "On-Shore Technology"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "OSTTE020161"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Part Number"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mouser Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetPL1_1 Pin=PL1-1
+Added Pin To Net: NetName=NetPL1_1 Pin=PR1-1

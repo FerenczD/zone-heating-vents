@@ -1,0 +1,63 @@
+Added Pin To Net: NetName=NetIC1_6 Pin=C5-1
+Added Pin To Net: NetName=NetPL1_1 Pin=PL1-1
+Added Pin To Net: NetName=NetPL1_2 Pin=PL1-2
+Added Pin To Net: NetName=NetPL1_1 Pin=PR1-1
+Added Pin To Net: NetName=NetPL1_2 Pin=PR1-2
+Added Pin To Net: NetName=NetIC1_6 Pin=PWR-1
+Change Net Name : Old Net Name=NetIC1_6 New Net Name=NetC5_1
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component BR1 MB1S
+Added Member To Class: ClassName=U_temp_sensor Member=Component C1 0.1u
+Added Member To Class: ClassName=Thermostat_Master Member=Component C2 0.1u
+Added Member To Class: ClassName=Thermostat_Master Member=Component C3 0.1u
+Added Member To Class: ClassName=Thermostat_Master Member=Component C4 0.1u
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component C5 UUD1E221MNL1GS
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component CBOOT1 C0805C103K1RACTU
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component CIN1 CAP 220nF 50V 0805(2012)
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component CIN2 220 µF 50V
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component D1 B360A-13-F
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component IC1 A8498SLJTR-T
+Added Member To Class: ClassName=U_Wall Thermostat Member=Component J1 OSTTE030161
+Added Member To Class: ClassName=U_Wall Thermostat Member=Component J2 OSTTC020162
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component L1 SRR1210-680M
+Added Member To Class: ClassName=Thermostat_Master Member=Component LED_A/C1
+Added Member To Class: ClassName=Thermostat_Master Member=Component LED_FAN1
+Added Member To Class: ClassName=Thermostat_Master Member=Component LED_HEAT1 LTST-C150KRKT
+Added Member To Class: ClassName=Thermostat_Master Member=Component OLED Header 8
+Added Member To Class: ClassName=Thermostat_Master Member=Component P3 Header 5
+Added Member To Class: ClassName=U_Wall Thermostat Member=Component PWR_HDR Header 2
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component PWR Header 2
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component R1 RC0805FR-076R34L
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component R2 RC0805JR-072KL
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component R3 0? - RC0603JR-070RL
+Added Member To Class: ClassName=U_temp_sensor Member=Component R4 470
+Added Member To Class: ClassName=U_temp_sensor Member=Component R5 5k
+Added Member To Class: ClassName=U_temp_sensor Member=Component R6 5k
+Added Member To Class: ClassName=U_temp_sensor Member=Component R7 5k
+Added Member To Class: ClassName=U_temp_sensor Member=Component R8 0
+Added Member To Class: ClassName=U_temp_sensor Member=Component R9 0
+Added Member To Class: ClassName=U_temp_sensor Member=Component R10 0
+Added Member To Class: ClassName=U_temp_sensor Member=Component R11 0
+Added Member To Class: ClassName=Thermostat_Master Member=Component R15 5k
+Added Member To Class: ClassName=Thermostat_Master Member=Component R16 5k
+Added Member To Class: ClassName=Thermostat_Master Member=Component R17 RC0805FR-07100RL
+Added Member To Class: ClassName=Thermostat_Master Member=Component R18 RC0805FR-07100RL
+Added Member To Class: ClassName=Thermostat_Master Member=Component R19 RC0805FR-07100RL
+Added Member To Class: ClassName=Thermostat_Master Member=Component R20 5k
+Added Member To Class: ClassName=Thermostat_Master Member=Component R21 5k
+Added Member To Class: ClassName=U_Buttons Member=Component R22 1.0K
+Added Member To Class: ClassName=U_Buttons Member=Component R23 1.0K
+Added Member To Class: ClassName=U_Buttons Member=Component R24 RC0805FR-0710KL
+Added Member To Class: ClassName=U_Buttons Member=Component R25 RC0805FR-0710KL
+Added Member To Class: ClassName=U_Buttons Member=Component R26 1.0K
+Added Member To Class: ClassName=U_Buttons Member=Component R27 1.0K
+Added Member To Class: ClassName=U_Buttons Member=Component R28 RC0805FR-0710KL
+Added Member To Class: ClassName=U_Buttons Member=Component R29 RC0805FR-0710KL
+Added Member To Class: ClassName=Thermostat_Master Member=Component R30 5k
+Added Member To Class: ClassName=Thermostat_Master Member=Component R31 5k
+Added Member To Class: ClassName=Thermostat_Master Member=Component RGB Header 4
+Added Member To Class: ClassName=U_Thermostat Power Supply Member=Component RTSET1 ERA6AEB6342V
+Added Member To Class: ClassName=U_Buttons Member=Component SW1 1571563-9
+Added Member To Class: ClassName=U_Buttons Member=Component SW2 1571563-9
+Added Member To Class: ClassName=U_Buttons Member=Component SW3 1571563-9
+Added Member To Class: ClassName=U_Buttons Member=Component SW4 1571563-9
+Added Member To Class: ClassName=U_temp_sensor Member=Component U1 TMP116NAIDRVT

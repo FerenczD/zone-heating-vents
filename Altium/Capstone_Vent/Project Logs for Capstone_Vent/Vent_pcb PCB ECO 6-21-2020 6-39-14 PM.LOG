@@ -1,0 +1,17 @@
+Change Managed Component Library Link : Designator=C9 Old VaultGUID= New VaultGUID=B7D15EC3-160A-466F-A46C-7801FE6295A7 Old ItemGUID= New ItemGUID=3EC7BB2A-7D01-4912-A212-22DA0E756E9A Old RevisionGUID= New RevisionGUID=A5BA2194-F0C2-4EA0-B16C-663A9C2852F3
+Change Managed Component Library Link : Designator=C10 Old VaultGUID= New VaultGUID=B7D15EC3-160A-466F-A46C-7801FE6295A7 Old ItemGUID= New ItemGUID=3EC7BB2A-7D01-4912-A212-22DA0E756E9A Old RevisionGUID= New RevisionGUID=A5BA2194-F0C2-4EA0-B16C-663A9C2852F3
+Change component parameters: Designator = "C9" ("C9"); Footprint = "CAPC2013X145X50LL20T25"; UniqueID = "\IERYSUSL\OTIVQTUD" ("\IERYSUSL\OTIVQTUD")
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "Kemet"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Part Number"; Value = "C0805C104Z5VACTU"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C10" ("C10"); Footprint = "CAPC2013X145X50LL20T25"; UniqueID = "\IERYSUSL\UZVCWUSJ" ("\IERYSUSL\UZVCWUSJ")
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "Kemet"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Part Number"; Value = "C0805C104Z5VACTU"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=C9-1
+Added Pin To Net: NetName=+3.3V Pin=C9-2
+Added Pin To Net: NetName=GND Pin=C10-1
+Added Pin To Net: NetName=NetP1_1 Pin=PL-2
+Added Pin To Net: NetName=+3.3V Pin=PL-3
+Added Pin To Net: NetName=NetP1_1 Pin=PR-2
+Added Pin To Net: NetName=+3.3V Pin=PR-3
+Added Member To Class: ClassName=U_dc_motor Member=Component C9 Comment
+Added Member To Class: ClassName=U_dc_motor Member=Component C10 Comment

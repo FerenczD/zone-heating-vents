@@ -1,0 +1,31 @@
+Removed Pin From Net: NetName=NetP2_1 Pin=P2-1
+Removed Pin From Net: NetName=NetP2_2 Pin=P2-2
+Removed Pin From Net: NetName=NetP2_2 Pin=R5-1
+Removed Pin From Net: NetName=NetP2_1 Pin=R6-1
+Removed Pin From Net: NetName=NetP2_2 Pin=R20-2
+Removed Pin From Net: NetName=NetP2_1 Pin=R21-2
+Removed Pin From Net: NetName=NetP2_2 Pin=U1-1
+Removed Pin From Net: NetName=NetP2_1 Pin=U1-6
+Change Component Designator: OldDesignator=LED_A/C NewDesignator=LED_A/C1
+Change Component Designator: OldDesignator=LED_FAN NewDesignator=LED_FAN1
+Change Component Designator: OldDesignator=LED_HEAT NewDesignator=LED_HEAT1
+Added Pin To Net: NetName=NetP2_2 Pin=P1-2
+Added Pin To Net: NetName=NetP2_1 Pin=P1-3
+Added Pin To Net: NetName=NetOLED_1 Pin=P2-1
+Added Pin To Net: NetName=NetOLED_2 Pin=P2-2
+Added Pin To Net: NetName=NetP2_1 Pin=P2-15
+Added Pin To Net: NetName=NetP2_2 Pin=P2-16
+Added Pin To Net: NetName=NetPL1_1 Pin=PL1-1
+Added Pin To Net: NetName=NetPL1_2 Pin=PL1-2
+Added Pin To Net: NetName=NetPL1_3 Pin=PL1-3
+Added Pin To Net: NetName=NetPL1_1 Pin=PR1-1
+Added Pin To Net: NetName=NetPL1_2 Pin=PR1-2
+Added Pin To Net: NetName=NetPL1_3 Pin=PR1-3
+Added Pin To Net: NetName=NetOLED_2 Pin=R5-1
+Added Pin To Net: NetName=NetOLED_1 Pin=R6-1
+Added Pin To Net: NetName=NetOLED_2 Pin=R20-2
+Added Pin To Net: NetName=NetOLED_1 Pin=R21-2
+Added Pin To Net: NetName=NetOLED_2 Pin=U1-1
+Added Pin To Net: NetName=NetOLED_1 Pin=U1-6
+Change Net Name : Old Net Name=NetP2_1 New Net Name=NetP1_3
+Change Net Name : Old Net Name=NetP2_2 New Net Name=NetP1_2
